@@ -4,10 +4,10 @@ import entity.ServerClient;
 
 import java.util.HashSet;
 
-public class users {
+public class Users {
     private HashSet<ServerClient> webUsers;
 
-    public users(HashSet<ServerClient> webUsers) {
+    public Users(HashSet<ServerClient> webUsers) {
         this.webUsers = new HashSet<>();
     }
     public boolean addNewUser(String fullName, String email, String phoneNumber, String password){
