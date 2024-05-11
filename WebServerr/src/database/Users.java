@@ -5,24 +5,30 @@ import entity.ServerClient;
 import java.util.HashSet;
 
 public class Users {
-    private HashSet<ServerClient> webUsers;
+    private static HashSet<ServerClient> webUsers;
 
     public Users(HashSet<ServerClient> webUsers) {
-        this.webUsers = new HashSet<>();
+        Users.webUsers = new HashSet<>();
     }
-    public boolean addNewUser(String fullName, String email, String phoneNumber, String password){
+    public static boolean addNewUser(String fullName, String email, String phoneNumber, String password){
+
         if(!checkUserExists(fullName)){
-            this.webUsers.add(new ServerClient(fullName,email,phoneNumber,password));
+            webUsers.add(new ServerClient(fullName,email,phoneNumber,password));
+            //לבדןק שזה באמת מספר ולא סתם
             return true;
         }
         return false;
     }
-    public boolean checkUserExists(String fullName){
+    public static boolean checkUserExists(String fullName){
         HashSet<String> usersName = new HashSet<>();
         for (ServerClient client : webUsers) {
             // Get the full name of the ServerClient object and add it to the list
             usersName.add(client.getFullName());
         }
         return usersName.contains(fullName);
+    }
+
+    public static HashSet<ServerClient> getWebUsers() {
+        return webUsers;
     }
 }
