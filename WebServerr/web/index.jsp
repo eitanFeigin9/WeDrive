@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <style>
         body {
@@ -27,6 +25,10 @@
         h1 {
             margin-top: 0;
         }
+        h2 {
+            margin-top: 10px;
+            color: #666;
+        }
         input[type="text"],
         input[type="password"],
         input[type="submit"] {
@@ -47,16 +49,24 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .btn-container button {
+            width: 48%;
+        }
     </style>
 </head>
 <body>
 <div class="login-container">
-    <h1>Login</h1>
-    <form action="your_servlet_url" method="post">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="submit" value="Login">
-    </form>
+    <h1>Welcome to weDrive</h1>
+    <h2>Creating a transportation experience for guests</h2>
+    <div class="btn-container">
+        <button onclick="window.location.href='signup.html'">Sign Up</button>
+        <button onclick="window.location.href='login.html'">Login</button>
+    </div>
 </div>
 </body>
 </html>

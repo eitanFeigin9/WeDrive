@@ -36,6 +36,9 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -53,6 +56,8 @@
     <input type="password" id="password" name="password" required>
 
     <input type="submit" value="Submit">
+
+    <span class="error-message">User with this name already exists</span>
 </form>
 </body>
 </html>

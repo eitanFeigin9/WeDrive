@@ -13,3 +13,4 @@ public class LoginServlet extends HttpServlet {
         request.getRequestDispatcher("login.html").forward(request, response);
     }
 }
+

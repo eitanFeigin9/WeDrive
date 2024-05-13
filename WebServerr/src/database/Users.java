@@ -6,9 +6,12 @@ import java.util.HashSet;
 
 public class Users {
     private static HashSet<ServerClient> webUsers;
+    private boolean isFirstUser;
 
-    public Users(HashSet<ServerClient> webUsers) {
+
+    public Users() {
         Users.webUsers = new HashSet<>();
+        isFirstUser =false;
     }
     public static boolean addNewUser(String fullName, String email, String phoneNumber, String password){
 
@@ -30,5 +33,12 @@ public class Users {
 
     public static HashSet<ServerClient> getWebUsers() {
         return webUsers;
+    }
+    public synchronized boolean isFirstUser() {
+        return isFirstUser;
+    }
+
+    public synchronized void setFirstUser(boolean firstUser) {
+        isFirstUser = firstUser;
     }
 }
