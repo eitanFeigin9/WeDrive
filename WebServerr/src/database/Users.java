@@ -2,36 +2,32 @@ package database;
 
 import entity.ServerClient;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Users {
-    private static HashSet<ServerClient> webUsers;
+    private static HashMap<String, ServerClient> webUsers;
     private boolean isFirstUser;
 
 
     public Users() {
-        Users.webUsers = new HashSet<>();
+        Users.webUsers = new HashMap<>();
         isFirstUser =false;
     }
     public static boolean addNewUser(String fullName, String email, String phoneNumber, String password){
 
         if(!checkUserExists(fullName)){
-            webUsers.add(new ServerClient(fullName,email,phoneNumber,password));
+            webUsers.put(fullName, new ServerClient(fullName,email,phoneNumber,password));
             //לבדןק שזה באמת מספר ולא סתם
             return true;
         }
         return false;
     }
     public static boolean checkUserExists(String fullName){
-        HashSet<String> usersName = new HashSet<>();
-        for (ServerClient client : webUsers) {
-            // Get the full name of the ServerClient object and add it to the list
-            usersName.add(client.getFullName());
-        }
-        return usersName.contains(fullName);
+        return webUsers.containsKey(fullName);
     }
 
-    public static HashSet<ServerClient> getWebUsers() {
+    public static HashMap<String,ServerClient> getWebUsers() {
         return webUsers;
     }
     public synchronized boolean isFirstUser() {
