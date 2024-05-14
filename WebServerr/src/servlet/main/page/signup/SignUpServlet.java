@@ -26,6 +26,7 @@ public class SignUpServlet extends HttpServlet {
         }
         else {
             response.sendRedirect("thankyou.html");
+
         }
 
 
