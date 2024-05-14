@@ -27,7 +27,7 @@ public class Users {
         return webUsers.containsKey(fullName);
     }
 
-    public static HashMap<String,ServerClient> getWebUsers() {
+    public HashMap<String,ServerClient> getWebUsers() {
         return webUsers;
     }
     public synchronized boolean isFirstUser() {
