@@ -24,20 +24,31 @@
             border-radius: 3px;
             box-sizing: border-box;
         }
-        input[type="submit"] {
+        input[type="submit"] ,
+        .forgot-password {
             width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
             background-color: #4CAF50;
             color: white;
-            padding: 10px 0;
-            border: none;
-            border-radius: 3px;
             cursor: pointer;
+            text-decoration: none;
+            display: block;
+            text-align: center;
         }
-        input[type="submit"]:hover {
+        input[type="submit"]:hover,
+        .forgot-password:hover {
             background-color: #45a049;
         }
         .error-message {
             color: red;
+        }
+        .forgot-password {
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -50,6 +61,8 @@
     <input type="password" id="password" name="password" required>
 
     <input type="submit" value="Login">
+
+    <a class="forgot-password" href="forgotPassword.jsp">Forgot Password?</a>
 
 </form>
 </body>

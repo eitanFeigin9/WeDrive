@@ -21,7 +21,8 @@ public class SignUpServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
-        if(!Users.addNewUser(fullName,email,phone,password)){
+        String securityAnswer = request.getParameter("securityAnswer");
+        if(!Users.addNewUser(fullName,email,phone,password,securityAnswer)){
             response.sendRedirect("signUpNameError.jsp");
         }
         else {

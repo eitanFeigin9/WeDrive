@@ -52,6 +52,9 @@
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
 
+    <label for="securityAnswer">What city were you born in?</label>
+    <input type="text" id="securityAnswer" name="securityAnswer" required>
+
     <input type="submit" value="Submit">
 </form>
 </body>
