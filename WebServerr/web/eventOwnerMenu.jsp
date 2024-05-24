@@ -62,8 +62,8 @@
 <div class="menu-container">
     <h1>Event Owner Menu</h1>
     <button onclick="window.location.href='newEvent.jsp'">New Event</button>
-    <button onclick="window.location.href='history.jsp'">History</button>
-    <button onclick="window.location.href='editDeleteEvent.jsp'">Edit/Delete Event</button>
+    <button onclick="window.location.href='eventDetails.jsp'">History</button>
+    <button onclick="window.location.href='editOrDeleteEvent.jsp'">Edit/Delete Event</button>
     <button class="back-button" onclick="window.location.href='mainPage.jsp'">Back to Main Menu</button>
 </div>
 </body>

@@ -9,11 +9,36 @@ public class EventData {
     private HashSet<String> guestList; //needs to be HashSet
     private String location;
 
-    public EventData(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location) {
+    private String fileName;
+
+    public EventData(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName) {
         this.eventName = eventName;
         this.eventDate = eventDate;
         this.eventKind = eventKind;
         this.guestList = guestList;
         this.location = location;
+        this.fileName = fileName;
     }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public String getEventKind() {
+        return eventKind;
+    }
+
+    public HashSet<String> getGuestList() {
+        return guestList;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getFileName() { return fileName; }
 }

@@ -29,7 +29,8 @@ public class NewEventServlet extends HttpServlet {
         String eventKind = request.getParameter("eventKind");
         String eventLocation = request.getParameter("eventLocation");
         HashSet<String> guestList = createGuestList(request,response);
-        if(!eventOwner.addNewEvent(eventName,eventDate,eventKind,guestList, eventLocation)){
+
+        if(!eventOwner.addNewEvent(eventName,eventDate,eventKind,guestList, eventLocation, getFileName(request.getPart("guestList")))){
             response.sendRedirect("eventExistsError.jsp");
         }
         else {
@@ -86,5 +87,15 @@ public class NewEventServlet extends HttpServlet {
         }
 
         return guestNames;
+    }
+
+    private String getFileName(Part part) {
+        String contentDispositionHeader = part.getHeader("content-disposition");
+        for (String header : contentDispositionHeader.split(";")) {
+            if (header.trim().startsWith("filename")) {
+                return header.substring(header.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
     }
 }

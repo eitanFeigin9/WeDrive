@@ -58,10 +58,10 @@ public class ServerClient {
 
     public void setSecurityAnswer(String securityAnswer) { this.securityAnswer = securityAnswer; }
 
-    public boolean addNewEvent(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location){
+    public boolean addNewEvent(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName){
 
         if(!checkEventExists(eventName)){
-            events.put(eventName, new EventData(eventName,eventDate,eventKind,guestList,location));
+            events.put(eventName, new EventData(eventName,eventDate,eventKind,guestList,location,fileName));
             return true;
         }
         return false;
