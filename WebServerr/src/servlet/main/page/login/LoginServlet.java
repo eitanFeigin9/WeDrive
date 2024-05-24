@@ -16,13 +16,13 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Forward the request to the login.jsp page
         Users userManager = ServletUtils.getUserManager(getServletContext());
         String fullName = request.getParameter("fullname");
         String password = request.getParameter("password");
         if (userManager.getWebUsers().containsKey(fullName)) {
             ServerClient client = userManager.getWebUsers().get(fullName);
             if (client.getPassword().equals(password)) {
+                request.getSession().setAttribute("userName", fullName);
                 response.sendRedirect("mainPage.jsp");
             }
             else {

@@ -3,7 +3,6 @@ package database;
 import entity.ServerClient;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Users {
     private static HashMap<String, ServerClient> webUsers;
@@ -17,7 +16,8 @@ public class Users {
     public static boolean addNewUser(String fullName, String email, String phoneNumber, String password, String securityAnswer){
 
         if(!checkUserExists(fullName)){
-            webUsers.put(fullName, new ServerClient(fullName,email,phoneNumber,password,securityAnswer));
+            ServerClient newUser = new ServerClient(fullName,email,phoneNumber,password,securityAnswer);
+            webUsers.put(fullName, newUser);
             //לבדןק שזה באמת מספר ולא סתם
             return true;
         }
@@ -37,7 +37,6 @@ public class Users {
     public synchronized void setFirstUser(boolean firstUser) {
         isFirstUser = firstUser;
     }
-    public static ServerClient getUserByFullName(String fullName) {
-        return webUsers.get(fullName);
-    }
+    public static ServerClient getUserByFullName(String fullName) { return webUsers.get(fullName); }
+
 }

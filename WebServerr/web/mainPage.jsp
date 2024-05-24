@@ -75,7 +75,7 @@
     <div class="section">
         <h2>As an Event Owner</h2>
         <p>Organize and manage your event's transportation needs.</p>
-        <button class="button button-green">Get Started</button>
+        <a href="eventOwnerMenu.jsp" class="button button-green">Get Started</a>
     </div>
 
     <div class="section">
