@@ -20,9 +20,10 @@ public class PasswordRecoveryServlet extends HttpServlet {
 
         ServerClient user = Users.getUserByFullName(fullname);
         if (user != null && user.getSecurityAnswer().equalsIgnoreCase(securityAnswer)) {
-            response.getWriter().println("Your password is: " + user.getPassword());
+            request.setAttribute("password", user.getPassword());
+            request.getRequestDispatcher("passwordRecovery.jsp").forward(request, response);
         } else {
-            response.sendRedirect("login.jsp?error=incorrectAnswer");
+            response.sendRedirect("forgotPasswordError.jsp");
         }
     }
 }

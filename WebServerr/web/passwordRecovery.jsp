@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You</title>
+    <title>Password Recovery</title>
     <style>
         body {
             display: flex;
@@ -34,6 +34,14 @@
             color: #333;
             margin: 10px 0;
         }
+        .container .password {
+            font-weight: bold;
+            color: #000;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 3px;
+            margin: 10px 0;
+        }
         .container a {
             display: block;
             margin-top: 20px;
@@ -51,8 +59,9 @@
 </head>
 <body>
 <div class="container">
-    <h1>Thank You!</h1>
-    <p>Your sign-up was successful. You will receive a confirmation email shortly.</p>
+    <h1>Password Recovery</h1>
+    <p>Your password is:</p>
+    <p class="password">${password}</p>
     <a href="login.jsp">Back to Login</a>
 </div>
 </body>
