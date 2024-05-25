@@ -7,6 +7,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="WebServer" />
         </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/WebServerr/web/web/WEB-INF/lib/javase-3.4.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/WebServerr/web/web/WEB-INF/lib/core-3.4.1.jar" />
+        </element>
       </element>
     </root>
   </artifact>
