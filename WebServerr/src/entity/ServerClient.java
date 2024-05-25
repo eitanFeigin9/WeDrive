@@ -61,10 +61,14 @@ public class ServerClient {
     public boolean addNewEvent(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName){
 
         if(!checkEventExists(eventName)){
-            events.put(eventName, new EventData(eventName,eventDate,eventKind,guestList,location,fileName));
+            events.put(eventName, new EventData(eventName,eventDate,eventKind,guestList,location, fileName));
             return true;
         }
         return false;
+    }
+
+    public void deleteEvent(String eventName){
+        events.remove(eventName);
     }
     public HashMap<String, EventData> getEvents() { return events; }
 

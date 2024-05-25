@@ -11,7 +11,8 @@ public class EventData {
 
     private String fileName;
 
-    public EventData(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName) {
+
+    public EventData(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location,String fileName) {
         this.eventName = eventName;
         this.eventDate = eventDate;
         this.eventKind = eventKind;

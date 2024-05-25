@@ -46,7 +46,7 @@
     <input type="text" id="eventName" name="eventName" required>
 
     <label for="eventDate">Date:</label>
-    <input type="text" id="eventDate" name="eventDate" placeholder="YYYY-MM-DD" required>
+    <input type="date" id="eventDate" name="eventDate" required>
 
     <label for="eventKind">Event Kind:</label>
     <input type="text" id="eventKind" name="eventKind" required>

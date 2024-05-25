@@ -104,6 +104,11 @@
         .form-container input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <%
@@ -140,6 +145,8 @@
         <input type="text" id="eventLocation" name="eventLocation" value="<%= event.getLocation() %>" required>
 
         <input type="submit" value="Update">
+
+        <span class="error-message">Event With This Name Already Exists</span>
     </form>
 </div>
 <script>
@@ -150,6 +157,3 @@
 </script>
 </body>
 </html>
-
-
-
