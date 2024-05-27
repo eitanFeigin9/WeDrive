@@ -42,7 +42,7 @@ public class NewEventServlet extends HttpServlet {
         String eventLocation = request.getParameter("eventLocation");
         HashSet<String> guestList = ServletUtils.createGuestList(request, response);
         //add new event
-        if (!eventOwner.addNewEvent(eventName, eventDate, eventKind, guestList, eventLocation, ServletUtils.getFileName(request.getPart("guestList")))) {
+        if (!eventOwner.addNewOwnedEvent(eventName, eventDate, eventKind, guestList, eventLocation, ServletUtils.getFileName(request.getPart("guestList")))) {
             response.sendRedirect("eventExistsError.jsp");
             return; // Exit if event creation fails
         }

@@ -110,7 +110,7 @@
     String userName = (String) request.getSession().getAttribute("userName");
     ServerClient client = Users.getUserByFullName(userName);
     String eventNamePar = request.getParameter("eventName");
-    EventData event = client.getEventByName(eventNamePar);
+    EventData event = client.getOwnedEventByName(eventNamePar);
     request.getSession().setAttribute("eventOldName", eventNamePar);
     String uploadedFileName = event.getFileName();
     if (uploadedFileName == null || uploadedFileName.isEmpty()) {

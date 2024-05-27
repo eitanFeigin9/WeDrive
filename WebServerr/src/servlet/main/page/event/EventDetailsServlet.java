@@ -3,15 +3,12 @@ import database.Users;
 import entity.ServerClient;
 import event.EventData;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import jakarta.servlet.http.HttpServlet;
-import utils.ServletUtils;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 @WebServlet("/eventDetails")
 public class EventDetailsServlet extends HttpServlet {
@@ -29,7 +26,7 @@ public class EventDetailsServlet extends HttpServlet {
         }
 
         ServerClient client = Users.getUserByFullName(userName);
-        EventData event = client.getEventByName(eventName);
+        EventData event = client.getOwnedEventByName(eventName);
 
         if (event == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Event not found");

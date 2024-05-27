@@ -2,7 +2,6 @@ package servlet.main.page.event;
 import database.Users;
 import entity.ServerClient;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
@@ -18,7 +17,7 @@ public class DeleteEventServlet extends HttpServlet {
         String userName = (String)request.getSession().getAttribute("userName");
         ServerClient client = Users.getUserByFullName(userName);
 
-        client.getEvents().remove(eventName);
+        client.getOwnedEvents().remove(eventName);
 
         response.sendRedirect("editOrDeleteEvent.jsp");
     }

@@ -56,26 +56,10 @@
     </style>
 </head>
 <body>
-<%
-    String uuid = request.getParameter("id");
-    String name = NewEventServlet.getNameMap().get(uuid);
-    request.setAttribute("currId", uuid);
-    if (name != null) {
-%>
 <div class="container">
     <h1>WeDrive</h1>
-    <h2>Glad to hear you are going to attend the "<%= name %>" event</h2>
-    <h2>Just One More Step...</h2>
-    <h2>Please log in or register on the site</h2>
-    <div class="btn-container">
-        <button onclick="window.location.href='signUpFromLink.jsp'">Sign Up</button>
-        <button onclick="window.location.href='loginFromLink.jsp'">Login</button>
-    </div>
+    <a href="createRide.jsp" class="btn">Are you interested in driving other guests and saving on fuel costs?</a>
+    <a href="joinRide.jsp" class="btn">Do you need transportation to the event?</a>
 </div>
-<% } else { %>
-<div class="container">
-    <p class="invalid-url">Invalid URL</p>
-</div>
-<% } %>
 </body>
 </html>

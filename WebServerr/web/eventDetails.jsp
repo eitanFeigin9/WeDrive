@@ -78,7 +78,7 @@
     <%
         String userName = (String)request.getSession().getAttribute("userName");
         ServerClient client = Users.getUserByFullName(userName);
-        HashMap<String, EventData> events = client.getEvents();
+        HashMap<String, EventData> events = client.getOwnedEvents();
         for (EventData event : events.values()) {
             LocalDate eventDate = LocalDate.parse(event.getEventDate());
             long daysTillEvent = ChronoUnit.DAYS.between(LocalDate.now(), eventDate);
