@@ -60,8 +60,8 @@
 </head>
 <body>
 <div class="menu-container">
-    <h1>Driver Options Menu</h1>
-    <button onclick="window.location.href='driverMenu.jsp'">Upcoming Event Drives</button>
+    <h1>Hitchhiker Options Menu</h1>
+    <button onclick="window.location.href='hitchhikerMenu.jsp'">Upcoming Event Rides</button>
     <button class="back-button" onclick="window.location.href='mainPage.jsp'">Back to Main Menu</button>
 </div>
 </body>

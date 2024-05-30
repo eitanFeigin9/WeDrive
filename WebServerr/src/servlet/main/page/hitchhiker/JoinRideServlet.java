@@ -1,4 +1,4 @@
-package servlet.main.page.ride;
+package servlet.main.page.hitchhiker;
 
 import database.Users;
 import entity.ServerClient;
@@ -38,7 +38,7 @@ public class JoinRideServlet extends HttpServlet {
         }
         else {
 
-            response.sendRedirect("thankForNewRide.jsp");
+            response.sendRedirect("thankYouHitchhiker.jsp");
         }
     }
 }

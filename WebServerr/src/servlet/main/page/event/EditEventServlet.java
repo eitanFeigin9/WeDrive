@@ -26,7 +26,6 @@ public class EditEventServlet extends HttpServlet {
             if (client.getOwnedEvents().containsKey(eventNewName)) {
                 response.sendRedirect("editEventError.jsp");
             }
-
         }
         HashSet<String> oldGuestList = event.getGuestList();
         String oldFileName = event.getFileName();

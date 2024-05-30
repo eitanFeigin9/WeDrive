@@ -6,12 +6,13 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="database.Users" %>
 <%@ page import="ride.DriverRide" %>
+<%@ page import="ride.HitchhikerRide" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Driver Menu</title>
+    <title>Hitchhiker Menu</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,41 +76,35 @@
     </style>
 </head>
 <body>
-<h2>Driver Current Rides</h2>
+<h2>Hitchhiker Current Rides</h2>
 <table>
     <tr>
         <th>Event Name</th>
         <th>Pick Up Address</th>
-        <th>Current Amount Of Hitchhikers</th>
-        <th>Max Capacity</th>
-        <th>Fuel Return Per Hitchhiker</th>
-        <th>Total fuel returns</th>
+        <th>Fuel Return</th>
     </tr>
     <%
         String userName = (String)request.getSession().getAttribute("userName");
         ServerClient client = Users.getUserByFullName(userName);
-        HashMap<String, DriverRide> rides = client.getDrivingEvents();
-        for (DriverRide ride : rides.values()) {
+        HashMap<String, HitchhikerRide> rides = client.getHitchhikingEvents();
+        for (HitchhikerRide ride : rides.values()) {
             String currEventName = ride.getEventName();
     %>
     <tr>
         <td><%= currEventName %></td>
         <td><%= ride.getPickupCity() %></td>
-        <td><%= ride.getCurrNumOfHitchhikers() %></td>
-        <td><%= ride.getMaxCapacity() %></td>
-        <td><%= ride.getFuelReturnsPerHitchhiker() %></td>
-        <td><%= ride.getTotalFuelReturns() %></td>
+        <td><%= ride.getFuelMoney() %></td>
         <td>
-            <a href="editRide.jsp?eventName=<%= currEventName %>" class="button edit-button">Edit</a>
+            <a href="editRideHitchhiker.jsp?eventName=<%= currEventName %>" class="button edit-button">Edit</a>
         </td>
         <td>
-            <a href="cancelRide.jsp?eventName=<%= currEventName %>" class="button delete-button">Cancel</a>
+            <a href="cancelRideHitchhiker.jsp?eventName=<%= currEventName %>" class="button delete-button">Cancel</a>
         </td>
     </tr>
     <% } %>
 </table>
 <div class="button-container">
-    <a href="driverOptionsMenu.jsp" class="button">Back to Driver Menu</a>
+    <a href="hitchhikerOptionsMenu.jsp" class="button">Back to Hitchhiker Options Menu</a>
 </div>
 </body>
 </html>

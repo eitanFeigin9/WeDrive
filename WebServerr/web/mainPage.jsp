@@ -11,6 +11,9 @@
             padding: 0;
             background-color: #f4f4f4;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         header {
             background-color: #4CAF50;
@@ -21,6 +24,7 @@
         .container {
             width: 80%;
             margin: 20px auto;
+            flex: 1;
         }
         .section {
             background: white;
@@ -54,9 +58,8 @@
             color: white;
             text-align: center;
             padding: 1em 0;
-            position: fixed;
+            position: relative;
             width: 100%;
-            bottom: 0;
         }
         footer a {
             color: #ddd;
@@ -81,13 +84,13 @@
     <div class="section">
         <h2>As a Driver</h2>
         <p>Offer rides and connect with passengers.</p>
-        <button class="button button-blue">Start Driving</button>
+        <a href="driverOptionsMenu.jsp" class="button button-blue">Start Driving</a>
     </div>
 
     <div class="section">
         <h2>As a Hitchhiker</h2>
         <p>Find rides to your favorite events.</p>
-        <button class="button button-orange">Find a Ride</button>
+        <a href="hitchhikerOptionsMenu.jsp" class="button button-orange">Find a Ride</a>
     </div>
 </div>
 

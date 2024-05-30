@@ -1,10 +1,9 @@
-<%@ page import="servlet.main.page.event.NewEventServlet" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Ride</title>
+    <title>Edit Pickup</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,7 +23,7 @@
             max-width: 400px;
         }
         h1 {
-            color: #4CAF50;
+            color: #333;
             font-size: 22px;
             margin-bottom: 20px;
         }
@@ -42,35 +41,52 @@
         .button-container {
             text-align: center;
         }
-        input[type="submit"], button {
-            padding: 12px 24px;
+        button, a.button {
+            padding: 10px 20px;
             margin: 10px 5px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            color: white;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            width: 45%;
+        }
+        .update-button {
             background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
             transition: background-color 0.3s;
         }
-        input[type="submit"]:hover, button:hover {
+        .update-button:hover {
             background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Create New Ride</h1>
-    <form action="createRide" method="post" enctype="multipart/form-data">
-        <label for="eventName">Event Name:</label><br>
-        <input type="text" id="eventName" name="eventName" required><br>
+    <h1>Edit Pickup For The <%= request.getParameter("eventName") %> Event</h1>
+    <form action="editRide" method="post" class="form-container">
         <label for="maxCapacity">Max Capacity:</label><br>
-        <input type="number" id="maxCapacity" name="maxCapacity" min="0" max="40" required><br>
+        <input type="number" id="maxCapacity" name="maxCapacity" required><br>
         <label for="pickupCity">Pickup City:</label><br>
         <input type="text" id="pickupCity" name="pickupCity" required><br>
-        <label for="fuelReturns">Fuel Returns:</label><br>
-        <input type="number" id="fuelReturns" name="fuelReturns" min="0" required><br>
-        <input type="submit" value="Confirm">
+        <label for="fuelReturns">Fuel Returns (per hitchhiker):</label><br>
+        <input type="number" id="fuelReturns" name="fuelReturns" required><br>
+        <form action="editRide" method="post" style="display:inline;">
+            <input type="hidden" name="eventName" value="<%= request.getParameter("eventName") %>">
+            <button type="submit" class="button update-button">Edit the Pickup</button>
+        </form>
+        <span class="error-message">Max Capacity and Fuel Returns Need To Be A Number</span>
     </form>
 </div>
 </body>
