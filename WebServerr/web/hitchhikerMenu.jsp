@@ -80,6 +80,8 @@
 <table>
     <tr>
         <th>Event Name</th>
+        <th>Driver Name</th>
+        <th>Driver Phone</th>
         <th>Pick Up Address</th>
         <th>Fuel Return</th>
     </tr>
@@ -92,6 +94,8 @@
     %>
     <tr>
         <td><%= currEventName %></td>
+        <td><%= ride.getDriverName() %></td>
+        <td><%= ride.getDriverPhone() %></td>
         <td><%= ride.getPickupCity() %></td>
         <td><%= ride.getFuelMoney() %></td>
         <td>

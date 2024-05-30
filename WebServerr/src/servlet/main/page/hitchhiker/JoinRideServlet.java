@@ -8,10 +8,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ride.DriverRide;
+import ride.HitchhikerRide;
 import servlet.main.page.event.NewEventServlet;
 import utils.ServletUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(name = "JoinRideServlet", urlPatterns = {"/joinRide"})
 @MultipartConfig
@@ -37,6 +41,26 @@ public class JoinRideServlet extends HttpServlet {
             response.sendRedirect("eventExistsError.jsp"); //change to you are already regiter as a hitchhiker to this event
         }
         else {
+            HitchhikerRide newRide = client.getHitchhikingEventByName(eventName);
+            Users userManager = ServletUtils.getUserManager(getServletContext());
+            HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
+            for (Map.Entry<String, ServerClient> user : webUsers.entrySet()) {
+                if (user.getValue().checkDrivingEventExists(eventName) && !user.getKey().equals(userName)) {
+                    DriverRide driverRide = user.getValue().getDrivingEventByName(eventName);
+                    if (driverRide.getPickupCity().equals(newRide.getPickupCity())) {
+                        if (newRide.getFuelMoney() >= driverRide.getFuelReturnsPerHitchhiker()) {
+                            if (driverRide.addNewHitchhiker(client.getFullName(), client.getPhoneNumber())){
+                                driverRide.addToTotalFuelReturns(newRide.getFuelMoney()); //ask eitan if it should be the hitchhiker or driver money
+                                newRide.setFreeForPickup(false); //The hitchhiker is no longer free for pickup
+                                newRide.setDriverName(user.getValue().getFullName());
+                                newRide.setDriverPhone(user.getValue().getPhoneNumber());
+                                response.sendRedirect("thankYouHitchhiker.jsp");
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
 
             response.sendRedirect("thankYouHitchhiker.jsp");
         }

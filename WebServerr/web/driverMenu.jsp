@@ -6,6 +6,7 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="database.Users" %>
 <%@ page import="ride.DriverRide" %>
+<%@ page import="java.util.Map" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +85,7 @@
         <th>Max Capacity</th>
         <th>Fuel Return Per Hitchhiker</th>
         <th>Total fuel returns</th>
+        <th>Hitchhiker Names and Phones</th>
     </tr>
     <%
         String userName = (String)request.getSession().getAttribute("userName");
@@ -99,6 +101,14 @@
         <td><%= ride.getMaxCapacity() %></td>
         <td><%= ride.getFuelReturnsPerHitchhiker() %></td>
         <td><%= ride.getTotalFuelReturns() %></td>
+        <td>
+            <%
+                HashMap<String, String> hitchhikers = ride.getCurrentHitchhikers();
+                for (Map.Entry<String, String> hitchhiker : hitchhikers.entrySet()) {
+                    out.println("Name: " + hitchhiker.getKey() + "<br>Phone: " + hitchhiker.getValue() + "<br><br>");
+                }
+            %>
+        </td>
         <td>
             <a href="editRide.jsp?eventName=<%= currEventName %>" class="button edit-button">Edit</a>
         </td>

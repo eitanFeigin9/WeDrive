@@ -1,21 +1,28 @@
 package ride;
 
+import event.EventData;
+
+import java.util.HashMap;
+import java.util.HashSet;
+
 public class DriverRide {
     private String eventName;
     private int maxCapacity;
     private String pickupCity;
     private int fuelReturnsPerHitchhiker;
-
     private int currNumOfHitchhikers;
     private int totalFuelReturns;
+    private HashMap<String, String> currentHitchhikers;
+
 
     public DriverRide(String eventName, int maxCapacity, String pickupCity, int fuelReturnsPerHitchhiker) {
         this.eventName = eventName;
         this.maxCapacity = maxCapacity;
         this.pickupCity = pickupCity;
         this.fuelReturnsPerHitchhiker = fuelReturnsPerHitchhiker;
-        currNumOfHitchhikers = 0;
-        totalFuelReturns = 0;
+        this.currNumOfHitchhikers = 0;
+        this.totalFuelReturns = 0;
+        this.currentHitchhikers = new HashMap<>();
     }
 
     public String getEventName() { return eventName; }
@@ -31,4 +38,26 @@ public class DriverRide {
     public int getCurrNumOfHitchhikers() { return currNumOfHitchhikers; }
 
     public int getTotalFuelReturns() { return totalFuelReturns; }
+    public void addToTotalFuelReturns(int fuelMoney) { this.totalFuelReturns += fuelMoney; }
+
+    public HashMap<String, String> getCurrentHitchhikers() {
+        return currentHitchhikers;
+    }
+
+    public boolean addNewHitchhiker(String hitchhikerName, String hitchhikerPhone){
+
+        if(!currentHitchhikers.containsKey(hitchhikerName)){
+            currentHitchhikers.put(hitchhikerName, hitchhikerPhone);
+            currNumOfHitchhikers++;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isTherePlace() {
+        if (maxCapacity > currNumOfHitchhikers) {
+            return true;
+        }
+        return false;
+    }
 }

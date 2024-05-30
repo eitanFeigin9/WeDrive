@@ -8,10 +8,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ride.DriverRide;
+import ride.HitchhikerRide;
 import servlet.main.page.event.NewEventServlet;
 import utils.ServletUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(name = "CreateDriverRideServlet", urlPatterns = {"/createRide"})
 @MultipartConfig
@@ -41,6 +45,30 @@ public class CreateDriverRideServlet extends HttpServlet {
         }
         else {
             //drive was added successfuly redirection
+            DriverRide newRide = client.getDrivingEventByName(eventName);
+            if (newRide.isTherePlace()) { //is there a place for a new hitchhiker
+                Users userManager = ServletUtils.getUserManager(getServletContext());
+                HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
+                for (Map.Entry<String, ServerClient> user : webUsers.entrySet()) {
+                    if (user.getValue().checkHitchhikingEventExists(eventName) && !user.getKey().equals(userName) && newRide.isTherePlace()) {
+                        HitchhikerRide hitchhikerRide = user.getValue().getHitchhikingEventByName(eventName);
+                        if (hitchhikerRide.getFreeForPickup()) { //The hitchhiker is free for pickup
+                            if (hitchhikerRide.getPickupCity().equals(newRide.getPickupCity())) {
+                                if (hitchhikerRide.getFuelMoney() >= newRide.getFuelReturnsPerHitchhiker()) {
+                                    if (newRide.addNewHitchhiker(user.getValue().getFullName(), user.getValue().getPhoneNumber())){
+                                        newRide.addToTotalFuelReturns(hitchhikerRide.getFuelMoney()); //ask eitan if it should be the hitchhiker or driver money
+                                        hitchhikerRide.setFreeForPickup(false); //The hitchhiker is no longer free for pickup
+                                        hitchhikerRide.setDriverName(client.getFullName());
+                                        hitchhikerRide.setDriverPhone(client.getPhoneNumber());
+                                    }
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+            }
             response.sendRedirect("thankForNewRide.jsp");
         }
     }
