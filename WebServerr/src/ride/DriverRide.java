@@ -40,6 +40,12 @@ public class DriverRide {
     public int getTotalFuelReturns() { return totalFuelReturns; }
     public void addToTotalFuelReturns(int fuelMoney) { this.totalFuelReturns += fuelMoney; }
 
+    public void lowerTotalFuelReturns(int fuelMoney) {
+        if (this.totalFuelReturns >= fuelMoney) {
+            this.totalFuelReturns -= fuelMoney;
+        }
+    }
+
     public HashMap<String, String> getCurrentHitchhikers() {
         return currentHitchhikers;
     }
@@ -53,7 +59,15 @@ public class DriverRide {
         }
         return false;
     }
+    public boolean removeHitchhiker(String hitchhikerName){
 
+        if(currentHitchhikers.containsKey(hitchhikerName)){
+            currentHitchhikers.remove(hitchhikerName);
+            currNumOfHitchhikers--;
+            return true;
+        }
+        return false;
+    }
     public boolean isTherePlace() {
         if (maxCapacity > currNumOfHitchhikers) {
             return true;
