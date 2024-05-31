@@ -74,4 +74,8 @@ public class DriverRide {
         }
         return false;
     }
+
+    public void lowerNumberOfCurrHitchhikers() {
+        this.currNumOfHitchhikers--;
+    }
 }

@@ -47,7 +47,7 @@ public class JoinRideServlet extends HttpServlet {
             for (Map.Entry<String, ServerClient> user : webUsers.entrySet()) {
                 if (user.getValue().checkDrivingEventExists(eventName) && !user.getKey().equals(userName)) {
                     DriverRide driverRide = user.getValue().getDrivingEventByName(eventName);
-                    if (driverRide.getPickupCity().equals(newRide.getPickupCity())) {
+                    if (driverRide.isTherePlace() && driverRide.getPickupCity().equals(newRide.getPickupCity())) {
                         if (newRide.getFuelMoney() >= driverRide.getFuelReturnsPerHitchhiker()) {
                             if (driverRide.addNewHitchhiker(client.getFullName(), client.getPhoneNumber())){
                                 driverRide.addToTotalFuelReturns(newRide.getFuelMoney()); //ask eitan if it should be the hitchhiker or driver money

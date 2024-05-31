@@ -7,8 +7,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import jakarta.servlet.http.HttpServlet;
+import ride.DriverRide;
+import ride.HitchhikerRide;
+import utils.ServletUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 @WebServlet(name = "EditRideHitchhikerServlet", urlPatterns = {"/editRideHitchhiker"})
 public class EditRideHitchhikerServlet extends HttpServlet {
@@ -28,8 +32,26 @@ public class EditRideHitchhikerServlet extends HttpServlet {
             response.sendRedirect("editRideError.jsp");
             return;
         }
-        client.deleteHitchhikingEvent(eventName);
-        client.addNewHitchhikingEvent(eventName, pickupCity, fuelMoneyInInt);
+        if (client.checkHitchhikingEventExists(eventName)) {
+            HitchhikerRide hitchhikerRide = client.getHitchhikingEventByName(eventName);
+            if (!hitchhikerRide.getFreeForPickup()) { //this hitchhiker has a driver
+                Users userManager = ServletUtils.getUserManager(getServletContext());
+                HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
+                String driverName = hitchhikerRide.getDriverName();
+                if (webUsers.containsKey(driverName)) {
+                    DriverRide driverRide = webUsers.get(driverName).getDrivingEventByName(eventName);
+                    if (fuelMoneyInInt < driverRide.getFuelReturnsPerHitchhiker() || !pickupCity.equals(driverRide.getPickupCity())) {
+                        driverRide.removeHitchhiker(userName);
+                        driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
+                        hitchhikerRide.setDriverPhone("");
+                        hitchhikerRide.setDriverName("");
+                        hitchhikerRide.setFreeForPickup(true);
+                    }
+                }
+            }
+            hitchhikerRide.setPickupCity(pickupCity);
+            hitchhikerRide.setFuelMoney(fuelMoneyInInt);
+        }
         response.sendRedirect("hitchhikerOptionsMenu.jsp");
     }
 }
