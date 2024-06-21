@@ -46,8 +46,11 @@
             font-size: 16px;
         }
         .btn:hover {
-            background-color: #4CAF50;
+            background-color: #45a049;
             transform: translateY(-2px);
+        }
+        .btn.main-menu {
+            margin-top: 30px; /* Add extra margin to push it further down */
         }
         .invalid-url {
             color: #d9534f;
@@ -60,6 +63,7 @@
     <h1>WeDrive</h1>
     <a href="createRide.jsp" class="btn">Are you interested in driving other guests and saving on fuel costs?</a>
     <a href="joinRide.jsp" class="btn">Do you need transportation to the event?</a>
+    <a href="mainPage.jsp" class="btn main-menu">Main Menu</a>
 </div>
 </body>
 </html>
