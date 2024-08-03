@@ -80,12 +80,21 @@
             margin-bottom: 15px;
             width: 100%;
         }
+
     </style>
 </head>
 <body>
 <div class="form-container">
     <form action="signupFromLink" method="post">
+        <input type="hidden" name="id" value="<%= request.getParameter("id") %>">
+        <input type="hidden" name="owner" value="<%= request.getParameter("owner") %>">
         <h1>Registration Form</h1>
+        <%
+            String eventId = request.getParameter("id");
+            String eventOwner = request.getParameter("owner");
+            //String eventOwner = request.getAttribute("eventOwner").toString();
+            if (eventId != null && eventOwner != null) {
+        %>
         <div class="form-group">
             <label for="fullname">Full Name:</label>
             <input type="text" id="fullname" name="fullname" required>
@@ -107,6 +116,11 @@
             <input type="text" id="securityAnswer" name="securityAnswer" required>
         </div>
         <input type="submit" value="Submit">
+        <% } else { %>
+        <div class="container">
+            <p class="invalid-url">Invalid URL</p>
+        </div>
+        <% } %>
     </form>
 </div>
 </body>

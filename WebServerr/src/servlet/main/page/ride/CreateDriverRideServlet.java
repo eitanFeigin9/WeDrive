@@ -24,9 +24,9 @@ public class CreateDriverRideServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String userName = (String) request.getSession().getAttribute("userName");
-        String eventName2 = (String) request.getSession().getAttribute("eventName");
         ServerClient client = Users.getUserByFullName(userName);
         String eventName = request.getParameter("eventName");
+        String eventOwner = request.getParameter("eventOwner");
         String maxCapacityInStr = request.getParameter("maxCapacity");
         String pickupCity = request.getParameter("pickupCity");
         String fuelReturnsPerPersonStr = request.getParameter("fuelReturns");
@@ -69,7 +69,7 @@ public class CreateDriverRideServlet extends HttpServlet {
                     }
                 }
             }
-            response.sendRedirect("thankForNewRide.jsp");
+            response.sendRedirect("thankForNewRide.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
         }
     }
 }

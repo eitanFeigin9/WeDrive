@@ -83,12 +83,15 @@
 </head>
 <body>
 <div class="form-container">
+    <%
+        String eventId = request.getParameter("id");
+        String eventOwner = request.getParameter("owner");
+        if (eventId != null && eventOwner != null) {
+    %>
     <form action="joinRide" method="post" enctype="multipart/form-data">
-        <h1>Join A Ride</h1>
-        <div class="form-group">
-            <label for="eventName">Event Name:</label>
-            <input type="text" id="eventName" name="eventName" required>
-        </div>
+        <h1>Join A Ride To The <%= eventId %> Event</h1>
+        <input type="hidden" id="eventName" name="eventName" value="<%= eventId %>">
+        <input type="hidden" id="eventOwner" name="eventOwner" value="<%= eventOwner %>">
         <div class="form-group">
             <label for="pickupCity">Pickup City:</label>
             <input type="text" id="pickupCity" name="pickupCity" required>
@@ -99,6 +102,13 @@
         </div>
         <input type="submit" value="Confirm">
     </form>
+    <%
+    } else {
+    %>
+    <p>Error: Event ID or owner not found.</p>
+    <%
+        }
+    %>
 </div>
 </body>
 </html>

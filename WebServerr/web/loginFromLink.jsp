@@ -99,12 +99,40 @@
         .error-message {
             color: red;
         }
+        .btn {
+            display: inline-block;
+            padding: 15px 25px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45A049;
+            transform: translateY(-2px);
+        }
+
     </style>
 </head>
 <body>
 <div class="form-container">
     <form action="loginFromLink" method="post">
         <h1>Login</h1>
+        <%
+            String eventId = request.getParameter("id");
+            String eventOwner = request.getParameter("owner");
+            //String eventOwner = request.getAttribute("eventOwner").toString();
+            if (eventId != null && eventOwner != null) {
+        %>
+        <input type="hidden" name="id" value="<%= eventId %>">
+        <input type="hidden" name="owner" value="<%= eventOwner %>">
         <div class="form-group">
             <label for="fullname">Full Name:</label>
             <input type="text" id="fullname" name="fullname" required>
@@ -113,8 +141,15 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <input type="submit" value="Login">
+        <button class="btn" type="submit">Login</button>
         <a class="forgot-password" href="forgotPassword.jsp">Forgot Password?</a>
+        <%
+        } else {
+        %>
+        <p>Error: Event ID not found.</p>
+        <%
+            }
+        %>
     </form>
 </div>
 </body>

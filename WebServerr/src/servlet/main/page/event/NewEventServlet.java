@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import utils.ServletUtils;
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,9 +26,13 @@ import java.util.Map;
 @MultipartConfig
 public class NewEventServlet extends HttpServlet {
     private static Map<String, String> nameMap = new HashMap<>();
+    private static Map<String, String> ownerMap = new HashMap<>();
 
     public static Map<String, String> getNameMap() {
         return nameMap;
+    }
+    public static String getEventOwnerName(String eventName) {
+        return ownerMap.get(eventName);
     }
     private static final String QR_CODE_IMAGE_PATH = "QRCodes"; // Set the path to save the QR code image
     @Override
@@ -40,13 +45,22 @@ public class NewEventServlet extends HttpServlet {
         String eventDate = request.getParameter("eventDate");
         String eventKind = request.getParameter("eventKind");
         String eventLocation = request.getParameter("eventLocation");
-        HashSet<String> guestList = ServletUtils.createGuestList(request, response);
+
+        //check if user uploaded a guest list
+        Part guestListPart = request.getPart("guestList");
+        HashSet<String> guestList = new HashSet<>();
+        String guestListFileName = null;
+        if (guestListPart != null && guestListPart.getSize() > 0) {
+            guestList = ServletUtils.createGuestList(request, response);
+            guestListFileName = ServletUtils.getFileName(guestListPart);
+        }
         //add new event
-        if (!eventOwner.addNewOwnedEvent(eventName, eventDate, eventKind, guestList, eventLocation, ServletUtils.getFileName(request.getPart("guestList")))) {
+        if (!eventOwner.addNewOwnedEvent(eventName, eventDate, eventKind, guestList, eventLocation, guestListFileName)) {
             response.sendRedirect("eventExistsError.jsp");
             return; // Exit if event creation fails
         }
         nameMap.put(eventName, eventName);
+        ownerMap.put(eventName, eventOwner.getFullName());
         String url = request.getContextPath() + "/welcome.jsp?id=" + eventName;
         String link = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventName;
 

@@ -102,7 +102,7 @@
             <input type="text" id="eventKind" name="eventKind" required>
         </div>
         <div class="form-group">
-            <label for="guestList">Upload Guest List:</label>
+            <label for="guestList">Upload Guest List (optional):</label>
             <input type="file" id="guestList" name="guestList" accept=".csv">
         </div>
         <div class="form-group">

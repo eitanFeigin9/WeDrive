@@ -61,9 +61,22 @@
 <body>
 <div class="container">
     <h1>WeDrive</h1>
-    <a href="createRide.jsp" class="btn">Are you interested in driving other guests and saving on fuel costs?</a>
-    <a href="joinRide.jsp" class="btn">Do you need transportation to the event?</a>
+    <%
+        String eventId = request.getParameter("id");
+        String eventOwner = request.getParameter("owner");
+        //String eventOwner = request.getAttribute("eventOwner").toString();
+        if (eventId != null && eventOwner != null) {
+    %>
+    <button class="btn" onclick="window.location.href='createRide.jsp?id=<%= java.net.URLEncoder.encode(eventId, "UTF-8") %>&owner=<%= java.net.URLEncoder.encode(eventOwner, "UTF-8") %>'">Are you interested in driving other guests and saving on fuel costs?</button>
+    <button class="btn" onclick="window.location.href='joinRide.jsp?id=<%= java.net.URLEncoder.encode(eventId, "UTF-8") %>&owner=<%= java.net.URLEncoder.encode(eventOwner, "UTF-8") %>'">Do you need transportation to the event?</button>
     <a href="mainPage.jsp" class="btn main-menu">Main Menu</a>
+    <%
+    } else {
+    %>
+    <p>Error: Event ID not found.</p>
+    <%
+        }
+    %>
 </div>
 </body>
 </html>

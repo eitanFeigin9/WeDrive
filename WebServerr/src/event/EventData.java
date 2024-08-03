@@ -6,7 +6,7 @@ public class EventData {
     private String eventName;
     private String eventDate;
     private String eventKind;
-    private HashSet<String> guestList; //needs to be HashSet
+    private HashSet<String> guestList;
     private String location;
 
     private String fileName;

@@ -84,8 +84,10 @@
 <%
     String uuid = request.getParameter("id");
     String name = NewEventServlet.getNameMap().get(uuid);
+    String eventOwnerName = NewEventServlet.getEventOwnerName(uuid);
     request.setAttribute("currId", uuid);
-    if (name != null) {
+    request.setAttribute("eventOwner", eventOwnerName);
+    if (name != null && eventOwnerName != null) {
 %>
 <div class="container">
     <h1>WeDrive</h1>
@@ -93,8 +95,8 @@
     <h2 class="instructions">Just One More Step...</h2>
     <h2 class="instructions">Please log in or register on the site</h2>
     <div class="btn-container">
-        <button class="btn" onclick="window.location.href='signUpFromLink.jsp'">Sign Up</button>
-        <button class="btn" onclick="window.location.href='loginFromLink.jsp'">Login</button>
+        <button class="btn" onclick="window.location.href='signUpFromLink.jsp?id=<%= java.net.URLEncoder.encode(uuid, "UTF-8") %>&owner=<%= java.net.URLEncoder.encode(eventOwnerName, "UTF-8") %>'">Sign Up</button>
+        <button class="btn" onclick="window.location.href='loginFromLink.jsp?id=<%= java.net.URLEncoder.encode(uuid, "UTF-8") %>&owner=<%= java.net.URLEncoder.encode(eventOwnerName, "UTF-8") %>'">Login</button>
     </div>
 </div>
 <% } else { %>
