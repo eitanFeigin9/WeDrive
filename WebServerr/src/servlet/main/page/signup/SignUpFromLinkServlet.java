@@ -36,7 +36,7 @@ public class SignUpFromLinkServlet extends HttpServlet {
                 HashSet<String> guestList = eventData.getGuestList();
                 if (guestList.contains(fullName)) {
                     if(!Users.addNewUser(fullName,email,phone,password,securityAnswer)){
-                        response.sendRedirect("signUpNameError.jsp");
+                        response.sendRedirect("signUpFromLinkNameError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                     }
                     else {
                         //response.sendRedirect("loginFromLink.jsp");
@@ -45,13 +45,13 @@ public class SignUpFromLinkServlet extends HttpServlet {
                     }
                 }
                 else {
-                    response.sendRedirect("notInGuestListError.jsp");
+                    response.sendRedirect("notInGuestListError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                 }
             }
             else if (eventData != null)
             {
                 if(!Users.addNewUser(fullName,email,phone,password,securityAnswer)){
-                    response.sendRedirect("signUpNameError.jsp");
+                    response.sendRedirect("signUpFromLinkNameError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                 }
                 else {
                     response.sendRedirect("loginFromLink.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));

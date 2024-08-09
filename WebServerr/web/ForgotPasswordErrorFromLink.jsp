@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Password Recovery</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
@@ -18,11 +18,11 @@
         }
 
         form {
-            max-width: 600px; /* Increased max-width */
-            width: 100%; /* Increased width */
-            padding: 30px; /* Increased padding */
+            max-width: 600px; /* Increased max-width for consistency */
+            width: 80%; /* Adjusted width for consistency */
+            padding: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 10px;
             background-color: #f9f9f9;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -35,60 +35,30 @@
         }
 
         input[type="text"],
-        input[type="password"] {
+        input[type="submit"] {
             width: 100%;
-            padding: 10px;
-            margin: 5px 0;
+            padding: 8px 10px;
+            margin: 6px 0 14px;
             border: 1px solid #ccc;
-            border-radius: 3px;
+            border-radius: 5px;
             box-sizing: border-box;
             font-size: 14px;
         }
 
         input[type="submit"] {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
             padding: 10px 0;
+            background-color: #4CAF50;
+            color: #ffffff;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
+            transition: background-color 0.3s ease;
         }
 
         input[type="submit"]:hover {
             background-color: #45a049;
-        }
-
-        .forgot-password {
-            display: block;
-            text-align: center;
-            margin-top: 10px;
-            text-decoration: none;
-            color: white;
-            background-color: #4CAF50;
-            padding: 10px 0;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
-
-        .forgot-password:hover {
-            background-color: #45a049;
-        }
-
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 {
-            color: #4CAF50;
-            margin-bottom: 20px;
-            font-size: 20px;
-            text-align: center;
         }
 
         .form-group {
@@ -99,32 +69,22 @@
         .error-message {
             color: red;
         }
-        .btn {
-            display: inline-block;
-            padding: 15px 25px;
-            background-color: #4CAF50;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 10px 10px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            font-size: 16px;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-        }
 
-        .btn:hover {
-            background-color: #45A049;
-            transform: translateY(-2px);
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-align: center;
         }
-
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
 <div class="form-container">
-    <form action="loginFromLink" method="post">
-        <h1>Login</h1>
+    <form action="recoverFromLink" method="post">
+        <h1>Password Recovery</h1>
         <%
             String eventId = request.getParameter("id");
             String eventOwner = request.getParameter("owner");
@@ -138,11 +98,11 @@
             <input type="text" id="fullname" name="fullname" required>
         </div>
         <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <label for="securityAnswer">What city were you born in?</label>
+            <input type="text" id="securityAnswer" name="securityAnswer" required>
         </div>
-        <button class="btn" type="submit">Login</button>
-        <a class="forgot-password" href="ForgotPasswordFromLink.jsp?id=<%= eventId %>&owner=<%= eventOwner %>">Forgot Password?</a>
+        <input type="submit" value="Recover Password">
+        <span class="error-message">Security answer is incorrect</span>
         <%
         } else {
         %>

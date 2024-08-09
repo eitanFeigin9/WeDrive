@@ -118,7 +118,11 @@
             background-color: #45A049;
             transform: translateY(-2px);
         }
-
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -143,6 +147,7 @@
         </div>
         <button class="btn" type="submit">Login</button>
         <a class="forgot-password" href="ForgotPasswordFromLink.jsp?id=<%= eventId %>&owner=<%= eventOwner %>">Forgot Password?</a>
+        <span class="error-message">Password is incorrect</span>
         <%
         } else {
         %>

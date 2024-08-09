@@ -26,24 +26,24 @@ public class LoginFromLinkServlet extends HttpServlet {
 
         ServerClient owner = userManager.getUserByFullName(eventOwner);
         if (owner == null) {
-            redirectWithError(response, eventId, eventOwner, "loginPasswordError.jsp");
+            redirectWithError(response, eventId, eventOwner, "LoginFromLinkPasswordError.jsp");
             return;
         }
 
         EventData eventData = owner.getOwnedEventByName(eventId);
         if (eventData == null || (eventData.getFileName() != null && eventData.getGuestList().isEmpty())) {
-            redirectWithError(response, eventId, eventOwner, "loginPasswordError.jsp");
+            redirectWithError(response, eventId, eventOwner, "LoginFromLinkPasswordError.jsp");
             return;
         }
 
         if (!userManager.getWebUsers().containsKey(fullName)) {
-            redirectWithError(response, eventId, eventOwner, "loginPasswordError.jsp");
+            redirectWithError(response, eventId, eventOwner, "UserDoesNotExists.jsp");
             return;
         }
 
         ServerClient client = userManager.getWebUsers().get(fullName);
         if (!client.getPassword().equals(password)) {
-            redirectWithError(response, eventId, eventOwner, "loginPasswordError.jsp");
+            redirectWithError(response, eventId, eventOwner, "LoginFromLinkPasswordError.jsp");
             return;
         }
 
@@ -51,7 +51,7 @@ public class LoginFromLinkServlet extends HttpServlet {
             request.getSession().setAttribute("userName", fullName);
             response.sendRedirect("optionsFromLink.jsp?id=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
         } else {
-            response.sendRedirect("notInGuestListError.jsp");
+            response.sendRedirect("NotInGuestListLoginFromLink.jsp?id=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
         }
     }
 

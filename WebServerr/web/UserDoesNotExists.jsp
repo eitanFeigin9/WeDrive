@@ -118,7 +118,11 @@
             background-color: #45A049;
             transform: translateY(-2px);
         }
-
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -142,7 +146,8 @@
             <input type="password" id="password" name="password" required>
         </div>
         <button class="btn" type="submit">Login</button>
-        <a class="forgot-password" href="ForgotPasswordFromLink.jsp?id=<%= eventId %>&owner=<%= eventOwner %>">Forgot Password?</a>
+        <a class="forgot-password" href="forgotPassword.jsp">Forgot Password?</a>
+        <span class="error-message">Sorry, this username doesn't exist in the system!</span>
         <%
         } else {
         %>

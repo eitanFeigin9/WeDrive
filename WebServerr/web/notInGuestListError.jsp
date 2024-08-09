@@ -18,9 +18,9 @@
         }
 
         form {
-            max-width: 600px; /* Increased max-width */
-            width: 100%; /* Increased width */
-            padding: 30px; /* Increased padding */
+            max-width: 400px;
+            width: 90%;
+            padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
@@ -35,6 +35,8 @@
         }
 
         input[type="text"],
+        input[type="email"],
+        input[type="tel"],
         input[type="password"] {
             width: 100%;
             padding: 10px;
@@ -61,21 +63,10 @@
             background-color: #45a049;
         }
 
-        .forgot-password {
-            display: block;
+        .error-message {
+            color: red;
             text-align: center;
             margin-top: 10px;
-            text-decoration: none;
-            color: white;
-            background-color: #4CAF50;
-            padding: 10px 0;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
-
-        .forgot-password:hover {
-            background-color: #45a049;
         }
 
         .form-container {
@@ -90,41 +81,12 @@
             font-size: 20px;
             text-align: center;
         }
-
-        .form-group {
-            margin-bottom: 15px;
-            width: 100%;
-        }
-
-        .error-message {
-            color: red;
-        }
-        .btn {
-            display: inline-block;
-            padding: 15px 25px;
-            background-color: #4CAF50;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 10px 10px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            font-size: 16px;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #45A049;
-            transform: translateY(-2px);
-        }
-
     </style>
 </head>
 <body>
 <div class="form-container">
-    <form action="loginFromLink" method="post">
-        <h1>Login</h1>
+    <form action="signupFromLink" method="post">
+        <h1>Registration</h1>
         <%
             String eventId = request.getParameter("id");
             String eventOwner = request.getParameter("owner");
@@ -133,16 +95,24 @@
         %>
         <input type="hidden" name="id" value="<%= eventId %>">
         <input type="hidden" name="owner" value="<%= eventOwner %>">
-        <div class="form-group">
-            <label for="fullname">Full Name:</label>
-            <input type="text" id="fullname" name="fullname" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button class="btn" type="submit">Login</button>
-        <a class="forgot-password" href="ForgotPasswordFromLink.jsp?id=<%= eventId %>&owner=<%= eventOwner %>">Forgot Password?</a>
+        <label for="fullname">Full Name:</label>
+        <input type="text" id="fullname" name="fullname" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="securityAnswer">What city were you born in?</label>
+        <input type="text" id="securityAnswer" name="securityAnswer" required>
+
+        <input type="submit" value="Submit">
+
+        <span class="error-message">Sorry, you are not in the guest list of this event!</span>
         <%
         } else {
         %>
@@ -154,3 +124,4 @@
 </div>
 </body>
 </html>
+
