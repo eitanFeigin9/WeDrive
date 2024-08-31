@@ -30,17 +30,23 @@ public class CreateDriverRideServlet extends HttpServlet {
         String maxCapacityInStr = request.getParameter("maxCapacity");
         String pickupCity = request.getParameter("pickupCity");
         String fuelReturnsPerPersonStr = request.getParameter("fuelReturns");
+        String latitudeStr = request.getParameter("latitude");   // Get latitude
+        String longitudeStr = request.getParameter("longitude"); // Get longitude
         int maxCapacityInInt;
         int fuelReturnsInInt;
+        double latitude;
+        double longitude;
 
         try {
             maxCapacityInInt = Integer.parseInt(maxCapacityInStr);
             fuelReturnsInInt = Integer.parseInt(fuelReturnsPerPersonStr);
+            latitude = Double.parseDouble(latitudeStr);   // Parse latitude
+            longitude = Double.parseDouble(longitudeStr); // Parse longitude
         } catch (NumberFormatException e) {
             //redirect to error page
             return;
         }
-        if (!client.addNewDrivingEvent(eventName, maxCapacityInInt,pickupCity,fuelReturnsInInt)) {
+        if (!client.addNewDrivingEvent(eventName, maxCapacityInInt, pickupCity, fuelReturnsInInt, latitude, longitude)) {
             response.sendRedirect("eventExistsError.jsp"); //change to you are alreadt regiter as a driver to this event
         }
         else {

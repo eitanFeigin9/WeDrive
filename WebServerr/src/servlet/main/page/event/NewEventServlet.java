@@ -62,7 +62,7 @@ public class NewEventServlet extends HttpServlet {
         nameMap.put(eventName, eventName);
         ownerMap.put(eventName, eventOwner.getFullName());
         String url = request.getContextPath() + "/welcome.jsp?id=" + eventName;
-        String link = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventName;
+        String link = "http://wedriveco.com:8080/WebServer_Web exploded/welcome.jsp?id=" + eventName;
 
         // Generate the QR code
         generateQRCodeImage(link, QR_CODE_IMAGE_PATH, 350, 350);

@@ -3,7 +3,6 @@ package servlet.main.page.signup;
 import java.io.IOException;
 
 import database.Users;
-import database.UsersDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,8 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import utils.ServletUtils;
 
-@WebServlet(name = "SignUpServlet", urlPatterns = {"/signup"})
-public class SignUpServlet extends HttpServlet {
+@WebServlet(name = "SignUpServlet2", urlPatterns = {"/signup2"})
+public class SignUpServlet2 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -27,8 +26,6 @@ public class SignUpServlet extends HttpServlet {
             response.sendRedirect("signUpNameError.jsp");
         }
         else {
-            UsersDAO usersDAO = new UsersDAO();
-            usersDAO.addNewUser(fullName,email,phone,password,securityAnswer);
             response.sendRedirect("thankyou.html");
 
         }

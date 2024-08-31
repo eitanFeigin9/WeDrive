@@ -1,15 +1,16 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="WebServer:Web exploded">
+  <artifact type="war" name="WebServer:Web exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/WebServer_Web_exploded</output-path>
-    <root id="root">
+    <root id="archive" name="WebServer_Web exploded.war">
       <element id="javaee-facet-resources" facet="WebServer/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="WebServer" />
         </element>
         <element id="directory" name="lib">
-          <element id="file-copy" path="$PROJECT_DIR$/WebServerr/web/web/WEB-INF/lib/javase-3.4.1.jar" />
           <element id="file-copy" path="$PROJECT_DIR$/WebServerr/web/web/WEB-INF/lib/core-3.4.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/WebServerr/web/web/WEB-INF/lib/javase-3.4.1.jar" />
+          <element id="file-copy" path="$USER_HOME$/Desktop/weDriveFiles/mysql-connector-j-8.0.31.jar" />
         </element>
       </element>
     </root>
