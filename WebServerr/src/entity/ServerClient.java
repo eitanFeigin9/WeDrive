@@ -64,10 +64,10 @@ public class ServerClient {
 
     public void setSecurityAnswer(String securityAnswer) { this.securityAnswer = securityAnswer; }
 
-    public boolean addNewOwnedEvent(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName){
+    public boolean addNewOwnedEvent(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName, double latitude, double longitude){
 
         if(!checkOwnedEventExists(eventName)){
-            ownedEvents.put(eventName, new EventData(eventName,eventDate,eventKind,guestList,location, fileName));
+            ownedEvents.put(eventName, new EventData(eventName,eventDate,eventKind,guestList,location, fileName, latitude, longitude));
             return true;
         }
         return false;
@@ -105,10 +105,10 @@ public class ServerClient {
     public DriverRide getDrivingEventByName(String eventName) { return drivingEvents.get(eventName); }
 
     public boolean checkHitchhikingEventExists(String eventName){ return hitchhikingEvents.containsKey(eventName); }
-    public boolean addNewHitchhikingEvent(String eventName, String pickupCity, int fuelMoney){
+    public boolean addNewHitchhikingEvent(String eventName, String pickupCity, int fuelMoney, double latitude, double longitude){
 
         if(!checkHitchhikingEventExists(eventName)){
-            hitchhikingEvents.put(eventName, new HitchhikerRide(eventName,pickupCity,fuelMoney));
+            hitchhikingEvents.put(eventName, new HitchhikerRide(eventName,pickupCity,fuelMoney, latitude, longitude));
             return true;
         }
         return false;

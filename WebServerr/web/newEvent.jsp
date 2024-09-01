@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,6 +82,14 @@
             margin-bottom: 15px;
             width: 100%;
         }
+
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -106,11 +113,20 @@
             <input type="file" id="guestList" name="guestList" accept=".csv">
         </div>
         <div class="form-group">
-            <label for="eventLocation">Location:</label>
-            <input type="text" id="eventLocation" name="eventLocation" required>
+            <label for="eventLocation">Event Location:</label>
+            <input type="text" id="eventLocation" name="eventLocation" placeholder="Enter the event location address" required>
         </div>
+
+        <!-- Map Container -->
+        <div id="map"></div>
+
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
         <input type="submit" value="Confirm">
     </form>
 </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
+<script src="web/js/map2.js"></script>
 </body>
 </html>

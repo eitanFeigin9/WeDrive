@@ -139,6 +139,8 @@
         <label for="eventLocation">Location:</label>
         <input type="text" id="eventLocation" name="eventLocation" value="<%= event.getLocation() %>" required>
 
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
         <input type="submit" value="Update">
     </form>
 </div>
@@ -148,6 +150,8 @@
         document.querySelector('.file-info').textContent = fileName;
     }
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
+<script src="web/js/map2.js"></script>
 </body>
 </html>
 

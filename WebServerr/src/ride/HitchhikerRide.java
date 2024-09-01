@@ -7,14 +7,18 @@ public class HitchhikerRide {
     private Boolean isFreeForPickup;
     private String driverName;
     private String driverPhone;
+    private double latitude;  // New attribute for latitude
+    private double longitude; // New attribute for longitude
 
-    public HitchhikerRide(String eventName, String pickupCity, int fuelMoney) {
+    public HitchhikerRide(String eventName, String pickupCity, int fuelMoney, double latitude, double longitude) {
         this.eventName = eventName;
         this.pickupCity = pickupCity;
         this.fuelMoney = fuelMoney;
         this.isFreeForPickup = true;
         this.driverName = "";
         this.driverPhone = "";
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getEventName() { return eventName; }
@@ -31,4 +35,11 @@ public class HitchhikerRide {
     public void setFreeForPickup(Boolean freeForPickup) { isFreeForPickup = freeForPickup; }
     public void setDriverName(String driverName) { this.driverName = driverName; }
     public void setDriverPhone(String driverPhone) { this.driverPhone = driverPhone; }
+    public double getLatitude() { return latitude; }
+
+    public double getLongitude() { return longitude; }
+
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 }

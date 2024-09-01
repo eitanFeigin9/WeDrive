@@ -45,7 +45,18 @@ public class NewEventServlet extends HttpServlet {
         String eventDate = request.getParameter("eventDate");
         String eventKind = request.getParameter("eventKind");
         String eventLocation = request.getParameter("eventLocation");
+        String latitudeStr = request.getParameter("latitude");   // Get latitude
+        String longitudeStr = request.getParameter("longitude"); // Get longitude
+        double latitude;
+        double longitude;
 
+        try {
+            latitude = Double.parseDouble(latitudeStr);   // Parse latitude
+            longitude = Double.parseDouble(longitudeStr); // Parse longitude
+        } catch (NumberFormatException e) {
+            //redirect to error page
+            return;
+        }
         //check if user uploaded a guest list
         Part guestListPart = request.getPart("guestList");
         HashSet<String> guestList = new HashSet<>();
@@ -55,7 +66,7 @@ public class NewEventServlet extends HttpServlet {
             guestListFileName = ServletUtils.getFileName(guestListPart);
         }
         //add new event
-        if (!eventOwner.addNewOwnedEvent(eventName, eventDate, eventKind, guestList, eventLocation, guestListFileName)) {
+        if (!eventOwner.addNewOwnedEvent(eventName, eventDate, eventKind, guestList, eventLocation, guestListFileName,latitude, longitude)) {
             response.sendRedirect("eventExistsError.jsp");
             return; // Exit if event creation fails
         }

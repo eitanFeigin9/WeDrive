@@ -79,6 +79,12 @@
         .error-message {
             color: red;
         }
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -93,13 +99,16 @@
         <input type="hidden" id="eventName" name="eventName" value="<%= eventId %>">
         <input type="hidden" id="eventOwner" name="eventOwner" value="<%= eventOwner %>">
         <div class="form-group">
-            <label for="pickupCity">Pickup City:</label>
-            <input type="text" id="pickupCity" name="pickupCity" required>
+            <label for="pickupCity">Pickup City Or Address:</label>
+            <input type="text" id="pickupCity" name="pickupCity" placeholder="Enter a city or address" required>
         </div>
         <div class="form-group">
             <label for="fuelMoney">Maximum Fuel Price You Are Willing To Pay:</label>
             <input type="text" id="fuelMoney" name="fuelMoney" required>
         </div>
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        <div id="map"></div>
         <input type="submit" value="Confirm">
     </form>
     <%
@@ -110,6 +119,9 @@
         }
     %>
 </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
+<script src="web/js/map.js"></script>
 </body>
 </html>
 

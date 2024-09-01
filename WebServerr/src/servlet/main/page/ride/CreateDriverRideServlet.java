@@ -34,19 +34,19 @@ public class CreateDriverRideServlet extends HttpServlet {
         String longitudeStr = request.getParameter("longitude"); // Get longitude
         int maxCapacityInInt;
         int fuelReturnsInInt;
-        double latitude;
-        double longitude;
+        double driverLatitude;
+        double driverLongitude;
 
         try {
             maxCapacityInInt = Integer.parseInt(maxCapacityInStr);
             fuelReturnsInInt = Integer.parseInt(fuelReturnsPerPersonStr);
-            latitude = Double.parseDouble(latitudeStr);   // Parse latitude
-            longitude = Double.parseDouble(longitudeStr); // Parse longitude
+            driverLatitude = Double.parseDouble(latitudeStr);   // Parse latitude
+            driverLongitude = Double.parseDouble(longitudeStr); // Parse longitude
         } catch (NumberFormatException e) {
             //redirect to error page
             return;
         }
-        if (!client.addNewDrivingEvent(eventName, maxCapacityInInt, pickupCity, fuelReturnsInInt, latitude, longitude)) {
+        if (!client.addNewDrivingEvent(eventName, maxCapacityInInt, pickupCity, fuelReturnsInInt, driverLatitude, driverLongitude)) {
             response.sendRedirect("eventExistsError.jsp"); //change to you are alreadt regiter as a driver to this event
         }
         else {
@@ -59,7 +59,10 @@ public class CreateDriverRideServlet extends HttpServlet {
                     if (user.getValue().checkHitchhikingEventExists(eventName) && !user.getKey().equals(userName) && newRide.isTherePlace()) {
                         HitchhikerRide hitchhikerRide = user.getValue().getHitchhikingEventByName(eventName);
                         if (hitchhikerRide.getFreeForPickup()) { //The hitchhiker is free for pickup
-                            if (hitchhikerRide.getPickupCity().equals(newRide.getPickupCity())) {
+                            double hitchhikerLatitude = hitchhikerRide.getLatitude(); // Assuming these methods exist
+                            double hitchhikerLongitude = hitchhikerRide.getLongitude();
+                            double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
+                            if (distance < 5.0) {
                                 if (hitchhikerRide.getFuelMoney() >= newRide.getFuelReturnsPerHitchhiker()) {
                                     if (newRide.addNewHitchhiker(user.getValue().getFullName(), user.getValue().getPhoneNumber())){
                                         newRide.addToTotalFuelReturns(hitchhikerRide.getFuelMoney()); //ask eitan if it should be the hitchhiker or driver money
@@ -78,4 +81,18 @@ public class CreateDriverRideServlet extends HttpServlet {
             response.sendRedirect("thankForNewRide.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
         }
     }
+
+    private static final int EARTH_RADIUS = 6371; // Earth radius in kilometers
+
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return EARTH_RADIUS * c; // Distance in kilometers
+    }
 }
+
+

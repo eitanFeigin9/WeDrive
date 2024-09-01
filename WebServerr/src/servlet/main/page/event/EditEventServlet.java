@@ -33,15 +33,25 @@ public class EditEventServlet extends HttpServlet {
         String eventDate = request.getParameter("eventDate");
         String eventKind = request.getParameter("eventKind");
         String location = request.getParameter("eventLocation");
-
+        String latitudeStr = request.getParameter("latitude");   // Get latitude
+        String longitudeStr = request.getParameter("longitude"); // Get longitude
+        double latitude;
+        double longitude;
+        try {
+            latitude = Double.parseDouble(latitudeStr);   // Parse latitude
+            longitude = Double.parseDouble(longitudeStr); // Parse longitude
+        } catch (NumberFormatException e) {
+            //redirect to error page
+            return;
+        }
         String fileName = ServletUtils.getFileName(request.getPart("guestList"));
         assert fileName != null;
         if (fileName.isEmpty()) {
-            client.addNewOwnedEvent(eventNewName, eventDate, eventKind, oldGuestList, location, oldFileName);
+            client.addNewOwnedEvent(eventNewName, eventDate, eventKind, oldGuestList, location, oldFileName,latitude, longitude);
         }
         else {
             HashSet<String> guestList = ServletUtils.createGuestList(request,response);
-            client.addNewOwnedEvent(eventNewName, eventDate, eventKind, guestList, location, fileName);
+            client.addNewOwnedEvent(eventNewName, eventDate, eventKind, guestList, location, fileName,latitude, longitude);
         }
         response.sendRedirect("updateEventSuccess.jsp");
     }

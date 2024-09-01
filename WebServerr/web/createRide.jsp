@@ -63,7 +63,6 @@
             border-radius: 5px;
         }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
 <div class="container">
@@ -96,67 +95,9 @@
     %>
 </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-    // Initialize the map centered on Israel
-    var map = L.map('map').setView([31.0461, 34.8516], 8); // Coordinates for Israel
-
-    // Load OSM tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var marker;
-
-    // Event listener for map clicks
-    map.on('click', function(e) {
-        var lat = e.latlng.lat;
-        var lon = e.latlng.lng;
-
-        // Place or move marker on the map
-        if (marker) {
-            marker.setLatLng([lat, lon]);
-        } else {
-            marker = L.marker([lat, lon]).addTo(map);
-        }
-
-        // Set the hidden fields for lat/lon
-        document.getElementById("latitude").value = lat;
-        document.getElementById("longitude").value = lon;
-    });
-
-    // Geocode the address entered by the user
-    document.getElementById("pickupCity").addEventListener("blur", function() {
-        var address = this.value;
-
-        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address) + '&countrycodes=IL&addressdetails=1&limit=1')
-            .then(response => response.json())
-            .then(data => {
-                if (data.length > 0) {
-                    var lat = data[0].lat;
-                    var lon = data[0].lon;
-
-                    // Center the map on the found location
-                    map.setView([lat, lon], 13);
-
-                    // Place or move marker on the map
-                    if (marker) {
-                        marker.setLatLng([lat, lon]);
-                    } else {
-                        marker = L.marker([lat, lon]).addTo(map);
-                    }
-
-                    // Set the hidden fields for lat/lon
-                    document.getElementById("latitude").value = lat;
-                    document.getElementById("longitude").value = lon;
-                } else {
-                    alert("Address not found. Please try again or select the location on the map.");
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
+<script src="web/js/map.js"></script>
 </body>
 </html>
+
 
