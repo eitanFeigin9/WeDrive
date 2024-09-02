@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 public class DriverRide {
     private String eventName;
+    private String eventAddress;
     private int maxCapacity;
     private String pickupCity;
     private int fuelReturnsPerHitchhiker;
@@ -14,12 +15,13 @@ public class DriverRide {
     private int totalFuelReturns;
     private HashMap<String, String> currentHitchhikers;
 
-    private double latitude;  // New attribute for latitude
-    private double longitude; // New attribute for longitude
+    private double latitude;
+    private double longitude;
     private double maxPickupDistance;
 
-    public DriverRide(String eventName, int maxCapacity, String pickupCity, int fuelReturnsPerHitchhiker, double latitude, double longitude, double maxPickupDistance) {
+    public DriverRide(String eventName,String eventAddress, int maxCapacity, String pickupCity, int fuelReturnsPerHitchhiker, double latitude, double longitude, double maxPickupDistance) {
         this.eventName = eventName;
+        this.eventAddress = eventAddress;
         this.maxCapacity = maxCapacity;
         this.pickupCity = pickupCity;
         this.fuelReturnsPerHitchhiker = fuelReturnsPerHitchhiker;
@@ -33,6 +35,11 @@ public class DriverRide {
 
     public String getEventName() { return eventName; }
     public int getMaxCapacity() { return maxCapacity; }
+
+    public String getEventAddress() { return eventAddress; }
+
+    public void setEventAddress(String eventAddress) { this.eventAddress = eventAddress; }
+
     public String getPickupCity() { return pickupCity; }
     public int getFuelReturnsPerHitchhiker() { return fuelReturnsPerHitchhiker; }
 

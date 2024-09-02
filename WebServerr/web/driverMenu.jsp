@@ -80,12 +80,15 @@
 <table>
     <tr>
         <th>Event Name</th>
-        <th>Pick Up Address</th>
+        <th>Event Address</th>
+        <th>Starting Point Address</th>
         <th>Current Amount Of Hitchhikers</th>
         <th>Max Capacity</th>
         <th>Fuel Return Per Hitchhiker</th>
         <th>Total fuel returns</th>
-        <th>Hitchhiker Names and Phones</th>
+        <th>Maximum KM for Pickup</th>
+        <th>Hitchhikers Names</th>
+        <th>Hitchhikers Phones</th>
     </tr>
     <%
         String userName = (String)request.getSession().getAttribute("userName");
@@ -93,19 +96,30 @@
         HashMap<String, DriverRide> rides = client.getDrivingEvents();
         for (DriverRide ride : rides.values()) {
             String currEventName = ride.getEventName();
+            String currEventAddress = ride.getEventAddress();
     %>
     <tr>
         <td><%= currEventName %></td>
+        <td><%= currEventAddress %></td>
         <td><%= ride.getPickupCity() %></td>
         <td><%= ride.getCurrNumOfHitchhikers() %></td>
         <td><%= ride.getMaxCapacity() %></td>
         <td><%= ride.getFuelReturnsPerHitchhiker() %></td>
         <td><%= ride.getTotalFuelReturns() %></td>
+        <td><%= ride.getMaxPickupDistance() %></td>
         <td>
             <%
                 HashMap<String, String> hitchhikers = ride.getCurrentHitchhikers();
                 for (Map.Entry<String, String> hitchhiker : hitchhikers.entrySet()) {
-                    out.println("Name: " + hitchhiker.getKey() + "<br>Phone: " + hitchhiker.getValue() + "<br><br>");
+                    out.println(hitchhiker.getKey() + "<br><br>");
+                }
+            %>
+        </td>
+        <td>
+            <%
+                HashMap<String, String> hitchhikers2 = ride.getCurrentHitchhikers();
+                for (Map.Entry<String, String> hitchhiker2 : hitchhikers2.entrySet()) {
+                    out.println(hitchhiker2.getValue() + "<br><br>");
                 }
             %>
         </td>

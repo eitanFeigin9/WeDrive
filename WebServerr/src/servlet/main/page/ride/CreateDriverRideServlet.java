@@ -2,6 +2,7 @@ package servlet.main.page.ride;
 
 import database.Users;
 import entity.ServerClient;
+import event.EventData;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,6 +28,9 @@ public class CreateDriverRideServlet extends HttpServlet {
         ServerClient client = Users.getUserByFullName(userName);
         String eventName = request.getParameter("eventName");
         String eventOwner = request.getParameter("eventOwner");
+        ServerClient owner = Users.getUserByFullName(eventOwner);
+        EventData event = owner.getOwnedEventByName(eventName);
+        String eventAddress = event.getLocation();
         String maxCapacityInStr = request.getParameter("maxCapacity");
         String pickupCity = request.getParameter("pickupCity");
         String fuelReturnsPerPersonStr = request.getParameter("fuelReturns");
@@ -49,7 +53,7 @@ public class CreateDriverRideServlet extends HttpServlet {
             //redirect to error page
             return;
         }
-        if (!client.addNewDrivingEvent(eventName, maxCapacityInInt, pickupCity, fuelReturnsInInt, driverLatitude, driverLongitude, maxPickupDistance)) {
+        if (!client.addNewDrivingEvent(eventName,eventAddress, maxCapacityInInt, pickupCity, fuelReturnsInInt, driverLatitude, driverLongitude, maxPickupDistance)) {
             response.sendRedirect("eventExistsError.jsp"); //change to you are alreadt regiter as a driver to this event
         }
         else {
