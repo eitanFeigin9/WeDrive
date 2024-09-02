@@ -117,7 +117,7 @@
             <input type="text" id="eventLocation" name="eventLocation" placeholder="Enter the event location address" required>
         </div>
 
-        <!-- Map Container -->
+
         <div id="map"></div>
 
         <input type="hidden" id="latitude" name="latitude">

@@ -73,7 +73,7 @@
         <th>Event Kind</th>
         <th>Date</th>
         <th>Location</th>
-        <th>Days Till Event</th> <!-- New column for Days Till Event -->
+        <th>Days Till Event</th>
     </tr>
     <%
         String userName = (String)request.getSession().getAttribute("userName");
@@ -88,7 +88,7 @@
         <td><%= event.getEventKind() %></td>
         <td><%= event.getEventDate() %></td>
         <td><%= event.getLocation() %></td>
-        <td><%= daysTillEvent %></td> <!-- Display Days Till Event -->
+        <td><%= daysTillEvent %></td>
     </tr>
     <% } %>
 </table>

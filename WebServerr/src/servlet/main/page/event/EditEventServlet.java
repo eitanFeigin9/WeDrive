@@ -33,8 +33,8 @@ public class EditEventServlet extends HttpServlet {
         String eventDate = request.getParameter("eventDate");
         String eventKind = request.getParameter("eventKind");
         String location = request.getParameter("eventLocation");
-        String latitudeStr = request.getParameter("latitude");   // Get latitude
-        String longitudeStr = request.getParameter("longitude"); // Get longitude
+        String latitudeStr = request.getParameter("latitude");
+        String longitudeStr = request.getParameter("longitude");
         double latitude;
         double longitude;
         try {

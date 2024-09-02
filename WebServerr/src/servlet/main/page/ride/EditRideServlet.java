@@ -14,6 +14,9 @@ import utils.ServletUtils;
 import java.io.IOException;
 import java.util.*;
 
+import static utils.ServletUtils.calculateDistance;
+import static utils.ServletUtils.matchHitchhikersToDriver;
+
 @WebServlet(name = "EditRideServlet", urlPatterns = {"/editRide"})
 public class EditRideServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,12 +28,21 @@ public class EditRideServlet extends HttpServlet {
         String maxCapacity = request.getParameter("maxCapacity");
         String pickupCity = request.getParameter("pickupCity");
         String fuelReturns = request.getParameter("fuelReturns");
+        String latitudeStr = request.getParameter("latitude");
+        String longitudeStr = request.getParameter("longitude");
+        String maxPickupDistanceStr = request.getParameter("maxPickupDistance");
+        double driverLatitude;
+        double driverLongitude;
+        double maxPickupDistance;
         int maxCapacityInInt;
         int fuelReturnsInInt;
 
         try {
             maxCapacityInInt = Integer.parseInt(maxCapacity);
             fuelReturnsInInt = Integer.parseInt(fuelReturns);
+            driverLatitude = Double.parseDouble(latitudeStr);
+            driverLongitude = Double.parseDouble(longitudeStr);
+            maxPickupDistance = Double.parseDouble(maxPickupDistanceStr);
         } catch (NumberFormatException e) {
             response.sendRedirect("editRideError.jsp");
             return;
@@ -40,14 +52,17 @@ public class EditRideServlet extends HttpServlet {
         DriverRide driverRide = client.getDrivingEventByName(eventName);
         int copyOfNewMaxCapacity = maxCapacityInInt;
         //In case the driver increased the fuel return per hitchhiker
-        if (fuelReturnsInInt > driverRide.getFuelReturnsPerHitchhiker() || !pickupCity.equals(driverRide.getPickupCity())) {
+        if (fuelReturnsInInt > driverRide.getFuelReturnsPerHitchhiker() || !pickupCity.equals(driverRide.getPickupCity()) || maxPickupDistance < driverRide.getMaxPickupDistance()) {
             HashMap<String,String> hitchhikers = driverRide.getCurrentHitchhikers();
             List<String> hitchhikersToDelete = new LinkedList<>();
             for (String hitchhikerName : hitchhikers.keySet()) {
                 if (webUsers.containsKey(hitchhikerName)) {
                     ServerClient user = webUsers.get(hitchhikerName);
                     HitchhikerRide hitchhikerRide = user.getHitchhikingEventByName(eventName);
-                    if (hitchhikerRide.getFuelMoney() < fuelReturnsInInt || !pickupCity.equals(hitchhikerRide.getPickupCity())) { //this hitchhiker can't afford this ride
+                    double hitchhikerLatitude = hitchhikerRide.getLatitude();
+                    double hitchhikerLongitude = hitchhikerRide.getLongitude();
+                    double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
+                    if (hitchhikerRide.getFuelMoney() < fuelReturnsInInt || distance > maxPickupDistance) { //this hitchhiker can't afford this ride
                         hitchhikerRide.setFreeForPickup(true);
                         hitchhikerRide.setDriverName("");
                         hitchhikerRide.setDriverPhone("");
@@ -89,6 +104,11 @@ public class EditRideServlet extends HttpServlet {
         driverRide.setMaxCapacity(maxCapacityInInt);
         driverRide.setPickupCity(pickupCity);
         driverRide.setFuelReturnsPerHitchhiker(fuelReturnsInInt);
+        driverRide.setMaxPickupDistance(maxPickupDistance);
+        driverRide.setLatitude(driverLatitude);
+        driverRide.setLongitude(driverLongitude);
+        //matchHitchhikersToDriver checks if there are other passengers that match this driver after updating the details
+        matchHitchhikersToDriver(client, driverRide, userManager, eventName, userName, driverLatitude, driverLongitude, maxPickupDistance);
         response.sendRedirect("driverOptionsMenu.jsp");
     }
 }

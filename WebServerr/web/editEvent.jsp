@@ -104,6 +104,13 @@
         .form-container input[type="submit"]:hover {
             background-color: #45a049;
         }
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <%
@@ -139,8 +146,9 @@
         <label for="eventLocation">Location:</label>
         <input type="text" id="eventLocation" name="eventLocation" value="<%= event.getLocation() %>" required>
 
-        <input type="hidden" id="latitude" name="latitude">
-        <input type="hidden" id="longitude" name="longitude">
+        <input type="hidden" id="latitude" name="latitude" value="<%= event.getLatitude() %>">
+        <input type="hidden" id="longitude" name="longitude" value="<%= event.getLongitude() %>">
+        <div id="map"></div>
         <input type="submit" value="Update">
     </form>
 </div>

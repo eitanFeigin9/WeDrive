@@ -76,6 +76,12 @@
             margin-bottom: 10px;
             text-align: left;
         }
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <%
@@ -88,12 +94,15 @@
 <div class="container">
     <h1>Edit Pickup For The <%= request.getParameter("eventName") %> Event</h1>
     <form action="editRideHitchhiker" method="post" class="form-container">
-        <label for="pickupCity">Pickup City:</label><br>
+        <label for="pickupCity">Pickup Address:</label><br>
         <input type="text" id="pickupCity" name="pickupCity" value="<%= ride.getPickupCity() %>" required><br>
-        <div class="notice">Notice: If you change the pickup city, the current drive may be canceled</div>
+        <div class="notice">Notice: If you change the pickup address, the current drive may be canceled</div>
         <label for="fuelMoney">The Maximum Fuel Price You Are Willing To Pay:</label><br>
         <input type="number" id="fuelMoney" name="fuelMoney" min="0" value="<%= ride.getFuelMoney() %>" required><br>
         <div class="notice">Notice: Lowering the price of fuel could lead to the cancellation of the current pickup</div>
+        <input type="hidden" id="latitude" name="latitude" value="<%= ride.getLatitude() %>">
+        <input type="hidden" id="longitude" name="longitude" value="<%= ride.getLongitude() %>">
+        <div id="map"></div>
         <form action="editRideHitchhiker" method="post" style="display:inline;">
             <input type="hidden" name="eventName" value="<%= request.getParameter("eventName") %>">
             <button type="submit" class="button update-button">Edit the Pickup</button>
@@ -101,5 +110,7 @@
         <span class="error-message">Fuel Money Needs To Be A Number</span>
     </form>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
+<script src="web/js/map.js"></script>
 </body>
 </html>

@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static utils.ServletUtils.calculateDistance;
+import static utils.ServletUtils.matchHitchhikersToDriver;
+
 @WebServlet(name = "CreateDriverRideServlet", urlPatterns = {"/createRide"})
 @MultipartConfig
 public class CreateDriverRideServlet extends HttpServlet {
@@ -58,48 +61,14 @@ public class CreateDriverRideServlet extends HttpServlet {
         }
         else {
             //drive was added successfuly redirection
+            Users userManager = ServletUtils.getUserManager(getServletContext());
             DriverRide newRide = client.getDrivingEventByName(eventName);
-            if (newRide.isTherePlace()) { //is there a place for a new hitchhiker
-                Users userManager = ServletUtils.getUserManager(getServletContext());
-                HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
-                for (Map.Entry<String, ServerClient> user : webUsers.entrySet()) {
-                    if (user.getValue().checkHitchhikingEventExists(eventName) && !user.getKey().equals(userName) && newRide.isTherePlace()) {
-                        HitchhikerRide hitchhikerRide = user.getValue().getHitchhikingEventByName(eventName);
-                        if (hitchhikerRide.getFreeForPickup()) { //The hitchhiker is free for pickup
-                            double hitchhikerLatitude = hitchhikerRide.getLatitude(); // Assuming these methods exist
-                            double hitchhikerLongitude = hitchhikerRide.getLongitude();
-                            double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
-                            if (distance <= maxPickupDistance) {
-                                if (hitchhikerRide.getFuelMoney() >= newRide.getFuelReturnsPerHitchhiker()) {
-                                    if (newRide.addNewHitchhiker(user.getValue().getFullName(), user.getValue().getPhoneNumber())){
-                                        newRide.addToTotalFuelReturns(hitchhikerRide.getFuelMoney()); //ask eitan if it should be the hitchhiker or driver money
-                                        hitchhikerRide.setFreeForPickup(false); //The hitchhiker is no longer free for pickup
-                                        hitchhikerRide.setDriverName(client.getFullName());
-                                        hitchhikerRide.setDriverPhone(client.getPhoneNumber());
-                                    }
-                                }
-                            }
-
-                        }
-
-                    }
-                }
-            }
+            matchHitchhikersToDriver(client, newRide, userManager, eventName, userName, driverLatitude, driverLongitude, maxPickupDistance);
             response.sendRedirect("thankForNewRide.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
         }
     }
 
-    private static final int EARTH_RADIUS = 6371; // Earth radius in kilometers
 
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return EARTH_RADIUS * c; // Distance in kilometers
-    }
 }
 
 

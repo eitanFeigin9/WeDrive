@@ -85,9 +85,9 @@
         <input type="number" id="maxPickupDistance" name="maxPickupDistance" min="0" required><br>
         <input type="hidden" id="latitude" name="latitude">
         <input type="hidden" id="longitude" name="longitude">
+        <div id="map"></div>
         <input type="submit" value="Confirm">
     </form>
-    <div id="map"></div>
     <%
     } else {
     %>

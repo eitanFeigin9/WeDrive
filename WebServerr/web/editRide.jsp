@@ -75,6 +75,12 @@
             margin-bottom: 10px;
             text-align: left;
         }
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <%
@@ -82,6 +88,7 @@
     String eventName = request.getParameter("eventName");
     ServerClient client = Users.getUserByFullName(userName);
     DriverRide ride = client.getDrivingEventByName(eventName);
+    if (userName != null && eventName != null && ride != null) {
 %>
 <body>
 <div class="container">
@@ -90,16 +97,32 @@
         <label for="maxCapacity">Max Capacity:</label><br>
         <input type="number" id="maxCapacity" name="maxCapacity" min="0" max="40" value="<%= ride.getMaxCapacity() %>" required><br>
         <div class="notice">Notice: If you have lowered the number of passengers - the last hitchhikers added will be affected</div>
-        <label for="pickupCity">Pickup City:</label><br>
+        <label for="pickupCity">Pickup Address (your starting point):</label><br>
         <input type="text" id="pickupCity" name="pickupCity" value="<%= ride.getPickupCity() %>" required><br>
+        <div class="notice">Notice: If you change the pickup address - your hitchhikers might be affected</div>
         <label for="fuelReturns">Fuel Returns (per hitchhiker):</label><br>
         <input type="number" id="fuelReturns" name="fuelReturns" min="0" value="<%= ride.getFuelReturnsPerHitchhiker() %>" required><br>
         <div class="notice">Notice: If you raise the fuel costs - the current passengers will pay the amount that agreed at the beginning</div>
+        <label for="maxPickupDistance">Maximum KM you are willing to drive to pick up a passenger:</label><br>
+        <input type="number" id="maxPickupDistance" name="maxPickupDistance" min="0" required><br>
+        <div class="notice">Notice: If you have lowered the max pickup distance - your hitchhikers might be affected</div>
+        <input type="hidden" id="latitude" name="latitude" value="<%= ride.getLatitude() %>">
+        <input type="hidden" id="longitude" name="longitude" value="<%= ride.getLongitude() %>">
+        <div id="map"></div>
         <form action="editRide" method="post" style="display:inline;">
             <input type="hidden" name="eventName" value="<%= request.getParameter("eventName") %>">
             <button type="submit" class="button update-button">Edit the Pickup</button>
         </form>
     </form>
+    <%
+    } else {
+    %>
+    <p>Error: Event ID or owner not found.</p>
+    <%
+        }
+    %>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
+<script src="web/js/map.js"></script>
 </body>
 </html>

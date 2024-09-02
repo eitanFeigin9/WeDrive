@@ -70,6 +70,12 @@
             text-align: center;
             margin-top: 10px;
         }
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -82,6 +88,12 @@
         <input type="text" id="pickupCity" name="pickupCity" required><br>
         <label for="fuelReturns">Fuel Returns (per hitchhiker):</label><br>
         <input type="number" id="fuelReturns" name="fuelReturns" required><br>
+        <label for="maxPickupDistance">Maximum KM you are willing to drive to pick up a passenger:</label><br>
+        <input type="number" id="maxPickupDistance" name="maxPickupDistance" min="0" required><br>
+        <div class="notice">Notice: If you have lowered the max pickup distance - your hitchhikers might be affected</div>
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        <div id="map"></div>
         <form action="editRide" method="post" style="display:inline;">
             <input type="hidden" name="eventName" value="<%= request.getParameter("eventName") %>">
             <button type="submit" class="button update-button">Edit the Pickup</button>
@@ -89,5 +101,7 @@
         <span class="error-message">Max Capacity and Fuel Returns Need To Be A Number</span>
     </form>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
+<script src="web/js/map.js"></script>
 </body>
 </html>
