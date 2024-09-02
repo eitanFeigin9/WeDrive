@@ -30,23 +30,26 @@ public class CreateDriverRideServlet extends HttpServlet {
         String maxCapacityInStr = request.getParameter("maxCapacity");
         String pickupCity = request.getParameter("pickupCity");
         String fuelReturnsPerPersonStr = request.getParameter("fuelReturns");
-        String latitudeStr = request.getParameter("latitude");   // Get latitude
-        String longitudeStr = request.getParameter("longitude"); // Get longitude
+        String latitudeStr = request.getParameter("latitude");
+        String longitudeStr = request.getParameter("longitude");
+        String maxPickupDistanceStr = request.getParameter("maxPickupDistance");
         int maxCapacityInInt;
         int fuelReturnsInInt;
         double driverLatitude;
         double driverLongitude;
+        double maxPickupDistance;
 
         try {
             maxCapacityInInt = Integer.parseInt(maxCapacityInStr);
             fuelReturnsInInt = Integer.parseInt(fuelReturnsPerPersonStr);
             driverLatitude = Double.parseDouble(latitudeStr);   // Parse latitude
             driverLongitude = Double.parseDouble(longitudeStr); // Parse longitude
+            maxPickupDistance = Double.parseDouble(maxPickupDistanceStr);
         } catch (NumberFormatException e) {
             //redirect to error page
             return;
         }
-        if (!client.addNewDrivingEvent(eventName, maxCapacityInInt, pickupCity, fuelReturnsInInt, driverLatitude, driverLongitude)) {
+        if (!client.addNewDrivingEvent(eventName, maxCapacityInInt, pickupCity, fuelReturnsInInt, driverLatitude, driverLongitude, maxPickupDistance)) {
             response.sendRedirect("eventExistsError.jsp"); //change to you are alreadt regiter as a driver to this event
         }
         else {
@@ -62,7 +65,7 @@ public class CreateDriverRideServlet extends HttpServlet {
                             double hitchhikerLatitude = hitchhikerRide.getLatitude(); // Assuming these methods exist
                             double hitchhikerLongitude = hitchhikerRide.getLongitude();
                             double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
-                            if (distance < 5.0) {
+                            if (distance <= maxPickupDistance) {
                                 if (hitchhikerRide.getFuelMoney() >= newRide.getFuelReturnsPerHitchhiker()) {
                                     if (newRide.addNewHitchhiker(user.getValue().getFullName(), user.getValue().getPhoneNumber())){
                                         newRide.addToTotalFuelReturns(hitchhikerRide.getFuelMoney()); //ask eitan if it should be the hitchhiker or driver money

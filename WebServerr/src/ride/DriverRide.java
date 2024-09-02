@@ -16,8 +16,9 @@ public class DriverRide {
 
     private double latitude;  // New attribute for latitude
     private double longitude; // New attribute for longitude
+    private double maxPickupDistance;
 
-    public DriverRide(String eventName, int maxCapacity, String pickupCity, int fuelReturnsPerHitchhiker, double latitude, double longitude) {
+    public DriverRide(String eventName, int maxCapacity, String pickupCity, int fuelReturnsPerHitchhiker, double latitude, double longitude, double maxPickupDistance) {
         this.eventName = eventName;
         this.maxCapacity = maxCapacity;
         this.pickupCity = pickupCity;
@@ -27,6 +28,7 @@ public class DriverRide {
         this.currentHitchhikers = new HashMap<>();
         this.latitude = latitude;   // Initialize latitude
         this.longitude = longitude;  // Initialize longitude
+        this.maxPickupDistance = maxPickupDistance;
     }
 
     public String getEventName() { return eventName; }
@@ -50,6 +52,10 @@ public class DriverRide {
     public void setLatitude(double latitude) { this.latitude = latitude; }
 
     public void setLongitude(double longitude) { this.longitude = longitude; }
+
+    public double getMaxPickupDistance() { return maxPickupDistance; }
+
+    public void setMaxPickupDistance(double maxPickupDistance) { this.maxPickupDistance = maxPickupDistance; }
 
     public void addToTotalFuelReturns(int fuelMoney) { this.totalFuelReturns += fuelMoney; }
 
@@ -91,4 +97,5 @@ public class DriverRide {
     public void lowerNumberOfCurrHitchhikers() {
         this.currNumOfHitchhikers--;
     }
+
 }
