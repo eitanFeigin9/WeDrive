@@ -8,6 +8,7 @@ import jakarta.servlet.http.*;
 
 import jakarta.servlet.http.HttpServlet;
 import ride.DriverRide;
+import ride.HitchhikerDetails;
 import ride.HitchhikerRide;
 import utils.ServletUtils;
 
@@ -53,7 +54,7 @@ public class EditRideServlet extends HttpServlet {
         int copyOfNewMaxCapacity = maxCapacityInInt;
         //In case the driver increased the fuel return per hitchhiker
         if (fuelReturnsInInt > driverRide.getFuelReturnsPerHitchhiker() || !pickupCity.equals(driverRide.getPickupCity()) || maxPickupDistance < driverRide.getMaxPickupDistance()) {
-            HashMap<String,String> hitchhikers = driverRide.getCurrentHitchhikers();
+            HashMap<String, HitchhikerDetails> hitchhikers = driverRide.getCurrentHitchhikers();
             List<String> hitchhikersToDelete = new LinkedList<>();
             for (String hitchhikerName : hitchhikers.keySet()) {
                 if (webUsers.containsKey(hitchhikerName)) {
@@ -79,11 +80,11 @@ public class EditRideServlet extends HttpServlet {
         //In case the driver decreased the max capacity for this ride
         if (maxCapacityInInt < driverRide.getMaxCapacity() && driverRide.getCurrNumOfHitchhikers() > maxCapacityInInt) {
             int numOfHitchhikersToDelete = driverRide.getCurrNumOfHitchhikers() - maxCapacityInInt;
-            HashMap<String,String> hitchhikers = driverRide.getCurrentHitchhikers();
-            Iterator<Map.Entry<String, String>> iterator = hitchhikers.entrySet().iterator();
+            HashMap<String,HitchhikerDetails> hitchhikers = driverRide.getCurrentHitchhikers();
+            Iterator<Map.Entry<String, HitchhikerDetails>> iterator = hitchhikers.entrySet().iterator();
 
             while (numOfHitchhikersToDelete > 0 && iterator.hasNext()) {
-                Map.Entry<String, String> hitchhikerEntry = iterator.next();
+                Map.Entry<String, HitchhikerDetails> hitchhikerEntry = iterator.next();
                 String hitchhikerName = hitchhikerEntry.getKey();
 
                 if (webUsers.containsKey(hitchhikerName)) {

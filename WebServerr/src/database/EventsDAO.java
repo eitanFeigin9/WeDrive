@@ -1,12 +1,11 @@
 package database;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UsersDAO {
+public class EventsDAO {
 
     private static final String JDBC_URL = "jdbc:mysql://aws-db-wedrive.c5seuugwg6qy.us-east-1.rds.amazonaws.com:3306/wedrive-aws-db";
     private static final String JDBC_USER = "sharon";
@@ -14,26 +13,26 @@ public class UsersDAO {
 
     static {
         try {
-            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            //Class.forName("com.mysql.cj.xdevapi.Driver");
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void addNewUser(String fullName, String email, String phoneNumber, String password, String securityAnswer) {
-        String sql = "INSERT INTO Users (fullName, email, phoneNumber, password, securityAnswer) VALUES (?, ?, ?, ?, ?)";
+    public void addNewEvent(String eventName, String eventDate, String eventKind, String guestList, String location, String fileName, String latitude, String longitude) {
+        String sql = "INSERT INTO Events (eventName, eventDate, eventKind, guestList, location, fileName, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, fullName);
-            statement.setString(2, email);
-            statement.setString(3, phoneNumber);
-            statement.setString(4, password);
-            statement.setString(5, securityAnswer);
+            statement.setString(1, eventName);
+            statement.setString(2, eventDate);
+            statement.setString(3, eventKind);
+            statement.setString(4, guestList);
+            statement.setString(5, location);
+            statement.setString(6, fileName);
+            statement.setString(7, latitude);
+            statement.setString(8, longitude);
 
             statement.executeUpdate();
 
@@ -42,3 +41,4 @@ public class UsersDAO {
         }
     }
 }
+

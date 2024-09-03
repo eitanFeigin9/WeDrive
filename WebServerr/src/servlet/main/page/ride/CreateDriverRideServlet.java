@@ -1,5 +1,6 @@
 package servlet.main.page.ride;
 
+import database.DriverRideDAO;
 import database.Users;
 import entity.ServerClient;
 import event.EventData;
@@ -33,7 +34,9 @@ public class CreateDriverRideServlet extends HttpServlet {
         String eventOwner = request.getParameter("eventOwner");
         ServerClient owner = Users.getUserByFullName(eventOwner);
         EventData event = owner.getOwnedEventByName(eventName);
+        double eventLatitude = event.getLatitude();
         String eventAddress = event.getLocation();
+        double eventLongitude = event.getLongitude();
         String maxCapacityInStr = request.getParameter("maxCapacity");
         String pickupCity = request.getParameter("pickupCity");
         String fuelReturnsPerPersonStr = request.getParameter("fuelReturns");
@@ -56,10 +59,13 @@ public class CreateDriverRideServlet extends HttpServlet {
             //redirect to error page
             return;
         }
-        if (!client.addNewDrivingEvent(eventName,eventAddress, maxCapacityInInt, pickupCity, fuelReturnsInInt, driverLatitude, driverLongitude, maxPickupDistance)) {
+        if (!client.addNewDrivingEvent(eventName,eventAddress, maxCapacityInInt, pickupCity, fuelReturnsInInt, driverLatitude, driverLongitude, maxPickupDistance,eventLatitude,eventLongitude)) {
             response.sendRedirect("eventExistsError.jsp"); //change to you are alreadt regiter as a driver to this event
         }
         else {
+            //add to database
+            DriverRideDAO driverRideDAO = new DriverRideDAO();
+            driverRideDAO.addNewDriverRide(eventName, eventAddress, Double.toString(eventLatitude), Double.toString(eventLongitude), maxCapacityInInt, pickupCity, fuelReturnsInInt, 0, 0, latitudeStr,longitudeStr,maxPickupDistance);
             //drive was added successfuly redirection
             Users userManager = ServletUtils.getUserManager(getServletContext());
             DriverRide newRide = client.getDrivingEventByName(eventName);

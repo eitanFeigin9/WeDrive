@@ -8,6 +8,7 @@ import jakarta.servlet.http.*;
 
 import jakarta.servlet.http.HttpServlet;
 import ride.DriverRide;
+import ride.HitchhikerDetails;
 import ride.HitchhikerRide;
 import utils.ServletUtils;
 
@@ -28,7 +29,7 @@ public class CancelRideServlet extends HttpServlet {
 
         //remove all the hitchhikers that are in this drive
         DriverRide driverRide = client.getDrivingEventByName(eventName);
-        HashMap<String, String> hitchhikers = driverRide.getCurrentHitchhikers();
+        HashMap<String, HitchhikerDetails> hitchhikers = driverRide.getCurrentHitchhikers();
         for (String hitchhikerName : hitchhikers.keySet()) {
             if (webUsers.containsKey(hitchhikerName)) {
                 ServerClient user = webUsers.get(hitchhikerName);

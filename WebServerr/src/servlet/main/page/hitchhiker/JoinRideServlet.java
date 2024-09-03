@@ -1,5 +1,6 @@
 package servlet.main.page.hitchhiker;
 
+import database.HitchhikerRideDAO;
 import database.Users;
 import entity.ServerClient;
 import jakarta.servlet.ServletException;
@@ -50,6 +51,9 @@ public class JoinRideServlet extends HttpServlet {
             response.sendRedirect("eventExistsError.jsp"); //change to you are already register as a hitchhiker to this event
         }
         else {
+            //add to the database
+            HitchhikerRideDAO hitchhikerRideDAO = new HitchhikerRideDAO();
+            hitchhikerRideDAO.addNewHitchhikerRide(eventName, pickupCity, fuelMoneyInInt, true, "", "", latitudeStr, longitudeStr);
             HitchhikerRide newRide = client.getHitchhikingEventByName(eventName);
             Users userManager = ServletUtils.getUserManager(getServletContext());
             if (matchDriverToHitchhiker(client, newRide, userManager, eventName, userName, hitchhikerLatitude,hitchhikerLongitude))

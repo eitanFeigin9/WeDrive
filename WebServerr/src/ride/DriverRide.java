@@ -8,18 +8,19 @@ import java.util.HashSet;
 public class DriverRide {
     private String eventName;
     private String eventAddress;
+    private Double eventLatitude;
+    private Double eventLongitude;
     private int maxCapacity;
     private String pickupCity;
     private int fuelReturnsPerHitchhiker;
     private int currNumOfHitchhikers;
     private int totalFuelReturns;
-    private HashMap<String, String> currentHitchhikers;
-
+    private HashMap<String, HitchhikerDetails> currentHitchhikers;
     private double latitude;
     private double longitude;
     private double maxPickupDistance;
 
-    public DriverRide(String eventName,String eventAddress, int maxCapacity, String pickupCity, int fuelReturnsPerHitchhiker, double latitude, double longitude, double maxPickupDistance) {
+    public DriverRide(String eventName,String eventAddress, int maxCapacity, String pickupCity, int fuelReturnsPerHitchhiker, double latitude, double longitude, double maxPickupDistance, double eventLatitude, double eventLongitude) {
         this.eventName = eventName;
         this.eventAddress = eventAddress;
         this.maxCapacity = maxCapacity;
@@ -28,9 +29,11 @@ public class DriverRide {
         this.currNumOfHitchhikers = 0;
         this.totalFuelReturns = 0;
         this.currentHitchhikers = new HashMap<>();
-        this.latitude = latitude;   // Initialize latitude
-        this.longitude = longitude;  // Initialize longitude
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.maxPickupDistance = maxPickupDistance;
+        this.eventLatitude = eventLatitude;
+        this.eventLongitude = eventLongitude;
     }
 
     public String getEventName() { return eventName; }
@@ -42,6 +45,14 @@ public class DriverRide {
 
     public String getPickupCity() { return pickupCity; }
     public int getFuelReturnsPerHitchhiker() { return fuelReturnsPerHitchhiker; }
+
+    public double getEventLatitude() { return eventLatitude; }
+
+    public double getEventLongitude() { return eventLongitude; }
+
+    public void setEventLatitude(double eventLatitude) { this.eventLatitude = eventLatitude;}
+
+    public void setEventLongitude(double eventLongitude) { this.eventLongitude = eventLongitude;}
 
     public void setEventName(String eventName) { this.eventName = eventName; }
     public void setMaxCapacity(int maxCapacity) { this.maxCapacity = maxCapacity; }
@@ -72,14 +83,15 @@ public class DriverRide {
         }
     }
 
-    public HashMap<String, String> getCurrentHitchhikers() {
+    public HashMap<String, HitchhikerDetails> getCurrentHitchhikers() {
         return currentHitchhikers;
     }
 
-    public boolean addNewHitchhiker(String hitchhikerName, String hitchhikerPhone){
+    public boolean addNewHitchhiker(String name, String phone, String address, double latitude, double longitude){
 
-        if(!currentHitchhikers.containsKey(hitchhikerName)){
-            currentHitchhikers.put(hitchhikerName, hitchhikerPhone);
+        if(!currentHitchhikers.containsKey(name)){
+            HitchhikerDetails hitchhikerDetails = new HitchhikerDetails(name, phone, address, latitude, longitude);
+            currentHitchhikers.put(name, hitchhikerDetails);
             currNumOfHitchhikers++;
             return true;
         }

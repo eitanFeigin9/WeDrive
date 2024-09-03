@@ -28,7 +28,7 @@ public class JdbcConnectionTest {
             statement = connection.createStatement();
 
             // Execute a query
-            String query = "SELECT * FROM Users"; // Replace with a valid table name
+            String query = "SELECT * FROM Users";
             resultSet = statement.executeQuery(query);
 
             // Process the results

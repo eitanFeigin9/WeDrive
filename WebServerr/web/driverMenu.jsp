@@ -7,6 +7,7 @@
 <%@ page import="database.Users" %>
 <%@ page import="ride.DriverRide" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="ride.HitchhikerDetails" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,8 +88,9 @@
         <th>Fuel Return Per Hitchhiker</th>
         <th>Total fuel returns</th>
         <th>Maximum KM for Pickup</th>
-        <th>Hitchhikers Names</th>
-        <th>Hitchhikers Phones</th>
+        <th>Hitchhiker Name</th>
+        <th>Hitchhiker Phone</th>
+        <th>Hitchhiker Address</th>
     </tr>
     <%
         String userName = (String)request.getSession().getAttribute("userName");
@@ -97,6 +99,8 @@
         for (DriverRide ride : rides.values()) {
             String currEventName = ride.getEventName();
             String currEventAddress = ride.getEventAddress();
+            HashMap<String, HitchhikerDetails> hitchhikers = ride.getCurrentHitchhikers();
+            int numHitchhikers = hitchhikers.size();
     %>
     <tr>
         <td><%= currEventName %></td>
@@ -109,19 +113,34 @@
         <td><%= ride.getMaxPickupDistance() %></td>
         <td>
             <%
-                HashMap<String, String> hitchhikers = ride.getCurrentHitchhikers();
-                for (Map.Entry<String, String> hitchhiker : hitchhikers.entrySet()) {
-                    out.println(hitchhiker.getKey() + "<br><br>");
+                for (HitchhikerDetails hitchhiker : hitchhikers.values()) {
+                    out.println(hitchhiker.getName() + "<br>");
                 }
             %>
         </td>
         <td>
             <%
-                HashMap<String, String> hitchhikers2 = ride.getCurrentHitchhikers();
-                for (Map.Entry<String, String> hitchhiker2 : hitchhikers2.entrySet()) {
-                    out.println(hitchhiker2.getValue() + "<br><br>");
+                for (HitchhikerDetails hitchhiker : hitchhikers.values()) {
+                    out.println(hitchhiker.getPhone() + "<br>");
                 }
             %>
+        </td>
+        <td>
+            <%
+                for (HitchhikerDetails hitchhiker : hitchhikers.values()) {
+                    out.println(hitchhiker.getAddress() + "<br>");
+                }
+            %>
+        </td>
+        <td>
+            <button class="button"
+                    onclick="openMapPopup(
+                            '<%= String.valueOf(ride.getLatitude()) %>',
+                            '<%= String.valueOf(ride.getLongitude()) %>',
+                            '<%= ride.getCurrentHitchhikers() %>',
+                            '<%= String.valueOf(ride.getEventLatitude()) %>',
+                            '<%= String.valueOf(ride.getEventLongitude()) %>'
+                            )">Show Map</button>
         </td>
         <td>
             <a href="editRide.jsp?eventName=<%= currEventName %>" class="button edit-button">Edit</a>
@@ -132,8 +151,16 @@
     </tr>
     <% } %>
 </table>
+<div id="mapModal" style="display:none;">
+    <div>
+        <span onclick="closeMapPopup()" style="cursor:pointer;">&times; Close</span>
+        <div id="map" style="height: 500px; width: 100%;"></div>
+    </div>
+</div>
 <div class="button-container">
     <a href="driverOptionsMenu.jsp" class="button">Back to Driver Menu</a>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg"></script>
+<script src="web/js/mapPopup.js"></script>
 </body>
 </html>

@@ -90,10 +90,10 @@ public class ServerClient {
     public boolean checkDrivingEventExists(String eventName){
         return drivingEvents.containsKey(eventName);
     }
-    public boolean addNewDrivingEvent(String eventName,String eventAddress, int maxCapacity, String pickupCity, int fuelReturnsPerPerson, double latitude, double longitude, double maxPickupDistance){
+    public boolean addNewDrivingEvent(String eventName,String eventAddress, int maxCapacity, String pickupCity, int fuelReturnsPerPerson, double latitude, double longitude, double maxPickupDistance, double eventLatitude, double eventLongitude){
 
         if(!checkDrivingEventExists(eventName)){
-            drivingEvents.put(eventName, new DriverRide(eventName,eventAddress, maxCapacity,pickupCity,fuelReturnsPerPerson, latitude, longitude,maxPickupDistance));
+            drivingEvents.put(eventName, new DriverRide(eventName,eventAddress, maxCapacity,pickupCity,fuelReturnsPerPerson, latitude, longitude,maxPickupDistance,eventLatitude,eventLongitude));
             return true;
         }
         return false;

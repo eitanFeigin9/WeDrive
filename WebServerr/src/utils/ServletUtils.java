@@ -113,7 +113,7 @@ public class ServletUtils {
                         double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
                         if (distance <= maxPickupDistance) {
                             if (hitchhikerRide.getFuelMoney() >= newRide.getFuelReturnsPerHitchhiker()) {
-                                if (newRide.addNewHitchhiker(user.getValue().getFullName(), user.getValue().getPhoneNumber())) {
+                                if (newRide.addNewHitchhiker(user.getValue().getFullName(), user.getValue().getPhoneNumber(), hitchhikerRide.getPickupCity(), hitchhikerLatitude, hitchhikerLongitude)) {
                                     newRide.addToTotalFuelReturns(hitchhikerRide.getFuelMoney()); //ask eitan if it should be the hitchhiker or driver money
                                     hitchhikerRide.setFreeForPickup(false); //The hitchhiker is no longer free for pickup
                                     hitchhikerRide.setDriverName(client.getFullName());
@@ -141,7 +141,7 @@ public class ServletUtils {
                 double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
                 if (driverRide.isTherePlace() && distance <= driverRide.getMaxPickupDistance()) {
                     if (newRide.getFuelMoney() >= driverRide.getFuelReturnsPerHitchhiker()) {
-                        if (driverRide.addNewHitchhiker(client.getFullName(), client.getPhoneNumber())){
+                        if (driverRide.addNewHitchhiker(client.getFullName(), client.getPhoneNumber(), newRide.getPickupCity(),hitchhikerLatitude, hitchhikerLongitude)){
                             driverRide.addToTotalFuelReturns(newRide.getFuelMoney()); //ask eitan if it should be the hitchhiker or driver money
                             newRide.setFreeForPickup(false); //The hitchhiker is no longer free for pickup
                             newRide.setDriverName(user.getValue().getFullName());

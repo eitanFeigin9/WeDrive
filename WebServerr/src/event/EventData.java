@@ -8,10 +8,9 @@ public class EventData {
     private String eventKind;
     private HashSet<String> guestList;
     private String location;
-
     private String fileName;
-    private double latitude;  // New attribute for latitude
-    private double longitude; // New attribute for longitude
+    private double latitude;
+    private double longitude;
 
     public EventData(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location,String fileName, double latitude, double longitude) {
         this.eventName = eventName;

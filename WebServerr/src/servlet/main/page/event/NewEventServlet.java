@@ -1,6 +1,7 @@
 package servlet.main.page.event;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.*;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -8,6 +9,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import database.EventsDAO;
 import database.Users;
 import entity.ServerClient;
 import jakarta.servlet.ServletException;
@@ -65,11 +67,18 @@ public class NewEventServlet extends HttpServlet {
             guestList = ServletUtils.createGuestList(request, response);
             guestListFileName = ServletUtils.getFileName(guestListPart);
         }
-        //add new event
+        //add new event to the event owner
         if (!eventOwner.addNewOwnedEvent(eventName, eventDate, eventKind, guestList, eventLocation, guestListFileName,latitude, longitude)) {
             response.sendRedirect("eventExistsError.jsp");
             return; // Exit if event creation fails
         }
+
+        String guestListString = String.join(",", guestList);
+
+        //add event to database to Events table
+        EventsDAO eventsDAO = new EventsDAO();
+        eventsDAO.addNewEvent(eventName, eventDate, eventKind, guestListString, eventLocation, guestListFileName, latitudeStr, longitudeStr);
+
         nameMap.put(eventName, eventName);
         ownerMap.put(eventName, eventOwner.getFullName());
         String url = request.getContextPath() + "/welcome.jsp?id=" + eventName;
