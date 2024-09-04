@@ -17,31 +17,20 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Retrieve form data
-        Users userManagerManager = ServletUtils.getUserManager(getServletContext());
+        //Users userManagerManager = ServletUtils.getUserManager(getServletContext());
         String fullName = request.getParameter("fullname");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
         String securityAnswer = request.getParameter("securityAnswer");
-        if(!Users.addNewUser(fullName,email,phone,password,securityAnswer)){
+        UsersDAO usersDAO = new UsersDAO();
+        if (!usersDAO.addNewUser(fullName,email,phone,password,securityAnswer))
+        {
             response.sendRedirect("signUpNameError.jsp");
         }
-        else {
-            UsersDAO usersDAO = new UsersDAO();
-            usersDAO.addNewUser(fullName,email,phone,password,securityAnswer);
-            response.sendRedirect("thankyou.html");
-
-        }
-
-
-
-
-
+        response.sendRedirect("thankyou.html");
 
         response.getWriter().println("Full Name: " + fullName + "Email: " + email + "Phone: " + phone + "Password: " + password);
-
-
-
 
 
     }

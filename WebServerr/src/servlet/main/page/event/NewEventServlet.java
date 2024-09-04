@@ -11,6 +11,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import database.EventsDAO;
 import database.Users;
+import database.UsersDAO;
 import entity.ServerClient;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -76,8 +77,9 @@ public class NewEventServlet extends HttpServlet {
         String guestListString = String.join(",", guestList);
 
         //add event to database to Events table
+        String eventOwnerName = eventOwner.getFullName();
         EventsDAO eventsDAO = new EventsDAO();
-        eventsDAO.addNewEvent(eventName, eventDate, eventKind, guestListString, eventLocation, guestListFileName, latitudeStr, longitudeStr);
+        eventsDAO.addNewEvent(eventName, eventDate, eventKind, guestListString, eventLocation, guestListFileName, latitudeStr, longitudeStr, eventOwnerName);
 
         nameMap.put(eventName, eventName);
         ownerMap.put(eventName, eventOwner.getFullName());
@@ -94,7 +96,8 @@ public class NewEventServlet extends HttpServlet {
     }
         private ServerClient getEventOwnerFromSessionOrDatabase (HttpServletRequest request){
             String userName = (String) request.getSession().getAttribute("userName");
-            return Users.getUserByFullName(userName);
+            UsersDAO usersDAO = new UsersDAO();
+            return usersDAO.getUserByFullName(userName);
         }
 
     private void generateQRCodeImage(String text, String filePath, int width, int height) {

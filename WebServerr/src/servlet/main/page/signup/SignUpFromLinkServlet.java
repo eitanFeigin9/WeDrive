@@ -1,9 +1,12 @@
 package servlet.main.page.signup;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 
+import database.EventsDAO;
 import database.Users;
+import database.UsersDAO;
 import entity.ServerClient;
 import event.EventData;
 import jakarta.servlet.ServletException;
@@ -18,8 +21,10 @@ public class SignUpFromLinkServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Retrieve form data
-        Users userManagerManager = ServletUtils.getUserManager(getServletContext());
+        // the version with database
+        UsersDAO usersDAO = new UsersDAO();
+        EventsDAO eventsDAO = new EventsDAO();
+        //Users userManagerManager = ServletUtils.getUserManager(getServletContext());
         String fullName = request.getParameter("fullname");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
@@ -27,19 +32,20 @@ public class SignUpFromLinkServlet extends HttpServlet {
         String securityAnswer = request.getParameter("securityAnswer");
         String eventName = request.getParameter("id");
         String eventOwnerName = request.getParameter("owner");
-        ServerClient owner = ServletUtils.getUserManager(getServletContext()).getUserByFullName(eventOwnerName);
-        if (owner != null)
+        HashMap<String, EventData> ownedEvents = eventsDAO.getAllOwnedEventsForUser(eventOwnerName);
+        //ServerClient owner = usersDAO.getUserByEmail(email);
+        //ServerClient owner = ServletUtils.getUserManager(getServletContext()).getUserByFullName(eventOwnerName);
+        if (!ownedEvents.isEmpty())
         {
-            EventData eventData = owner.getOwnedEventByName(eventName);
+            EventData eventData = ownedEvents.get(eventName);
             if (eventData != null && eventData.getFileName() != null && !(eventData.getGuestList().isEmpty()))
             {
                 HashSet<String> guestList = eventData.getGuestList();
                 if (guestList.contains(fullName)) {
-                    if(!Users.addNewUser(fullName,email,phone,password,securityAnswer)){
+                    if(!usersDAO.addNewUser(fullName,email,phone,password,securityAnswer)){
                         response.sendRedirect("signUpFromLinkNameError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                     }
                     else {
-                        //response.sendRedirect("loginFromLink.jsp");
                         response.sendRedirect("loginFromLink.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
 
                     }
@@ -48,14 +54,14 @@ public class SignUpFromLinkServlet extends HttpServlet {
                     response.sendRedirect("notInGuestListError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                 }
             }
-            else if (eventData != null)
+            else if (eventData != null) //did not insert guest list
             {
-                if(!Users.addNewUser(fullName,email,phone,password,securityAnswer)){
+                if(!usersDAO.addNewUser(fullName,email,phone,password,securityAnswer)){
                     response.sendRedirect("signUpFromLinkNameError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                 }
                 else {
+                    //usersDAO.addNewUser(fullName,email,phone,password,securityAnswer); //I don't think it needs to be here
                     response.sendRedirect("loginFromLink.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
-
                 }
             }
             else {

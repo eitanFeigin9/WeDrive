@@ -1,6 +1,7 @@
 package servlet.main.page.login;
 
 import database.Users;
+import database.UsersDAO;
 import entity.ServerClient;
 import event.EventData;
 import jakarta.servlet.ServletException;
@@ -18,13 +19,15 @@ public class LoginFromLinkServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Users userManager = ServletUtils.getUserManager(getServletContext());
+        UsersDAO usersDAO = new UsersDAO();
+        //Users userManager = ServletUtils.getUserManager(getServletContext());
         String fullName = request.getParameter("fullname");
         String password = request.getParameter("password");
         String eventId = request.getParameter("id");
         String eventOwner = request.getParameter("owner");
 
-        ServerClient owner = userManager.getUserByFullName(eventOwner);
+        ServerClient owner = usersDAO.getUserByFullName(eventOwner);
+        //ServerClient owner = userManager.getUserByFullName(eventOwner);
         if (owner == null) {
             redirectWithError(response, eventId, eventOwner, "LoginFromLinkPasswordError.jsp");
             return;
@@ -36,16 +39,11 @@ public class LoginFromLinkServlet extends HttpServlet {
             return;
         }
 
-        if (!userManager.getWebUsers().containsKey(fullName)) {
-            redirectWithError(response, eventId, eventOwner, "UserDoesNotExists.jsp");
-            return;
-        }
-
-        ServerClient client = userManager.getWebUsers().get(fullName);
-        if (!client.getPassword().equals(password)) {
+        if (!usersDAO.isValidUser(fullName, password)) {
             redirectWithError(response, eventId, eventOwner, "LoginFromLinkPasswordError.jsp");
             return;
         }
+
 
         if (eventData.getGuestList().contains(fullName) || eventData.getFileName() == null) {
             request.getSession().setAttribute("userName", fullName);

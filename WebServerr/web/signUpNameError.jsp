@@ -101,7 +101,7 @@
 
         <input type="submit" value="Submit">
 
-        <span class="error-message">User with this name already exists</span>
+        <span class="error-message">User with this email already exists</span>
     </form>
 </div>
 </body>

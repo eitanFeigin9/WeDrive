@@ -53,11 +53,10 @@ public class JoinRideServlet extends HttpServlet {
         else {
             //add to the database
             HitchhikerRideDAO hitchhikerRideDAO = new HitchhikerRideDAO();
-            hitchhikerRideDAO.addNewHitchhikerRide(eventName, pickupCity, fuelMoneyInInt, true, "", "", latitudeStr, longitudeStr);
+            hitchhikerRideDAO.addNewHitchhikerRide(eventName, pickupCity, fuelMoneyInInt, true, "", "", latitudeStr, longitudeStr, userName);
             HitchhikerRide newRide = client.getHitchhikingEventByName(eventName);
-            Users userManager = ServletUtils.getUserManager(getServletContext());
-            if (matchDriverToHitchhiker(client, newRide, userManager, eventName, userName, hitchhikerLatitude,hitchhikerLongitude))
-            {
+            //Users userManager = ServletUtils.getUserManager(getServletContext());
+            if (hitchhikerRideDAO.matchDriverToHitchhiker(newRide,userName,hitchhikerLatitude,hitchhikerLongitude)) {
                 response.sendRedirect("thankYouHitchhiker.jsp");
             }
             response.sendRedirect("thankYouHitchhiker.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
