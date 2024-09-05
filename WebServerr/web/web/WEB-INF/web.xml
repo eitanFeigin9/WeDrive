@@ -18,5 +18,22 @@
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>servlet.main.page.login.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PasswordRecoveryServlet</servlet-name>
+        <servlet-class>servlet.main.page.passwordRecovery.PasswordRecoveryServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PasswordRecoveryServlet</servlet-name>
+        <url-pattern>/recover</url-pattern>
+    </servlet-mapping>
 
 </web-app>

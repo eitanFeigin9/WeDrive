@@ -9,6 +9,8 @@ import java.util.HashSet;
 
 public class ServerClient {
     private  String fullName;
+    private  String userName;
+
     private  String email;
     private  String phoneNumber;
     private  String password;
@@ -17,8 +19,9 @@ public class ServerClient {
     private HashMap<String, DriverRide> drivingEvents;
     private HashMap<String,HitchhikerRide> hitchhikingEvents;
 
-    public ServerClient(String fullName, String email, String phoneNumber, String password, String securityAnswer) {
+    public ServerClient(String fullName,String userName ,String email, String phoneNumber, String password, String securityAnswer) {
         this.fullName = fullName;
+        this.userName = userName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
@@ -30,6 +33,14 @@ public class ServerClient {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {

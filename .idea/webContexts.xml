@@ -3,6 +3,8 @@
   <component name="WebContextManager">
     <option name="state">
       <map>
+        <entry key="file://$PROJECT_DIR$/WebServerr/web/check.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
+        <entry key="file://$PROJECT_DIR$/WebServerr/web/login.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
         <entry key="file://$PROJECT_DIR$/WebServerr/web/notInGuestListError.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
       </map>
     </option>

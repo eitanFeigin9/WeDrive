@@ -13,10 +13,10 @@ public class Users {
         Users.webUsers = new HashMap<>();
         isFirstUser =false;
     }
-    public static boolean addNewUser(String fullName, String email, String phoneNumber, String password, String securityAnswer){
+    public static boolean addNewUser(String fullName, String userName,String email, String phoneNumber, String password, String securityAnswer){
 
         if(!checkUserExists(fullName)){
-            ServerClient newUser = new ServerClient(fullName,email,phoneNumber,password,securityAnswer);
+            ServerClient newUser = new ServerClient(fullName,userName,email,phoneNumber,password,securityAnswer);
             webUsers.put(fullName, newUser);
             //לבדןק שזה באמת מספר ולא סתם
             return true;
@@ -38,5 +38,6 @@ public class Users {
         isFirstUser = firstUser;
     }
     public static ServerClient getUserByFullName(String fullName) { return webUsers.get(fullName); }
+    public static ServerClient getUserByUserName(String userName) { return webUsers.get(userName); }
 
 }

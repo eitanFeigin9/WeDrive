@@ -18,17 +18,18 @@ public class SignUpServlet extends HttpServlet {
             throws ServletException, IOException {
         // Retrieve form data
         //Users userManagerManager = ServletUtils.getUserManager(getServletContext());
-        String fullName = request.getParameter("fullname");
+        String fullName = request.getParameter("fullName");
+        String userName = request.getParameter("userName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
         String securityAnswer = request.getParameter("securityAnswer");
         UsersDAO usersDAO = new UsersDAO();
-        if (!usersDAO.addNewUser(fullName,email,phone,password,securityAnswer))
+        if (!usersDAO.addNewUser(fullName,userName,email,phone,password,securityAnswer))
         {
             response.sendRedirect("signUpNameError.jsp");
         }
-        response.sendRedirect("thankyou.html");
+        response.sendRedirect("thankForSignUp.jsp");
 
         response.getWriter().println("Full Name: " + fullName + "Email: " + email + "Phone: " + phone + "Password: " + password);
 

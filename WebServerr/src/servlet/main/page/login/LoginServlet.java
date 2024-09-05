@@ -1,10 +1,7 @@
 package servlet.main.page.login;
 
-import database.Users;
 import database.UsersDAO;
-import entity.ServerClient;
 import jakarta.servlet.annotation.WebServlet;
-import utils.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,15 +15,28 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UsersDAO usersDAO = new UsersDAO();
-        String fullName = request.getParameter("fullname");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if (usersDAO.isValidUser(fullName, password)) {
-            request.getSession().setAttribute("userName", fullName);
+        // Check if username exists
+        if (usersDAO.isUsernameExits(username)) {
+            response.sendRedirect("login.jsp?error=Username does not exist!");
+            return; // Stop further processing
+        }
+
+        // Check if password is correct
+        if (!usersDAO.isPasswordCorrect(username, password)) {
+            response.sendRedirect("login.jsp?error=Password isn't correct!");
+            return; // Stop further processing
+        }
+
+        // Check if user is valid
+        if (usersDAO.isValidUser(username, password)) {
+            request.getSession().setAttribute("userName", username);
             response.sendRedirect("mainPage.jsp");
+            return; // Stop further processing
         } else {
             response.sendRedirect("loginPasswordError.jsp");
         }
     }
 }
-

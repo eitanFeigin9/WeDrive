@@ -25,7 +25,9 @@ public class SignUpFromLinkServlet extends HttpServlet {
         UsersDAO usersDAO = new UsersDAO();
         EventsDAO eventsDAO = new EventsDAO();
         //Users userManagerManager = ServletUtils.getUserManager(getServletContext());
-        String fullName = request.getParameter("fullname");
+        String fullName = request.getParameter("fullName");
+        String userName = request.getParameter("userName");
+
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
@@ -42,7 +44,7 @@ public class SignUpFromLinkServlet extends HttpServlet {
             {
                 HashSet<String> guestList = eventData.getGuestList();
                 if (guestList.contains(fullName)) {
-                    if(!usersDAO.addNewUser(fullName,email,phone,password,securityAnswer)){
+                    if(!usersDAO.addNewUser(fullName,userName,email,phone,password,securityAnswer)){
                         response.sendRedirect("signUpFromLinkNameError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                     }
                     else {
@@ -56,7 +58,7 @@ public class SignUpFromLinkServlet extends HttpServlet {
             }
             else if (eventData != null) //did not insert guest list
             {
-                if(!usersDAO.addNewUser(fullName,email,phone,password,securityAnswer)){
+                if(!usersDAO.addNewUser(fullName,userName,email,phone,password,securityAnswer)){
                     response.sendRedirect("signUpFromLinkNameError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                 }
                 else {
