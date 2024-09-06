@@ -15,21 +15,33 @@ public class Users {
     }
     public static boolean addNewUser(String fullName, String userName,String email, String phoneNumber, String password, String securityAnswer){
 
-        if(!checkUserExists(fullName)){
+        if(!checkUserExists(userName)){
             ServerClient newUser = new ServerClient(fullName,userName,email,phoneNumber,password,securityAnswer);
-            webUsers.put(fullName, newUser);
-            //לבדןק שזה באמת מספר ולא סתם
+            webUsers.put(userName, newUser);
             return true;
         }
         return false;
     }
-    public static boolean checkUserExists(String fullName){
-        return webUsers.containsKey(fullName);
+
+    public static boolean isValidUser(String userName,String password){
+        ServerClient user = webUsers.get(userName);
+        return user.getPassword().equals(password);
+    }
+    public static boolean checkUserExists(String userName){
+        if(webUsers!=null) {
+            return webUsers.containsKey(userName);
+        }
+        else return false;
     }
 
     public HashMap<String,ServerClient> getWebUsers() {
         return webUsers;
     }
+
+    public static void setWebUsers(HashMap<String, ServerClient> webUsers) {
+        Users.webUsers = webUsers;
+    }
+
     public synchronized boolean isFirstUser() {
         return isFirstUser;
     }

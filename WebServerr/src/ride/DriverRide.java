@@ -1,9 +1,7 @@
 package ride;
 
-import event.EventData;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class DriverRide {
     private String eventName;

@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 public class EventData {
     private String eventName;
+    private String eventOwnerUserName;
     private String eventDate;
     private String eventKind;
     private HashSet<String> guestList;
@@ -12,8 +13,9 @@ public class EventData {
     private double latitude;
     private double longitude;
 
-    public EventData(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location,String fileName, double latitude, double longitude) {
+    public EventData(String eventName,String eventOwnerUserName ,String eventDate, String eventKind, HashSet<String> guestList, String location,String fileName, double latitude, double longitude) {
         this.eventName = eventName;
+        this.eventOwnerUserName=eventOwnerUserName;
         this.eventDate = eventDate;
         this.eventKind = eventKind;
         this.guestList = guestList;
@@ -33,6 +35,14 @@ public class EventData {
 
     public String getEventKind() {
         return eventKind;
+    }
+
+    public String getEventOwnerUserName() {
+        return eventOwnerUserName;
+    }
+
+    public void setEventOwnerUserName(String eventOwnerUserName) {
+        this.eventOwnerUserName = eventOwnerUserName;
     }
 
     public HashSet<String> getGuestList() {

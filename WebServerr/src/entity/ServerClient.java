@@ -1,5 +1,6 @@
 package entity;
 
+import database.EventsDAO;
 import event.EventData;
 import ride.DriverRide;
 import ride.HitchhikerRide;
@@ -29,8 +30,22 @@ public class ServerClient {
         this.ownedEvents = new HashMap<>();
         this.drivingEvents = new HashMap<>();
         this.hitchhikingEvents = new HashMap<>();
+        restoreOwnedEventsFromDB();
     }
+    public void restoreOwnedEventsFromDB(){
+// Instantiate the EventsDAO to fetch events from the database
+        EventsDAO eventsDAO = new EventsDAO();
 
+        // Use the DAO to fetch all owned events for this client (by userName)
+        HashMap<String, EventData> restoredEvents = eventsDAO.getAllOwnedEventsForUser(this.userName);
+
+        // If events are retrieved, add them to the ownedEvents map
+        if (restoredEvents != null && !restoredEvents.isEmpty()) {
+            this.ownedEvents.putAll(restoredEvents);
+        } else {
+            System.out.println("No events found for user: " + this.userName);
+        }
+    }
     public String getFullName() {
         return fullName;
     }
@@ -75,10 +90,10 @@ public class ServerClient {
 
     public void setSecurityAnswer(String securityAnswer) { this.securityAnswer = securityAnswer; }
 
-    public boolean addNewOwnedEvent(String eventName, String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName, double latitude, double longitude){
+    public boolean addNewOwnedEvent(String eventName,String eventOwner ,String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName, double latitude, double longitude){
 
         if(!checkOwnedEventExists(eventName)){
-            ownedEvents.put(eventName, new EventData(eventName,eventDate,eventKind,guestList,location, fileName, latitude, longitude));
+            ownedEvents.put(eventName, new EventData(eventName,eventOwner,eventDate,eventKind,guestList,location, fileName, latitude, longitude));
             return true;
         }
         return false;
@@ -128,4 +143,14 @@ public class ServerClient {
         hitchhikingEvents.remove(eventName);
     }
     public HitchhikerRide getHitchhikingEventByName(String eventName) { return hitchhikingEvents.get(eventName); }
+    public boolean addOwnedEvent(EventData event) {
+        // Check if the event already exists
+        if (!checkOwnedEventExists(event.getEventName())) {
+            // If it doesn't exist, add the event to the ownedEvents map
+            ownedEvents.put(event.getEventName(), event);
+            return true; // Successfully added
+        }
+        return false; // Event already exists
+    }
+
 }

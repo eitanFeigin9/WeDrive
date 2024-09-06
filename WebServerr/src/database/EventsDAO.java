@@ -21,23 +21,27 @@ public class EventsDAO {
         }
     }
 
-    public void addNewEvent(String eventName, String eventDate, String eventKind, String guestList, String location,
-                            String fileName, String latitude, String longitude, String eventOwnerName) {
+    public boolean addNewEvent(String eventName, String eventDate, String eventKind, String guestList, String location,
+                            String fileName, String latitude, String longitude, String eventOwnerUserName) {
 
-        String selectSql = "SELECT id FROM Users WHERE fullName = ?";
+       /* String selectSql = "SELECT id FROM Users WHERE fullName = ?";
         String insertSql = "INSERT INTO Events (eventName, eventDate, eventKind, guestList, location, fileName, latitude, longitude, OwnerID) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        */
+        String selectSql = "SELECT userName FROM Clients WHERE userName = ?";
+        String insertSql = "INSERT INTO Events (eventName, eventDate, eventKind, guestList, location, fileName, latitude, longitude, userName) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement selectStatement = connection.prepareStatement(selectSql);
              PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
 
-            // Retrieve eventOwnerId using eventOwnerName
-            selectStatement.setString(1, eventOwnerName);
+            // Retrieve eventOwnerId using eventOwnerUserName
+            selectStatement.setString(1, eventOwnerUserName);
             ResultSet resultSet = selectStatement.executeQuery();
 
             if (resultSet.next()) {
-                int eventOwnerId = resultSet.getInt("id");
+                String eventOwnerUsername = resultSet.getString("userName");
 
                 // Insert the new event into the Events table
                 insertStatement.setString(1, eventName);
@@ -48,24 +52,63 @@ public class EventsDAO {
                 insertStatement.setString(6, fileName);
                 insertStatement.setString(7, latitude);
                 insertStatement.setString(8, longitude);
-                insertStatement.setInt(9, eventOwnerId);
+                insertStatement.setString(9, eventOwnerUsername);
 
                 insertStatement.executeUpdate();
             } else {
-                // Handle case where eventOwnerName is not found
+                // Handle case where eventOwnerUserName is not found
                 System.out.println("Event owner not found.");
+                return false;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
-    public HashMap<String, EventData> getAllOwnedEventsForUser(String fullName) {
+    public HashMap<String, EventData> getAllOwnedEventsForUser(String userName) {
         HashMap<String, EventData> ownedEvents = new HashMap<>();
 
-        String getUserIDSql = "SELECT id FROM Users WHERE fullName = ?";
-        String getEventsSql = "SELECT * FROM Events WHERE ownerID = ?";
+        String getEventsSql = "SELECT * FROM Events WHERE userName = ?";
+
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement getEventsStatement = connection.prepareStatement(getEventsSql)) {
+
+            // Set the userName for the query
+            getEventsStatement.setString(1, userName);
+            ResultSet eventResultSet = getEventsStatement.executeQuery();
+
+            // Process the result set and construct EventData objects
+            while (eventResultSet.next()) {
+                String guestListString = eventResultSet.getString("guestList");
+                HashSet<String> guestList = new HashSet<>(Arrays.asList(guestListString.split(",")));
+
+                EventData event = new EventData(
+                        eventResultSet.getString("eventName"),
+                        userName,
+                        eventResultSet.getString("eventDate"),
+                        eventResultSet.getString("eventKind"),
+                        guestList,
+                        eventResultSet.getString("location"),
+                        eventResultSet.getString("fileName"),
+                        Double.parseDouble(eventResultSet.getString("latitude")),
+                        Double.parseDouble(eventResultSet.getString("longitude"))
+                );
+
+                // Add event to the map
+                ownedEvents.put(event.getEventName(), event);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ownedEvents;
+        /*   HashMap<String, EventData> ownedEvents = new HashMap<>();
+
+        String getUserIDSql = "SELECT userName FROM Clients WHERE userName = ?";
+        String getEventsSql = "SELECT * FROM Events WHERE userName = ?";
 
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement getUserIDStatement = connection.prepareStatement(getUserIDSql);
@@ -76,17 +119,17 @@ public class EventsDAO {
             ResultSet userResultSet = getUserIDStatement.executeQuery();
 
             if (userResultSet.next()) {
-                int userId = userResultSet.getInt("id");
+                int userName = userResultSet.getInt("userName");
 
                 // Get all events for the user
-                getEventsStatement.setInt(1, userId);
+                getEventsStatement.setInt(1, userName);
                 ResultSet eventResultSet = getEventsStatement.executeQuery();
 
                 while (eventResultSet.next()) {
                     String guestListString = eventResultSet.getString("guestList");
                     HashSet<String> guestList = new HashSet<>(Arrays.asList(guestListString.split(",")));
 
-                    EventData event = new EventData( eventResultSet.getString("eventName"), eventResultSet.getString("eventDate"), eventResultSet.getString("eventKind"), guestList, eventResultSet.getString("location"), eventResultSet.getString("fileName"), Double.parseDouble(eventResultSet.getString("latitude")), Double.parseDouble(eventResultSet.getString("longitude")));
+                    EventData event = new EventData( eventResultSet.getString("eventName"), fullName,eventResultSet.getString("eventDate"), eventResultSet.getString("eventKind"), guestList, eventResultSet.getString("location"), eventResultSet.getString("fileName"), Double.parseDouble(eventResultSet.getString("latitude")), Double.parseDouble(eventResultSet.getString("longitude")));
                     ownedEvents.put(event.getEventName(), event);
                 }
             }
@@ -96,27 +139,29 @@ public class EventsDAO {
         }
 
         return ownedEvents;
+
+      */
     }
 
-    public EventData getEventByOwnerAndName(String eventOwnerName, String eventName) {
+    public EventData getEventByOwnerAndName(String eventOwnerUserName, String eventName) {
         EventData event = null;
 
-        String getUserIDSql = "SELECT id FROM Users WHERE fullName = ?";
-        String getEventSql = "SELECT * FROM Events WHERE ownerID = ? AND eventName = ?";
+        String getUserIDSql = "SELECT userName FROM Clients WHERE userName = ?";
+        String getEventSql = "SELECT * FROM Events WHERE userName = ? AND eventName = ?";
 
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement getUserIDStatement = connection.prepareStatement(getUserIDSql);
              PreparedStatement getEventStatement = connection.prepareStatement(getEventSql)) {
 
             // Get user ID based on the event owner's full name
-            getUserIDStatement.setString(1, eventOwnerName);
+            getUserIDStatement.setString(1, eventOwnerUserName);
             ResultSet userResultSet = getUserIDStatement.executeQuery();
 
             if (userResultSet.next()) {
-                int userId = userResultSet.getInt("id");
+                int userName = userResultSet.getInt("userName");
 
                 // Get the specific event for the user
-                getEventStatement.setInt(1, userId);
+                getEventStatement.setInt(1, userName);
                 getEventStatement.setString(2, eventName);
                 ResultSet eventResultSet = getEventStatement.executeQuery();
 
@@ -126,6 +171,7 @@ public class EventsDAO {
 
                     event = new EventData(
                             eventResultSet.getString("eventName"),
+                            eventOwnerUserName,
                             eventResultSet.getString("eventDate"),
                             eventResultSet.getString("eventKind"),
                             guestList,

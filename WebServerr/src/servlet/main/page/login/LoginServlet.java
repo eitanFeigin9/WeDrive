@@ -1,5 +1,6 @@
 package servlet.main.page.login;
 
+import database.Users;
 import database.UsersDAO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.ServletException;
@@ -17,8 +18,13 @@ public class LoginServlet extends HttpServlet {
         UsersDAO usersDAO = new UsersDAO();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
         // Check if username exists
+        if (!Users.checkUserExists(username)) {
+            response.sendRedirect("login.jsp?error=Username does not exist!");
+            return; // Stop further processing
+        }
+
+        /*
         if (usersDAO.isUsernameExits(username)) {
             response.sendRedirect("login.jsp?error=Username does not exist!");
             return; // Stop further processing
@@ -30,13 +36,26 @@ public class LoginServlet extends HttpServlet {
             return; // Stop further processing
         }
 
+
+
         // Check if user is valid
         if (usersDAO.isValidUser(username, password)) {
+
+            request.getSession().setAttribute("userName", username);
+            usersDAO.addNewUserFromLogin( usersDAO.getUserByFullName(username));
+            usersDAO.addNewUser(fullName,username,email,phone,password,securityAnswer);
+            response.sendRedirect("mainPage.jsp");
+            return; // Stop further processing
+
+         */
+        if (Users.isValidUser(username, password)) {
             request.getSession().setAttribute("userName", username);
             response.sendRedirect("mainPage.jsp");
             return; // Stop further processing
         } else {
-            response.sendRedirect("loginPasswordError.jsp");
+            response.sendRedirect("login.jsp?error=Password isn't correct!");
         }
     }
 }
+
+

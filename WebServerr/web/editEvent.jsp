@@ -8,110 +8,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Event</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .form-container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            box-sizing: border-box;
-        }
-        .form-container h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-            font-size: 24px;
-        }
-        .form-container label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-        }
-        .form-container input[type="text"],
-        .form-container input[type="date"],
-        .form-container .file-upload {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        .form-container input[type="text"]:focus,
-        .form-container input[type="date"]:focus {
-            border-color: #4CAF50;
-            outline: none;
-        }
-        .file-upload {
-            position: relative;
-            display: inline-block;
-            overflow: hidden;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            height: 40px;
-            line-height: 40px;
-            cursor: pointer;
-        }
-        .file-upload input[type="file"] {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-        .file-upload .file-info {
-            padding: 0 10px;
-            height: 40px;
-            line-height: 30px; /* Adjusted line height */
-            display: inline-block;
-            color: #666;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            box-sizing: border-box;
-            position: relative;
-            top: -5px; /* Adjusted position */
-        }
-        .form-container input[type="submit"] {
-            width: 100%;
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 12px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .form-container input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        #map {
-            width: 100%;
-            height: 300px;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="newEvent/newEventStyle.css">
+    <!-- Include FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <%
     String userName = (String) request.getSession().getAttribute("userName");
@@ -125,32 +24,60 @@
     }
 %>
 <body>
-<div class="form-container">
-    <h1>Edit Event</h1>
-    <form action="editEvent" method="post" enctype="multipart/form-data">
-        <label for="eventName">Event Name:</label>
-        <input type="text" id="eventName" name="eventName" value="<%= event.getEventName() %>" required>
+<div class="container">
+    <div class="screen">
+        <div class="screen__content">
+            <h1>Edit Event</h1>
+            <form action="editEvent" method="post" enctype="multipart/form-data" class="event-form">
+                <!-- Display error message if passed from servlet -->
+                <%
+                    String errorMessage = (String) request.getAttribute("errorMessage");
+                    if (errorMessage != null) {
+                %>
+                <div class="error-message">
+                    <p style="color: red;"><strong><%= errorMessage %></strong></p>
+                </div>
+                <%
+                    }
+                %>
 
-        <label for="eventDate">Date:</label>
-        <input type="date" id="eventDate" name="eventDate" value="<%= event.getEventDate() %>" required>
-
-        <label for="eventKind">Event Kind:</label>
-        <input type="text" id="eventKind" name="eventKind" value="<%= event.getEventKind() %>" required>
-
-        <label for="guestList">Upload Guest List:</label>
-        <div class="file-upload">
-            <input type="file" id="guestList" name="guestList" accept=".csv" onchange="updateFileName(this)">
-            <div class="file-info"><%= uploadedFileName %></div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-calendar-day"></i>
+                    <input type="text" id="eventName" name="eventName" class="event-form__input" placeholder="Event Name" value="<%= event.getEventName() %>" required>
+                </div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-calendar-alt"></i>
+                    <input type="date" id="eventDate" name="eventDate" class="event-form__input" value="<%= event.getEventDate() %>" required>
+                </div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-tag"></i>
+                    <input type="text" id="eventKind" name="eventKind" class="event-form__input" placeholder="Event Kind" value="<%= event.getEventKind() %>" required>
+                </div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-file-upload"></i>
+                    <input type="file" id="guestList" name="guestList" class="event-form__input" accept=".csv" onchange="updateFileName(this)">
+                    <div class="file-info"><%= event.getFileName() %></div>
+                </div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-map-marker-alt"></i>
+                    <input type="text" id="eventLocation" name="eventLocation" class="event-form__input" placeholder="Event Location" value="<%= event.getLocation() %>" required>
+                </div>
+                <div id="map"></div>
+                <input type="hidden" id="latitude" name="latitude" value="<%= event.getLatitude() %>">
+                <input type="hidden" id="longitude" name="longitude" value="<%= event.getLongitude() %>">
+                <button type="submit" class="button event-form__submit">
+                    <span class="button__text">Update Event</span>
+                    <i class="button__icon fas fa-check"></i>
+                </button>
+            </form>
         </div>
-
-        <label for="eventLocation">Location:</label>
-        <input type="text" id="eventLocation" name="eventLocation" value="<%= event.getLocation() %>" required>
-
-        <input type="hidden" id="latitude" name="latitude" value="<%= event.getLatitude() %>">
-        <input type="hidden" id="longitude" name="longitude" value="<%= event.getLongitude() %>">
-        <div id="map"></div>
-        <input type="submit" value="Update">
-    </form>
+        <div class="screen__background">
+            <span class="screen__background__shape screen__background__shape4"></span>
+            <span class="screen__background__shape screen__background__shape3"></span>
+            <span class="screen__background__shape screen__background__shape2"></span>
+            <span class="screen__background__shape screen__background__shape1"></span>
+        </div>
+    </div>
 </div>
 <script>
     function updateFileName(input) {
@@ -159,9 +86,6 @@
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
-<script src="web/js/map2.js"></script>
+<script src="newEvent/map2.js"></script>
 </body>
 </html>
-
-
-

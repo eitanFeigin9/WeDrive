@@ -18,7 +18,7 @@ import java.util.HashSet;
 public class EditEventServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userName = (String) request.getSession().getAttribute("userName");
-        ServerClient client = Users.getUserByFullName(userName);
+        ServerClient client = Users.getUserByUserName(userName);
         String eventOldName = (String) request.getSession().getAttribute("eventOldName");
         EventData event = client.getOwnedEventByName(eventOldName);
         String eventNewName = request.getParameter("eventName");
@@ -47,11 +47,11 @@ public class EditEventServlet extends HttpServlet {
         String fileName = ServletUtils.getFileName(request.getPart("guestList"));
         assert fileName != null;
         if (fileName.isEmpty()) {
-            client.addNewOwnedEvent(eventNewName, eventDate, eventKind, oldGuestList, location, oldFileName,latitude, longitude);
+            client.addNewOwnedEvent(eventNewName, userName,eventDate, eventKind, oldGuestList, location, oldFileName,latitude, longitude);
         }
         else {
             HashSet<String> guestList = ServletUtils.createGuestList(request,response);
-            client.addNewOwnedEvent(eventNewName, eventDate, eventKind, guestList, location, fileName,latitude, longitude);
+            client.addNewOwnedEvent(eventNewName, userName,eventDate, eventKind, guestList, location, fileName,latitude, longitude);
         }
         response.sendRedirect("updateEventSuccess.jsp");
     }

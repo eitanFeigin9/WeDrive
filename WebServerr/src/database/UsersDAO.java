@@ -65,15 +65,16 @@ public class UsersDAO {
             insertUserStatement.setString(4, phoneNumber);
             insertUserStatement.setString(5, password);
             insertUserStatement.setString(6, securityAnswer);
-
             insertUserStatement.executeUpdate();
+            Users.addNewUser(fullName,userName,email,phoneNumber,password,securityAnswer);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return true;
     }
-
+public void addNewUserFromLogin(ServerClient newUser){            Users.addNewUser(newUser.getFullName(), newUser.getUserName(), newUser.getEmail(), newUser.getPhoneNumber(), newUser.getPassword(), newUser.getSecurityAnswer());
+}
     public boolean isValidUser(String userName, String password) {
         //  String sql = "SELECT * FROM Users WHERE fullName = ? AND password = ?";
         String sql = "SELECT * FROM Clients WHERE userName = ? AND password = ?";
@@ -150,26 +151,25 @@ public class UsersDAO {
         return false; // Return false in case of an exception
     }
 
-    public ServerClient getUserByFullName(String fullName) {
-        /*
+    public ServerClient getUserByFullName(String userName) {
+
         // Implement method to retrieve user from the database
-        String sql = "SELECT * FROM Users WHERE fullName = ?";
+        String sql = "SELECT * FROM Clients WHERE userName = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, fullName);
+            statement.setString(1, userName);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return new ServerClient(resultSet.getString("fullName"),resultSet.getString("email"),resultSet.getString("phoneNumber"), resultSet.getString("password"),resultSet.getString("securityAnswer"));
+                return new ServerClient(resultSet.getString("fullName"),resultSet.getString("userName"),resultSet.getString("email"),resultSet.getString("phoneNumber"), resultSet.getString("password"),resultSet.getString("securityAnswer"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null; // User not found
 
-         */
-        return null;
+
     }
 
     public static ServerClient getUserByUserName(String userName) {
@@ -213,4 +213,127 @@ public class UsersDAO {
          */
         return null;
     }
+    public HashSet<String> getAllUsernames() {
+        String sql = "SELECT userName FROM Clients";
+        HashSet<String> usernames = new HashSet<>();
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                usernames.add(resultSet.getString("userName"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usernames;
+    }
+    public String getFullName(String userName) {
+        String sql = "SELECT fullName FROM Clients WHERE userName = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("fullName");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getEmail(String userName) {
+        String sql = "SELECT email FROM Clients WHERE userName = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("email");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getPhoneNumber(String userName) {
+        String sql = "SELECT phoneNumber FROM Clients WHERE userName = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("phoneNumber");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getPassword(String userName) {
+        String sql = "SELECT password FROM Clients WHERE userName = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getSecurityAnswer(String userName) {
+        String sql = "SELECT securityAnswer FROM Clients WHERE userName = ?";
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userName);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("securityAnswer");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public HashMap<String, EventData> getOwnedEvents(String userName) {
+        HashMap<String, EventData> events = new HashMap<>();
+        String sql = "SELECT * FROM Events WHERE eventOwnerUserName = ?";
+
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, userName);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String eventName = resultSet.getString("eventName");
+                String eventDate = resultSet.getString("eventDate");
+                String eventKind = resultSet.getString("eventKind");
+                HashSet<String> guestList = new HashSet<>(Arrays.asList(resultSet.getString("guestList").split(",")));
+                String location = resultSet.getString("location");
+                String fileName = resultSet.getString("fileName");
+                double latitude = resultSet.getDouble("latitude");
+                double longitude = resultSet.getDouble("longitude");
+
+                EventData event = new EventData(eventName, userName, eventDate, eventKind, guestList, location, fileName, latitude, longitude);
+                events.put(eventName, event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return events;
+    }
+
 }

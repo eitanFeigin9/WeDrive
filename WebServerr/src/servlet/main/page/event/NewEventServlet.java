@@ -69,28 +69,38 @@ public class NewEventServlet extends HttpServlet {
             guestListFileName = ServletUtils.getFileName(guestListPart);
         }
         //add new event to the event owner
-        if (!eventOwner.addNewOwnedEvent(eventName, eventDate, eventKind, guestList, eventLocation, guestListFileName,latitude, longitude)) {
-            response.sendRedirect("eventExistsError.jsp");
-            return; // Exit if event creation fails
+        if (!eventOwner.addNewOwnedEvent(eventName,eventOwner.getUserName() ,eventDate, eventKind, guestList, eventLocation, guestListFileName,latitude, longitude)) {
+            //response.sendRedirect("eventExistsError.jsp");
+           // return; // Exit if event creation fails
+            request.setAttribute("errorMessage", "Event Name already exits.");
+
+            // Forward back to the JSP page with the error message
+            request.getRequestDispatcher("/newEvent.jsp").forward(request, response);
+            return;
         }
 
         String guestListString = String.join(",", guestList);
 
         //add event to database to Events table
-        String eventOwnerName = eventOwner.getFullName();
+        String eventOwnerUserName = eventOwner.getUserName();
         EventsDAO eventsDAO = new EventsDAO();
-        eventsDAO.addNewEvent(eventName, eventDate, eventKind, guestListString, eventLocation, guestListFileName, latitudeStr, longitudeStr, eventOwnerName);
+        eventsDAO.addNewEvent(eventName, eventDate, eventKind, guestListString, eventLocation, guestListFileName, latitudeStr, longitudeStr, eventOwnerUserName);
 
         nameMap.put(eventName, eventName);
-        ownerMap.put(eventName, eventOwner.getFullName());
+        ownerMap.put(eventName, eventOwnerUserName);
         String url = request.getContextPath() + "/welcome.jsp?id=" + eventName;
-        String link = "http://wedriveco.com:8080/WebServer_Web exploded/welcome.jsp?id=" + eventName;
+        //String link = "http://wedriveco.com:8080/WebServer_Web exploded/welcome.jsp?id=" + eventName;
+        String link = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventName;
 
         // Generate the QR code
         generateQRCodeImage(link, QR_CODE_IMAGE_PATH, 350, 350);
         request.setAttribute("qrUrl", link);
 
         // Redirect to a success page
+        request.setAttribute("eventName", eventName);
+        request.setAttribute("eventDate", eventDate);
+        request.setAttribute("eventLocation", eventLocation);
+        request.setAttribute("eventKind", eventKind);
         request.getRequestDispatcher("success.jsp").forward(request, response);
 
     }

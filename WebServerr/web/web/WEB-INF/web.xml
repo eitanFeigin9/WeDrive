@@ -35,5 +35,8 @@
         <servlet-name>PasswordRecoveryServlet</servlet-name>
         <url-pattern>/recover</url-pattern>
     </servlet-mapping>
-
+    <!-- Define Listeners -->
+    <listener>
+        <listener-class>listener.AppInitializerListener</listener-class>
+    </listener>
 </web-app>
