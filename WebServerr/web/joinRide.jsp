@@ -99,11 +99,11 @@
         <input type="hidden" id="eventName" name="eventName" value="<%= eventId %>">
         <input type="hidden" id="eventOwner" name="eventOwner" value="<%= eventOwner %>">
         <div class="form-group">
-            <label for="pickupCity">Pickup City Or Address:</label>
-            <input type="text" id="pickupCity" name="pickupCity" placeholder="Enter a city or address" required>
+            <label for="eventLocation">Pickup address:</label>
+            <input type="text" id="eventLocation" name="eventLocation" placeholder="Enter a pickup address:" required>
         </div>
         <div class="form-group">
-            <label for="fuelMoney">Maximum Fuel Price You Are Willing To Pay:</label>
+            <label for="fuelMoney">Maximum Fuel Price You Are Willing To Pay (in $):</label>
             <input type="text" id="fuelMoney" name="fuelMoney" required>
         </div>
         <input type="hidden" id="latitude" name="latitude">
@@ -121,7 +121,7 @@
 </div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
-<script src="web/js/map.js"></script>
+<script src="newEvent/map2.js"></script>
 </body>
 </html>
 

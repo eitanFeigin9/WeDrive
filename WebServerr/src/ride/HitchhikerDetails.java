@@ -1,5 +1,7 @@
 package ride;
 
+import database.Users;
+
 public class HitchhikerDetails {
     private String name;
     private String phone;

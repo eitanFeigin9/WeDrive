@@ -25,7 +25,7 @@ public class SignUpFromLinkServlet extends HttpServlet {
         UsersDAO usersDAO = new UsersDAO();
         EventsDAO eventsDAO = new EventsDAO();
         //Users userManagerManager = ServletUtils.getUserManager(getServletContext());
-        String fullName = request.getParameter("fullName");
+        /*String fullName = request.getParameter("fullName");
         String userName = request.getParameter("userName");
 
         String email = request.getParameter("email");
@@ -34,7 +34,19 @@ public class SignUpFromLinkServlet extends HttpServlet {
         String securityAnswer = request.getParameter("securityAnswer");
         String eventName = request.getParameter("id");
         String eventOwnerName = request.getParameter("owner");
-        HashMap<String, EventData> ownedEvents = eventsDAO.getAllOwnedEventsForUser(eventOwnerName);
+         */
+
+        String fullName = request.getParameter("fullName");
+        String userName = request.getParameter("userName");
+        String eventName = request.getParameter("id");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
+        String securityAnswer = request.getParameter("securityAnswer");
+        String eventOwnerName = request.getParameter("owner");
+        HashMap<String, EventData> ownedEvents = Users.getUserByUserName(eventOwnerName).getOwnedEvents();
+
+       // HashMap<String, EventData> ownedEvents = eventsDAO.getAllOwnedEventsForUser(eventOwnerName);
         //ServerClient owner = usersDAO.getUserByEmail(email);
         //ServerClient owner = ServletUtils.getUserManager(getServletContext()).getUserByFullName(eventOwnerName);
         if (!ownedEvents.isEmpty())

@@ -15,12 +15,12 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import static utils.ServletUtils.calculateDistance;
-import static utils.ServletUtils.matchDriverToHitchhiker;
+//import static utils.ServletUtils.matchDriverToHitchhiker;
 
 @WebServlet(name = "EditRideHitchhikerServlet", urlPatterns = {"/editRideHitchhiker"})
 public class EditRideHitchhikerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String eventName = request.getParameter("eventName");
+ /*       String eventName = request.getParameter("eventName");
 
         String userName = (String)request.getSession().getAttribute("userName");
         ServerClient client = Users.getUserByFullName(userName);
@@ -53,8 +53,8 @@ public class EditRideHitchhikerServlet extends HttpServlet {
                     double driverLongitude = hitchhikerRide.getLongitude();
                     double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
                     if (fuelMoneyInInt < driverRide.getFuelReturnsPerHitchhiker() || distance > driverRide.getMaxPickupDistance()) {
-                        driverRide.removeHitchhiker(userName);
-                        driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
+                //        driverRide.removeHitchhiker(userName);
+                  //      driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
                         hitchhikerRide.setDriverPhone("");
                         hitchhikerRide.setDriverName("");
                         hitchhikerRide.setFreeForPickup(true);
@@ -65,8 +65,12 @@ public class EditRideHitchhikerServlet extends HttpServlet {
             hitchhikerRide.setFuelMoney(fuelMoneyInInt);
             hitchhikerRide.setLatitude(hitchhikerLatitude);
             hitchhikerRide.setLongitude(hitchhikerLongitude);
-            boolean isMatchFound = matchDriverToHitchhiker(client, hitchhikerRide, userManager, eventName, userName, hitchhikerLatitude,hitchhikerLongitude);
+        //    boolean isMatchFound = matchDriverToHitchhiker(client, hitchhikerRide, userManager, eventName, userName, hitchhikerLatitude,hitchhikerLongitude);
         }
         response.sendRedirect("hitchhikerOptionsMenu.jsp");
+
+  */
     }
-}
+
+
+    }

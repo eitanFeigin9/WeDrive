@@ -73,8 +73,7 @@ public class UsersDAO {
         }
         return true;
     }
-public void addNewUserFromLogin(ServerClient newUser){            Users.addNewUser(newUser.getFullName(), newUser.getUserName(), newUser.getEmail(), newUser.getPhoneNumber(), newUser.getPassword(), newUser.getSecurityAnswer());
-}
+
     public boolean isValidUser(String userName, String password) {
         //  String sql = "SELECT * FROM Users WHERE fullName = ? AND password = ?";
         String sql = "SELECT * FROM Clients WHERE userName = ? AND password = ?";
@@ -326,8 +325,10 @@ public void addNewUserFromLogin(ServerClient newUser){            Users.addNewUs
                 String fileName = resultSet.getString("fileName");
                 double latitude = resultSet.getDouble("latitude");
                 double longitude = resultSet.getDouble("longitude");
+                String qrCodeFilePath = resultSet.getString("qrCodeFilePath");
+                String invitationLink = resultSet.getString("invitationLink");
 
-                EventData event = new EventData(eventName, userName, eventDate, eventKind, guestList, location, fileName, latitude, longitude);
+                EventData event = new EventData(eventName, userName, eventDate, eventKind, guestList, location, fileName, latitude, longitude,qrCodeFilePath,invitationLink);
                 events.put(eventName, event);
             }
         } catch (SQLException e) {

@@ -20,44 +20,44 @@ public class LoginFromLinkServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UsersDAO usersDAO = new UsersDAO();
-        //Users userManager = ServletUtils.getUserManager(getServletContext());
-        String fullName = request.getParameter("fullname");
+        String userName = request.getParameter("username");
         String password = request.getParameter("password");
         String eventId = request.getParameter("id");
         String eventOwner = request.getParameter("owner");
-
-        ServerClient owner = usersDAO.getUserByFullName(eventOwner);
-        //ServerClient owner = userManager.getUserByFullName(eventOwner);
+        if (!Users.checkUserExists(userName)) {
+            response.sendRedirect("loginFromLink.jsp?error=Username does not exist!");
+            return; // Stop further processing
+        }
+        // Get the owner details
+        ServerClient owner = Users.getUserByUserName(eventOwner);
         if (owner == null) {
-            redirectWithError(response, eventId, eventOwner, "LoginFromLinkPasswordError.jsp");
+            // Early exit after redirect
+            response.sendRedirect("loginFromLink.jsp?error=Owner is invalid!");
             return;
         }
 
+        // Get event data owned by the owner
         EventData eventData = owner.getOwnedEventByName(eventId);
         if (eventData == null || (eventData.getFileName() != null && eventData.getGuestList().isEmpty())) {
-            redirectWithError(response, eventId, eventOwner, "LoginFromLinkPasswordError.jsp");
+            // Early exit after redirect
+            response.sendRedirect("loginFromLink.jsp?error=You are not invited to the event:" + eventId + "!");
             return;
         }
 
-        if (!usersDAO.isValidUser(fullName, password)) {
-            redirectWithError(response, eventId, eventOwner, "LoginFromLinkPasswordError.jsp");
-            return;
-        }
-
-
-        if (eventData.getGuestList().contains(fullName) || eventData.getFileName() == null) {
-            request.getSession().setAttribute("userName", fullName);
+        // Check if the user credentials are valid
+        if (Users.isValidUser(userName, password)) {
+            // Set session attribute for logged-in user
+            request.getSession().setAttribute("userName", userName);
             response.sendRedirect("optionsFromLink.jsp?id=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
-        } else {
-            response.sendRedirect("NotInGuestListLoginFromLink.jsp?id=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
+            return;
         }
+
+        // Check if the password is incorrect
+        response.sendRedirect("loginFromLink.jsp?error=Password isn't correct!");
+        return;
     }
 
     private void redirectWithError(HttpServletResponse response, String eventId, String eventOwner, String errorPage) throws IOException {
         response.sendRedirect(errorPage + "?id=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
     }
-
-
-
-
 }

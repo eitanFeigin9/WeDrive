@@ -11,17 +11,23 @@
 <%@ page import="java.awt.Color" %>
 <%@ page import="java.awt.Font" %>
 <%@ page import="java.awt.Graphics2D" %>
-<%@ page import="java.awt.image.BufferedImage" %>
-<%@ page import="java.io.ByteArrayOutputStream" %>
 <%@ page import="java.io.File" %>
-<%@ page import="javax.imageio.ImageIO" %>
+<%@ page import="java.io.FileOutputStream" %>
+<%@ page import="java.io.OutputStream" %>
+<%@ page import="java.io.IOException" %>
 <%@ page import="java.util.Base64" %>
+<%@ page import="database.Users" %>
+<%@ page import="entity.ServerClient" %>
+<%@ page import="event.EventData" %>
+<%@ page import="java.util.HashSet" %>
+<%@ page import="database.EventsDAO" %>
+<%@ page import="utils.ServletUtils" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Updated Successfully</title>
+    <title>Event Details Updated Successfully</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,6 +97,13 @@
         String eventKind = (String) request.getAttribute("eventKind");
         String qrImagePath = (String) request.getAttribute("qrImagePath");
         String qrUrl = (String) request.getAttribute("qrUrl");
+        String eventOwnerUserName=(String) request.getAttribute("userName");
+        String latitudeStr=(String) request.getAttribute("latitude");
+        String longitudeStr=(String) request.getAttribute("longitude");
+        ServerClient owner = Users.getUserByUserName(eventOwnerUserName);
+        String fileName =(String) request.getAttribute("fileName");
+        HashSet<String>  guestList = (HashSet<String>) request.getAttribute("guestList");
+
         if (qrUrl != null) {
             // Generate QR code image dynamically
             int qrCodeSize = 250;
@@ -107,11 +120,29 @@
                 }
             }
 
+
+            // Save QR code image to file
+            // String qrCodeFileName = eventName.replaceAll("\\s+", "_") + ".png";
+            //  String basePath = application.getInitParameter("basePath");
+            //   String qrCodeFilePath = basePath+("WebServerr/web/QRCodes/"+qrCodeFileName);
+            //   try (OutputStream os = new FileOutputStream(qrCodeFilePath)) {
+            //       ImageIO.write(qrImage, "png", os);
+            //   } catch (IOException e) {
+            //       e.printStackTrace(); // Handle the exception as needed
+            //   }
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(qrImage, "png", baos);
             String qrImageBase64 = java.util.Base64.getEncoder().encodeToString(baos.toByteArray());
+            EventData newEvent =new EventData(eventName,eventOwnerUserName,eventDate,eventKind,guestList,eventLocation,fileName,Double.parseDouble(latitudeStr),Double.parseDouble(longitudeStr),qrImageBase64,qrUrl);
+            owner.addOwnedEvent(newEvent);
+            EventsDAO eventsDAO = new EventsDAO();
 
-            //For wedding invitation
+            String guestListString = String.join(",", guestList);
+
+            eventsDAO.addNewEvent(eventName,eventDate,eventKind,guestListString,eventLocation,fileName,Double.parseDouble(latitudeStr),Double.parseDouble(longitudeStr), eventOwnerUserName, qrImageBase64, qrUrl);
+
+            // For wedding invitation
             String weddingInvitationImagePath = application.getRealPath("/WeddingInvitation.png");
             File weddingInvitationFile = new File(weddingInvitationImagePath);
             BufferedImage weddingInvitationImage = ImageIO.read(weddingInvitationFile);
@@ -137,7 +168,7 @@
             ImageIO.write(weddingInvitationImage, "png", baos2);
             String finalImageBase64 = Base64.getEncoder().encodeToString(baos2.toByteArray());
 
-            //For birthday Invitation
+            // For birthday Invitation
             String birthdayInvitationImagePath = application.getRealPath("/birthdayInvitation.png");
             File birthdayInvitationFile = new File(birthdayInvitationImagePath);
             BufferedImage birthdayInvitationImage = ImageIO.read(birthdayInvitationFile);
@@ -168,18 +199,19 @@
             String birthdayImageBase64 = Base64.getEncoder().encodeToString(birthdayBaos2.toByteArray());
     %>
     <div class="qr-wrapper">
-        <img src="<%= qrImagePath %>" alt="QR Code">
+        <img src="data:image/png;base64,<%= qrImageBase64 %>" alt="QR Code">
     </div>
-    <p>Scan the QR code or click the following link:<br/><a href="<%= qrUrl %>"><%= qrUrl %></a></p>
-    <a href="<%= qrImagePath %>" download="event-qr-code.png">Download QR Code</a>
+    <p>Scan the new QR code or click the new following link:<br/><a href="<%= qrUrl %>"><%= qrUrl %></a></p>
+    <a href="data:image/png;base64,<%= qrImageBase64 %>" download="event-qr-code.png">Download QR Code</a>
     <%
+
         if ("Wedding".equalsIgnoreCase(eventKind)) {
     %>
-    <a href="data:image/png;base64,<%= finalImageBase64 %>" download="wedding-invitation.png">Download Wedding Invitation</a>
+    <a href="data:image/png;base64,<%= finalImageBase64 %>" download="wedding-invitation.png">Download the new Wedding Invitation</a>
     <%
     } else {
     %>
-    <a href="data:image/png;base64,<%= finalImageBase64 %>" download="event-invitation.png">Download Event Invitation</a>
+    <a href="data:image/png;base64,<%= birthdayImageBase64 %>" download="birthday-invitation.png">Download the new Birthday Invitation</a>
     <%
         }
     %>

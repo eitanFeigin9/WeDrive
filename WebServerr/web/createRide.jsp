@@ -1,105 +1,81 @@
-<%@ page import="servlet.main.page.event.NewEventServlet" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Ride</title>
+    <title>Edit Event</title>
+    <link rel="stylesheet" type="text/css" href="newEvent/newEventStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-        }
-        h1 {
-            color: #4CAF50;
-            font-size: 22px;
-            margin-bottom: 20px;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input[type="text"], input[type="number"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .button-container {
-            text-align: center;
-        }
-        input[type="submit"], button {
-            padding: 12px 24px;
-            margin: 10px 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            color: white;
-            background-color: #4CAF50;
-            transition: background-color 0.3s;
-        }
-        input[type="submit"]:hover, button:hover {
-            background-color: #45a049;
-        }
         #map {
+            height: 400px;
             width: 100%;
-            height: 300px;
-            margin-top: 20px;
-            border-radius: 5px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <%
-        String eventId = request.getParameter("id");
-        String eventOwner = request.getParameter("owner");
-        if (eventId != null && eventOwner != null) {
-    %>
-    <h1>Create New Ride For <%= eventId %></h1>
-    <form action="createRide" method="post" enctype="multipart/form-data">
-        <input type="hidden" id="eventName" name="eventName" value="<%= eventId %>">
-        <input type="hidden" id="eventOwner" name="eventOwner" value="<%= eventOwner %>">
-        <label for="pickupCity">Pickup Address (your starting point):</label><br>
-        <input type="text" id="pickupCity" name="pickupCity" placeholder="Enter an address" required><br>
-        <label for="maxCapacity">Number of available seats in your car:</label><br>
-        <input type="number" id="maxCapacity" name="maxCapacity" min="0" max="40" required><br>
-        <label for="fuelReturns">Fuel Returns per passenger:</label><br>
-        <input type="number" id="fuelReturns" name="fuelReturns" min="0" required><br>
-        <label for="maxPickupDistance">Maximum KM you are willing to drive to pick up a passenger:</label><br>
-        <input type="number" id="maxPickupDistance" name="maxPickupDistance" min="0" required><br>
-        <input type="hidden" id="latitude" name="latitude">
-        <input type="hidden" id="longitude" name="longitude">
-        <div id="map"></div>
-        <input type="submit" value="Confirm">
-    </form>
-    <%
-    } else {
-    %>
-    <p>Error: Event ID or owner not found.</p>
-    <%
-        }
-    %>
-</div>
+    <div class="screen">
+        <div class="screen__content">
+            <%
+                String eventId = request.getParameter("id");
+                String eventOwner = request.getParameter("owner");
+            %>
+            <%
+                String errorMessage = (String) request.getAttribute("errorMessage");
+                if (errorMessage != null) {
+            %>
+            <div class="error-message">
+                <p style="color: red;"><strong><%= errorMessage %></strong></p>
+            </div>
+            <%
+                }
+            %>
+            <h1>Create New Ride For <%= eventId %></h1>
 
+            <form action="createRide" method="post" enctype="multipart/form-data" class="event-form">
+                <input type="hidden" id="eventName" name="eventName" value="<%= eventId %>">
+                <input type="hidden" id="eventOwner" name="eventOwner" value="<%= eventOwner %>">
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-car"></i>
+                    <input type="range" id="maxCapacity" name="maxCapacity" min="0" max="50" value="1" oninput="updateCapacityValue(this.value)" class="event-form__input" required>
+                    <span class="slider-label"><strong>Free seats: </strong><strong id="capacityValue">1</strong></span>
+                </div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-gas-pump"></i>
+                    <input type="number" id="fuelReturns" name="fuelReturns" class="event-form__input" placeholder="Fuel Returns per passenger in $" min="0" required>
+                </div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-road"></i>
+                    <input type="number" id="maxPickupDistance" name="maxPickupDistance" class="event-form__input" placeholder="Maximum KM for pickup from starting point" min="0" step="0.1" required>
+                </div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-map-marker-alt"></i>
+                    <input type="text" id="eventLocation" name="sourceLocation" class="event-form__input" placeholder="Source Address (your starting point)" required>
+                </div>
+                <div id="map"></div>
+                <input type="hidden" id="latitude" name="sourceLatitude">
+                <input type="hidden" id="longitude" name="sourceLongitude">
+                <button type="submit" class="button event-form__submit">
+                    <span class="button__text">Create Event</span>
+                    <i class="button__icon fas fa-check"></i>
+                </button>
+            </form>
+        </div>
+        <div class="screen__background">
+            <span class="screen__background__shape screen__background__shape4"></span>
+            <span class="screen__background__shape screen__background__shape3"></span>
+            <span class="screen__background__shape screen__background__shape2"></span>
+            <span class="screen__background__shape screen__background__shape1"></span>
+        </div>
+    </div>
+</div>
+<script>
+    function updateCapacityValue(value) {
+        document.getElementById('capacityValue').innerText = value;
+    }
+</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
-<script src="web/js/map.js"></script>
+<script src="newEvent/map2.js"></script>
 </body>
 </html>
-
-

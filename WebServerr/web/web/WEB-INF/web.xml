@@ -19,6 +19,15 @@
         <url-pattern>/signup</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>PasswordRecoveryFromLinkServlet</servlet-name>
+        <servlet-class>servlet.main.page.passwordRecovery.PasswordRecoveryFromLinkServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PasswordRecoveryFromLinkServlet</servlet-name>
+        <url-pattern>/recoverFromLink</url-pattern> <!-- Update this to match the form action -->
+    </servlet-mapping>
+    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>servlet.main.page.login.LoginServlet</servlet-class>
     </servlet>
@@ -39,4 +48,8 @@
     <listener>
         <listener-class>listener.AppInitializerListener</listener-class>
     </listener>
+    <context-param>
+        <param-name>basePath</param-name>
+        <param-value>C:\Users\איתן\Desktop\WeDriveWithDB\</param-value>
+    </context-param>
 </web-app>

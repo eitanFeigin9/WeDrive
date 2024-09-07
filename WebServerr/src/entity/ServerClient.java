@@ -1,6 +1,7 @@
 package entity;
 
 import database.EventsDAO;
+import database.Users;
 import event.EventData;
 import ride.DriverRide;
 import ride.HitchhikerRide;
@@ -90,10 +91,19 @@ public class ServerClient {
 
     public void setSecurityAnswer(String securityAnswer) { this.securityAnswer = securityAnswer; }
 
-    public boolean addNewOwnedEvent(String eventName,String eventOwner ,String eventDate, String eventKind, HashSet<String> guestList, String location, String fileName, double latitude, double longitude){
+    public boolean ifEventExists(String eventName){
+        return !checkOwnedEventExists(eventName);
+    }
+    public boolean addNewOwnedEvent(String eventName, String eventOwner, String eventDate, String eventKind,
+                                    HashSet<String> guestList, String location, String fileName,
+                                    double latitude, double longitude, String qrCodeFilePath, String invitationLink) {
+        // Create a new EventData object with the updated parameters including QR code and invitation link
+        EventData newEvent = new EventData(eventName, eventOwner, eventDate, eventKind, guestList, location,
+                fileName, latitude, longitude, qrCodeFilePath, invitationLink);
 
-        if(!checkOwnedEventExists(eventName)){
-            ownedEvents.put(eventName, new EventData(eventName,eventOwner,eventDate,eventKind,guestList,location, fileName, latitude, longitude));
+        // Check if the event with the same name already exists in owned events
+        if (!checkOwnedEventExists(eventName)) {
+            ownedEvents.put(eventName, newEvent);
             return true;
         }
         return false;
@@ -116,10 +126,14 @@ public class ServerClient {
     public boolean checkDrivingEventExists(String eventName){
         return drivingEvents.containsKey(eventName);
     }
-    public boolean addNewDrivingEvent(String eventName,String eventAddress, int maxCapacity, String pickupCity, int fuelReturnsPerPerson, double latitude, double longitude, double maxPickupDistance, double eventLatitude, double eventLongitude){
+    public boolean addNewDrivingEvent( String eventName, String eventAddress, String eventLatitude, String eventLongitude,
+                                      int maxCapacity, String sourceLocation, String sourceLatitude, String sourceLongitude,
+                                      int fuelReturnsPerHitchhiker, double maxPickupDistance){
 
         if(!checkDrivingEventExists(eventName)){
-            drivingEvents.put(eventName, new DriverRide(eventName,eventAddress, maxCapacity,pickupCity,fuelReturnsPerPerson, latitude, longitude,maxPickupDistance,eventLatitude,eventLongitude));
+            DriverRide newRide=new DriverRide(eventName,this.userName,eventAddress,Double.parseDouble(eventLatitude),Double.parseDouble(eventLongitude),maxCapacity,sourceLocation,Double.parseDouble(sourceLatitude), Double.parseDouble(sourceLongitude), fuelReturnsPerHitchhiker,maxPickupDistance);
+            drivingEvents.put(eventName,newRide );
+            Users.getDriversRideByEvents().put(eventName,newRide);
             return true;
         }
         return false;
@@ -131,10 +145,13 @@ public class ServerClient {
     public DriverRide getDrivingEventByName(String eventName) { return drivingEvents.get(eventName); }
 
     public boolean checkHitchhikingEventExists(String eventName){ return hitchhikingEvents.containsKey(eventName); }
-    public boolean addNewHitchhikingEvent(String eventName, String pickupCity, int fuelMoney, double latitude, double longitude){
+    public boolean addNewHitchhikingEvent(String hitchhikerUserName ,String eventName, String pickupLocation, int fuelMoney, double latitude, double longitude){
 
         if(!checkHitchhikingEventExists(eventName)){
-            hitchhikingEvents.put(eventName, new HitchhikerRide(eventName,pickupCity,fuelMoney, latitude, longitude));
+            HitchhikerRide newRide = new HitchhikerRide(hitchhikerUserName,eventName,pickupLocation,fuelMoney, latitude, longitude);
+            hitchhikingEvents.put(eventName,newRide );
+            Users.getHitchhikersRideByEvents().put(eventName,newRide);
+
             return true;
         }
         return false;

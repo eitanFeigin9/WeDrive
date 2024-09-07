@@ -23,6 +23,10 @@
     <meta property="og:title" content="MAIN PAGE">
     <meta property="og:type" content="website">
     <meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
+<%
+    // Retrieve the username from the session
+    String userName = (String) session.getAttribute("userName");
+%>
 <body data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="en">
 <section class="u-clearfix u-grey-10 u-section-1" id="carousel_4564">
     <div class="u-clearfix u-sheet u-valign-middle-xs u-sheet-1">
@@ -40,7 +44,7 @@
             <div class="u-container-layout u-container-layout-2">
                 <h4 class="u-custom-font u-font-montserrat u-text u-text-2">Driver?</h4>
                 <span class="u-file-icon u-icon u-icon-2"><img src="mainPage/images/4900915.png" alt=""></span>
-                <a href="driverOptionsMenu.jsp" class="u-border-2 u-border-black u-btn u-btn-round u-button-style u-hover-black u-palette-3-base u-radius u-btn-2"> Offer rides, save costs&nbsp;<br>and connect&nbsp;<br>with passengers
+                <a href="driverOptionsMenu.jsp?userName=<%= userName %>" class="u-border-2 u-border-black u-btn u-btn-round u-button-style u-hover-black u-palette-3-base u-radius u-btn-2"> Offer rides, save costs&nbsp;<br>and connect&nbsp;<br>with passengers
                 </a>
             </div>
         </div>
@@ -48,7 +52,7 @@
             <div class="u-container-layout u-container-layout-3">
                 <h4 class="u-custom-font u-font-montserrat u-text u-text-3"> Hitchhiker?</h4>
                 <span class="u-file-icon u-icon u-icon-3"><img src="mainPage/images/5855138.png" alt=""></span>
-                <a href="hitchhikerOptionsMenu.jsp" class="u-border-2 u-border-black u-btn u-btn-round u-button-style u-hover-black u-palette-1-base u-radius u-btn-3"> Find transportation&nbsp;<br>to the events&nbsp;<br>you are invited to
+                <a href="hitchhikerOptionsMenu.jsp?userName=<%= userName %>" class="u-border-2 u-border-black u-btn u-btn-round u-button-style u-hover-black u-palette-1-base u-radius u-btn-3"> Find transportation&nbsp;<br>to the events&nbsp;<br>you are invited to
                 </a>
             </div>
         </div>

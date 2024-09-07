@@ -11,23 +11,24 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import utils.ServletUtils;
 
-@WebServlet(name = "PasswordRecoveryServlet", urlPatterns = {"/recoverFromLink"})
+@WebServlet(name = "PasswordRecoveryFromLinkServlet", urlPatterns = {"/recoverFromLink"})
 public class PasswordRecoveryFromLinkServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fullname = request.getParameter("fullname");
+        String userName = request.getParameter("userName");
         String securityAnswer = request.getParameter("securityAnswer");
         String eventName = request.getParameter("id");
         String eventOwnerName = request.getParameter("owner");
-        ServerClient owner = ServletUtils.getUserManager(getServletContext()).getUserByFullName(eventOwnerName);
+        ServerClient owner = Users.getUserByUserName(eventOwnerName);
 
-        ServerClient user = Users.getUserByFullName(fullname);
+        ServerClient user = Users.getUserByUserName(userName);
         if (user != null && user.getSecurityAnswer().equalsIgnoreCase(securityAnswer)) {
             request.setAttribute("password", user.getPassword());
             request.setAttribute("id", eventName);
             request.setAttribute("owner", eventOwnerName);
-            request.getRequestDispatcher("PasswordRecoveryFromLink.jsp").forward(request, response);
+          //  response.sendRedirect("/PasswordRecoveryFromLink.jsp?id="+eventName+"&owner="+eventOwnerName);
+            request.getRequestDispatcher("/PasswordRecoveryFromLink.jsp?id="+eventName+"&owner="+eventOwnerName).forward(request, response);
         } else {
             response.sendRedirect("ForgotPasswordErrorFromLink.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
         }

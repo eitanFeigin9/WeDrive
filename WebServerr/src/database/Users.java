@@ -1,19 +1,35 @@
 package database;
 
 import entity.ServerClient;
+import ride.DriverRide;
+import ride.HitchhikerRide;
 
 import java.util.HashMap;
 
 public class Users {
     private static HashMap<String, ServerClient> webUsers;
     private boolean isFirstUser;
+    private static HashMap<String, HitchhikerRide>hitchhikersRideByEvents;
+    private static HashMap<String, DriverRide>driversRideByEvents;
+
 
 
     public Users() {
         Users.webUsers = new HashMap<>();
         isFirstUser =false;
+        hitchhikersRideByEvents = new HashMap<>();
+        driversRideByEvents= new HashMap<>();
     }
-    public static boolean addNewUser(String fullName, String userName,String email, String phoneNumber, String password, String securityAnswer){
+
+    public static HashMap<String, HitchhikerRide> getHitchhikersRideByEvents() {
+        return hitchhikersRideByEvents;
+    }
+
+    public static HashMap<String, DriverRide> getDriversRideByEvents() {
+        return driversRideByEvents;
+    }
+
+    public static boolean addNewUser(String fullName, String userName, String email, String phoneNumber, String password, String securityAnswer){
 
         if(!checkUserExists(userName)){
             ServerClient newUser = new ServerClient(fullName,userName,email,phoneNumber,password,securityAnswer);

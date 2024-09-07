@@ -33,8 +33,8 @@ public class CancelRideHitchhikerServlet extends HttpServlet {
             if (!driverName.isEmpty() && webUsers.containsKey(driverName)) {
                 ServerClient driver = webUsers.get(driverName);
                 DriverRide driverRide = driver.getDrivingEventByName(eventName);
-                driverRide.removeHitchhiker(client.getFullName()); //remove hitchiker from the driverRide
-                driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
+                //driverRide.removeHitchhiker(client.getFullName()); //remove hitchiker from the driverRide
+                //driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
             }
         }
         client.getHitchhikingEvents().remove(eventName);

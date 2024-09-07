@@ -14,8 +14,42 @@
     <meta name="referrer" content="origin">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
     <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
+    <style>
+        /* Style for the top left button */
+        .top-left-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: white;
+            color: black;
+            font-family: 'Playfair Display', serif;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            border: 2px solid black;
+            border-radius: 5px; /* Optional: rounded corners */
+            transition: background-color 0.3s ease;
+            z-index: 1000; /* Ensure it's on top of other content */
+        }
+
+        .top-left-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Ensure body position is relative for absolute positioning */
+        body {
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="en">
+
+<!-- Top Left Button -->
+<a href="mainPage.jsp" class="top-left-button">Main Page</a>
+
 <section class="u-align-center u-clearfix u-palette-1-light-2 u-section-1" id="carousel_91ec">
     <div class="u-align-center u-container-style u-expanded-width u-group u-image u-shading u-image-1" data-image-width="1280" data-image-height="853">
         <div class="u-container-layout u-container-layout-1">
@@ -47,6 +81,7 @@
         </div>
     </div>
 </section>
+
 <footer class="u-align-center u-clearfix u-container-align-center u-footer u-grey-80 u-footer" id="sec-6e15">
     <div class="u-clearfix u-sheet u-sheet-1">
         <h3 class="u-align-center u-headline u-text u-text-1">
