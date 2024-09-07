@@ -180,7 +180,108 @@
             ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
             ImageIO.write(weddingInvitationImage, "png", baos2);
             String finalImageBase64 = Base64.getEncoder().encodeToString(baos2.toByteArray());
+            //For brit Invitation
+            String britInvitationImagePath = application.getRealPath("/brit.png");
+            File britInvitationFile = new File(britInvitationImagePath);
+            BufferedImage britInvitationImage = ImageIO.read(britInvitationFile);
 
+            Graphics2D britG2d = britInvitationImage.createGraphics();
+
+            britG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 80));
+            britG2d.setColor(new Color(42, 70, 154));
+            britG2d.drawString(eventDate, 535, 1050);
+
+            britG2d.setFont(new Font("David Libre", Font.PLAIN, 50));
+            britG2d.setColor(new Color(42, 70, 154));
+            britG2d.drawString(eventLocation, 540, 1200);
+
+            britG2d.drawImage(javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(Base64.getDecoder().decode(qrImageBase64))), 580, 1400, null);
+            britG2d.dispose();
+
+            ByteArrayOutputStream britBaos2 = new ByteArrayOutputStream();
+            ImageIO.write(britInvitationImage, "png", britBaos2);
+            String britImageBase64 = Base64.getEncoder().encodeToString(britBaos2.toByteArray());
+
+            //For Conference Invitation
+            String conferenceInvitationImagePath = application.getRealPath("/conference.png");
+            File conferenceInvitationFile = new File(conferenceInvitationImagePath);
+            BufferedImage conferenceInvitationImage = ImageIO.read(conferenceInvitationFile);
+
+            Graphics2D conferenceG2d = conferenceInvitationImage.createGraphics();
+
+            conferenceG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 70));
+            conferenceG2d.setColor(new Color(75, 56, 53));
+            conferenceG2d.drawString(eventDate, 250, 1500);
+
+            conferenceG2d.setFont(new Font("David Libre", Font.PLAIN, 50));
+            conferenceG2d.setColor(new Color(75, 56, 53));
+            conferenceG2d.drawString(eventLocation, 250, 1600);
+
+            conferenceG2d.drawImage(javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(Base64.getDecoder().decode(qrImageBase64))), 275, 1700, null);
+            conferenceG2d.dispose();
+
+            ByteArrayOutputStream conferenceBaos2 = new ByteArrayOutputStream();
+            ImageIO.write(conferenceInvitationImage, "png", conferenceBaos2);
+            String conferenceImageBase64 = Base64.getEncoder().encodeToString(conferenceBaos2.toByteArray());
+//For Bar Mitzvah Invitation
+            String barMitzvahInvitationImagePath = application.getRealPath("/barMitzvah.png");
+            File barMitzvahInvitationFile = new File(barMitzvahInvitationImagePath);
+            BufferedImage barMitzvahInvitationImage = ImageIO.read(barMitzvahInvitationFile);
+
+            Graphics2D barMitzvahG2d = barMitzvahInvitationImage.createGraphics();
+
+            barMitzvahG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 170));
+            barMitzvahG2d.setColor(new Color(35, 33, 54));
+            barMitzvahG2d.drawString(eventName, 555, 1100);
+
+            barMitzvahG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 80));
+            barMitzvahG2d.setColor(new Color(33, 33, 54));
+            barMitzvahG2d.drawString(eventDate, 555, 1300);
+
+            barMitzvahG2d.setFont(new Font("David Libre", Font.PLAIN, 50));
+            barMitzvahG2d.setColor(new Color(33, 33, 54));
+            barMitzvahG2d.drawString(eventLocation, 560, 1400);
+
+            barMitzvahG2d.setFont(new Font("Playfair Display", Font.PLAIN, 50));
+            barMitzvahG2d.setColor(new Color(33, 33, 54));
+            barMitzvahG2d.drawString("Catch a ride by scanning the QR code", 285, 1535);
+
+            barMitzvahG2d.drawImage(javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(Base64.getDecoder().decode(qrImageBase64))), 595, 1600, null);
+            barMitzvahG2d.dispose();
+
+            ByteArrayOutputStream barMitzvahBaos2 = new ByteArrayOutputStream();
+            ImageIO.write(barMitzvahInvitationImage, "png", barMitzvahBaos2);
+            String barMitzvahImageBase64 = Base64.getEncoder().encodeToString(barMitzvahBaos2.toByteArray());
+
+            //For Bat Mitzvah Invitation
+            String batMitzvahInvitationImagePath = application.getRealPath("/batMitzvah.png");
+            File batMitzvahInvitationFile = new File(batMitzvahInvitationImagePath);
+            BufferedImage batMitzvahInvitationImage = ImageIO.read(batMitzvahInvitationFile);
+
+            Graphics2D batMitzvahG2d = batMitzvahInvitationImage.createGraphics();
+
+            batMitzvahG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 170));
+            batMitzvahG2d.setColor(new Color(68, 56, 108));
+            batMitzvahG2d.drawString(eventName, 555, 1100);
+
+            batMitzvahG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 80));
+            batMitzvahG2d.setColor(new Color(68, 56, 108));
+            batMitzvahG2d.drawString(eventDate, 555, 1200);
+
+            batMitzvahG2d.setFont(new Font("David Libre", Font.PLAIN, 50));
+            batMitzvahG2d.setColor(new Color(33, 33, 54));
+            batMitzvahG2d.drawString(eventLocation, 560, 1300);
+
+            batMitzvahG2d.setFont(new Font("Playfair Display", Font.PLAIN, 50));
+            batMitzvahG2d.setColor(new Color(33, 33, 54));
+            batMitzvahG2d.drawString("Catch a ride by scanning the QR code", 285, 1435);
+
+            batMitzvahG2d.drawImage(javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(Base64.getDecoder().decode(qrImageBase64))), 595, 1500, null);
+            batMitzvahG2d.dispose();
+
+            ByteArrayOutputStream batMitzvahBaos2 = new ByteArrayOutputStream();
+            ImageIO.write(batMitzvahInvitationImage, "png", batMitzvahBaos2);
+            String batMitzvahImageBase64 = Base64.getEncoder().encodeToString(batMitzvahBaos2.toByteArray());
             // For birthday Invitation
             String birthdayInvitationImagePath = application.getRealPath("/birthdayInvitation.png");
             File birthdayInvitationFile = new File(birthdayInvitationImagePath);
@@ -222,7 +323,26 @@
     %>
     <a href="data:image/png;base64,<%= finalImageBase64 %>" download="wedding-invitation.png">Download Wedding Invitation</a>
     <%
-    } else {
+    } else if("Ritual circumcision".equalsIgnoreCase(eventKind)){
+    %>
+    <a href="data:image/png;base64,<%= britImageBase64 %>" download="brit-invitation.png">Download Ritual Circumcision Invitation</a>
+    <%
+    } else if("Conference".equalsIgnoreCase(eventKind)){
+    %>
+    <a href="data:image/png;base64,<%= conferenceImageBase64 %>" download="conference-invitation.png">Download Conference Invitation</a>
+    <%
+    }
+    else if("Bar Mitzvah".equalsIgnoreCase(eventKind)){
+    %>
+    <a href="data:image/png;base64,<%= barMitzvahImageBase64 %>" download="barMitzvah-invitation.png">Download Bar Mitzvah Invitation</a>
+    <%
+    }
+    else if("Bat Mitzvah".equalsIgnoreCase(eventKind)){
+    %>
+    <a href="data:image/png;base64,<%= batMitzvahImageBase64 %>" download="batMitzvah-invitation.png">Download Bat Mitzvah Invitation</a>
+    <%
+    }
+    else if("Birthday party".equalsIgnoreCase(eventKind)){
     %>
     <a href="data:image/png;base64,<%= birthdayImageBase64 %>" download="birthday-invitation.png">Download Birthday Invitation</a>
     <%
