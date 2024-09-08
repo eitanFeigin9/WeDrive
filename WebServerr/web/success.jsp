@@ -136,6 +136,7 @@
             String qrImageBase64 = java.util.Base64.getEncoder().encodeToString(baos.toByteArray());
             EventData newEvent =new EventData(eventName,eventOwnerUserName,eventDate,eventKind,guestList,eventLocation,fileName,Double.parseDouble(latitudeStr),Double.parseDouble(longitudeStr),qrImageBase64,qrUrl);
             owner.addOwnedEvent(newEvent);
+            Users.addEventToMap(newEvent);
             EventsDAO eventsDAO = new EventsDAO();
 
             String guestListString = String.join(",", guestList);

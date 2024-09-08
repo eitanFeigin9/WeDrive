@@ -8,6 +8,8 @@
         <entry key="file://$PROJECT_DIR$/WebServerr/web/createRide.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
         <entry key="file://$PROJECT_DIR$/WebServerr/web/editEvent.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
         <entry key="file://$PROJECT_DIR$/WebServerr/web/editOrDeleteEvent.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
+        <entry key="file://$PROJECT_DIR$/WebServerr/web/editRide.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
+        <entry key="file://$PROJECT_DIR$/WebServerr/web/hitchhikersData.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
         <entry key="file://$PROJECT_DIR$/WebServerr/web/login.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
         <entry key="file://$PROJECT_DIR$/WebServerr/web/notInGuestListError.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />
         <entry key="file://$PROJECT_DIR$/WebServerr/web/signUpFromLink.jsp" value="file://$PROJECT_DIR$/WebServerr/web" />

@@ -8,7 +8,24 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <servlet>
+        <servlet-name>CancelRideServlet</servlet-name>
+        <servlet-class>servlet.main.page.ride.CancelRideServlet</servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>CancelRideServlet</servlet-name>
+        <url-pattern>/cancelRide</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>EditRideServlet</servlet-name>
+        <servlet-class>servlet.main.page.ride.EditRideServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EditRideServlet</servlet-name>
+        <url-pattern>/editRide</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>SignUpServlet</servlet-name>
         <servlet-class>servlet.main.page.signup.SignUpServlet</servlet-class>

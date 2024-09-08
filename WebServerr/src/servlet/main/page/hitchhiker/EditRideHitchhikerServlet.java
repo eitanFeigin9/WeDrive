@@ -1,5 +1,7 @@
 package servlet.main.page.hitchhiker;
 
+import database.HitchhikerRideDAO;
+import database.MatchedDAO;
 import database.Users;
 import entity.ServerClient;
 import jakarta.servlet.ServletException;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.http.HttpServlet;
 import ride.DriverRide;
 import ride.HitchhikerRide;
+import ride.Matched;
 import utils.ServletUtils;
 
 import java.io.IOException;
@@ -20,10 +23,10 @@ import static utils.ServletUtils.calculateDistance;
 @WebServlet(name = "EditRideHitchhikerServlet", urlPatterns = {"/editRideHitchhiker"})
 public class EditRideHitchhikerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
- /*       String eventName = request.getParameter("eventName");
+        String eventName = request.getParameter("eventName");
 
         String userName = (String)request.getSession().getAttribute("userName");
-        ServerClient client = Users.getUserByFullName(userName);
+        ServerClient client = Users.getUserByUserName(userName);
 
         String pickupCity = request.getParameter("pickupCity");
         String fuelMoney = request.getParameter("fuelMoney");
@@ -38,14 +41,14 @@ public class EditRideHitchhikerServlet extends HttpServlet {
             hitchhikerLatitude = Double.parseDouble(latitudeStr);
             hitchhikerLongitude = Double.parseDouble(longitudeStr);
         } catch (NumberFormatException e) {
-            response.sendRedirect("editRideError.jsp");
+            request.setAttribute("errorMessage", "You entered text instead of number in one of the fields.");
+            request.getRequestDispatcher("/editRideHitchhiker.jsp").forward(request, response);
             return;
         }
         if (client.checkHitchhikingEventExists(eventName)) {
-            Users userManager = ServletUtils.getUserManager(getServletContext());
             HitchhikerRide hitchhikerRide = client.getHitchhikingEventByName(eventName);
             if (!hitchhikerRide.getFreeForPickup()) { //this hitchhiker has a driver
-                HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
+                HashMap<String, ServerClient> webUsers = Users.getWebUsers();
                 String driverName = hitchhikerRide.getDriverName();
                 if (webUsers.containsKey(driverName)) {
                     DriverRide driverRide = webUsers.get(driverName).getDrivingEventByName(eventName);
@@ -55,22 +58,36 @@ public class EditRideHitchhikerServlet extends HttpServlet {
                     if (fuelMoneyInInt < driverRide.getFuelReturnsPerHitchhiker() || distance > driverRide.getMaxPickupDistance()) {
                 //        driverRide.removeHitchhiker(userName);
                   //      driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
-                        hitchhikerRide.setDriverPhone("");
+                     /*   hitchhikerRide.setDriverPhone("");
                         hitchhikerRide.setDriverName("");
                         hitchhikerRide.setFreeForPickup(true);
+
+                      */
+                        MatchedDAO matchedDAO=new MatchedDAO();
+                        matchedDAO.deleteMatch(eventName,driverName,userName);
                     }
                 }
             }
-            hitchhikerRide.setPickupCity(pickupCity);
+            hitchhikerRide.setPickupLocation(pickupCity);
             hitchhikerRide.setFuelMoney(fuelMoneyInInt);
             hitchhikerRide.setLatitude(hitchhikerLatitude);
             hitchhikerRide.setLongitude(hitchhikerLongitude);
-        //    boolean isMatchFound = matchDriverToHitchhiker(client, hitchhikerRide, userManager, eventName, userName, hitchhikerLatitude,hitchhikerLongitude);
-        }
-        response.sendRedirect("hitchhikerOptionsMenu.jsp");
+            HitchhikerRideDAO hitchhikerRideDAO = new HitchhikerRideDAO();
 
-  */
+            boolean isMatchFound = hitchhikerRideDAO.matchDriverToHitchhiker(userName,  eventName);
+            if(isMatchFound){
+                response.sendRedirect("hitchhikerFindMatch.jsp?hitchhikerName=" + userName + "&eventName=" + eventName);
+            } else {
+                // Redirect to thank you page if no match is found
+                response.sendRedirect("hitchhikerOptionsMenu.jsp?userName="+userName+"&eventName="+eventName);
+            }
+
+            }
+    }
+      //  response.sendRedirect("hitchhikerOptionsMenu.jsp");
+
+
     }
 
 
-    }
+

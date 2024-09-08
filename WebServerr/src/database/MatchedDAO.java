@@ -52,9 +52,10 @@ public void deleteMatch(String eventName,String driverName,String hitchhiker){
 }
 public void removeMatchFromDriverAndHitchhiker(String eventName,String driverName,String hitchhiker){
     HitchhikerRide hitchhikerRide = Users.getUserByUserName(hitchhiker).getHitchhikingEventByName(eventName);
-    hitchhikerRide.setFreeForPickup(true);
+    hitchhikerRide.removeMatch();
     Users.getUserByUserName(driverName).getDrivingEventByName(eventName).addSeat();
-    Users.getUserByUserName(driverName).getDrivingEventByName(eventName).setMatch(false);
+    //Users.getUserByUserName(driverName).getDrivingEventByName(eventName).removeMatch(hitchhiker);
+    //Users.getUserByUserName(driverName).getDrivingEventByName(eventName).setMatch(false);
     }
     public void removeMatchDB(String eventName,String hitchhiker){
         String updateQuery = "UPDATE HitchhikerRide SET isFreeForPickup = 1 WHERE eventName = ? AND hitchhikerUserName = ?";
@@ -75,3 +76,51 @@ public void removeMatchFromDriverAndHitchhiker(String eventName,String driverNam
     }
 
 
+/*
+ String updateHitchhikerRideSQL = "UPDATE HitchhikerRide SET isFreeForPickup = 0 WHERE eventName = ? AND hitchhikerUserName = ?";
+            String insertMatchedSQL = "INSERT INTO Matched (driverUserName, hitchhikerUserName, eventName) VALUES (?, ?, ?)";
+                boolean isMatchFound=false;
+                double driverLatitude = Users.getUserByUserName(driverName).getDrivingEventByName(eventName).getSourceLatitude();
+                double driverLongitude = Users.getUserByUserName(driverName).getDrivingEventByName(eventName).getSourceLongitude();
+                double maxPickupDistance = Users.getUserByUserName(driverName).getDrivingEventByName(eventName).getMaxPickupDistance();
+                double fuelReturnAsked = Users.getUserByUserName(driverName).getDrivingEventByName(eventName).getFuelReturnsPerHitchhiker();
+                //Pass on each hitchhiker from the first one
+                for (HitchhikerRide hitchhikerRide : Users.getHitchhikersRideBySpecificEvent(eventName)) {
+                    if(Users.getUserByUserName(driverName).getDrivingEventByName(eventName).getFreeCapacity()<1)
+                    {
+                        return isMatchFound;
+                    }
+                    String hitchhikerUserName = hitchhikerRide.getHitchhikerUserName();
+                    double hitchhikerLatitude = hitchhikerRide.getLatitude();
+                    double hitchhikerLongitude = hitchhikerRide.getLongitude();
+                    double fuelMoney = hitchhikerRide.getFuelMoney();
+                    // Calculate distance from driver to hitchhiker
+                    double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
+                    // Check if the hitchhiker is within the pickup distance and if they can afford the fuel returns
+                    if (distance <= maxPickupDistance && fuelMoney >= fuelReturnAsked && hitchhikerRide.getFreeForPickup()) {
+                        hitchhikerRide.findARide(driverName);//Update hitchhiker ride details.
+                        try (Connection connection = java.sql.DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
+                            //Users.getUserByUserName(driverName).getHitchhikingEvents().put(eventName,hitchhikerRide);
+                            Users.getUserByUserName(driverName).getDrivingEventByName(eventName).addNewHitchhikersRideByEvents(hitchhikerRide);
+                        PreparedStatement updateStmt = connection.prepareStatement(updateHitchhikerRideSQL);
+                        updateStmt.setString(1, eventName);
+                        updateStmt.setString(2, hitchhikerUserName);
+                        updateStmt.executeUpdate();
+                        // Insert into Matched table
+                        PreparedStatement insertStmt = connection.prepareStatement(insertMatchedSQL);
+                        insertStmt.setString(1, driverName);
+                        insertStmt.setString(2, hitchhikerUserName);
+                        insertStmt.setString(3, eventName);
+                        insertStmt.executeUpdate();
+                        isMatchFound=true;
+                    } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+                }
+
+            return isMatchFound; // Return false in case of an exception
+
+    }
+ */

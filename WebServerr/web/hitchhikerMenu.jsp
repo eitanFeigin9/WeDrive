@@ -1,12 +1,9 @@
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="java.time.temporal.ChronoUnit" %>
-<%@ page import="entity.ServerClient" %>
-<%@ page import="event.EventData" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="entity.ServerClient" %>
+<%@ page import="ride.HitchhikerRide" %>
 <%@ page import="database.Users" %>
 <%@ page import="ride.DriverRide" %>
-<%@ page import="ride.HitchhikerRide" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,100 +12,181 @@
     <title>Hitchhiker Menu</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
-        h2 {
-            text-align: center;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
             color: #333;
-            margin-top: 20px;
+            margin: 0;
+            padding: 20px;
         }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
         table {
-            width: 80%;
-            margin: 20px auto;
+            width: 100%;
             border-collapse: collapse;
             background-color: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
         }
+
         th, td {
-            padding: 12px 15px;
-            text-align: left;
+            padding: 15px;
+            text-align: center;
             border-bottom: 1px solid #ddd;
         }
+
         th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            color: #333;
+            background-color: #2c3e50;
+            color: white;
+            font-size: 16px;
         }
+
+        td {
+            font-size: 14px;
+            color: #555;
+        }
+
         tr:hover {
-            background-color: #f5f5f5;
+            background-color: #f1f1f1;
         }
-        tr:nth-child(even) {
-            background-color: #fafafa;
-        }
-        .button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .button {
-            padding: 8px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
+
+        .edit-button, .delete-button {
+            padding: 8px 16px;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
-            background-color: #4CAF50;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-button {
+            background-color: #27ae60;
             color: white;
-            border: none;
-            margin-right: 10px;
         }
-        .button.delete-button {
-            background-color: #f44336;
+
+        .edit-button:hover {
+            background-color: #2ecc71;
         }
-        .button.edit-button {
-            background-color: #4CAF50;
+
+        .delete-button {
+            background-color: #e74c3c;
+            color: white;
         }
-        .button:hover {
-            opacity: 0.8;
+
+        .delete-button:hover {
+            background-color: #c0392b;
+        }
+
+        .x-sign {
+            color: #e74c3c;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .driver-details {
+            color: #2980b9;
+            font-size: 14px;
+        }
+
+        .no-events {
+            font-size: 20px;
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
-<h2>Hitchhiker Current Rides</h2>
+
+<h1>Hitchhiker's Events</h1>
+
+<%
+    String userName = (String) request.getSession().getAttribute("userName");
+    ServerClient client = Users.getUserByUserName(userName);
+    HashMap<String, HitchhikerRide> rides = client.getHitchhikingEvents();
+
+    if (rides == null || rides.isEmpty()) {
+%>
+<p class="no-events">You don't have any events that you need transportation for.</p>
+<%
+} else {
+%>
 <table>
     <tr>
         <th>Event Name</th>
-        <th>Driver Name</th>
-        <th>Driver Phone</th>
-        <th>Pick Up Address</th>
-        <th>Fuel Return</th>
+        <th>Pickup Location</th>
+        <th>Fuel Contribution ($)</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>Is a Match?</th>
     </tr>
     <%
-        String userName = (String)request.getSession().getAttribute("userName");
-        ServerClient client = Users.getUserByFullName(userName);
-        HashMap<String, HitchhikerRide> rides = client.getHitchhikingEvents();
         for (HitchhikerRide ride : rides.values()) {
             String currEventName = ride.getEventName();
+            String pickupLocation = ride.getPickupLocation();
+            double fuelMoney = ride.getFuelMoney();
+            String driverName=null;
+            if(ride.getDriverName()!=null)
+            {
+                 driverName =Users.getUserByUserName(ride.getDriverName()).getFullName();
+
+            }
+            boolean hasMatch = driverName != null && !driverName.isEmpty();
     %>
     <tr>
         <td><%= currEventName %></td>
-        <td><%= ride.getDriverName() %></td>
-        <td><%= ride.getDriverPhone() %></td>
-        <td><%= ride.getPickupCity() %></td>
-        <td><%= ride.getFuelMoney() %></td>
+        <td><%= pickupLocation %></td>
+        <td><%= fuelMoney %></td>
         <td>
-            <a href="editRideHitchhiker.jsp?eventName=<%= currEventName %>" class="button edit-button">Edit</a>
+            <a href="editRideHitchhiker.jsp?eventName=<%= currEventName %>&userName=<%= userName %>" class="edit-button">Edit</a>
         </td>
         <td>
-            <a href="cancelRideHitchhiker.jsp?eventName=<%= currEventName %>" class="button delete-button">Cancel</a>
+            <a href="cancelRideHitchhiker.jsp?eventName=<%= currEventName %>&userName=<%= userName %>" class="delete-button">Delete</a>
+        </td>
+        <td>
+            <%
+                if (hasMatch) {
+                    ServerClient driver = Users.getUserByUserName(ride.getDriverName());
+                    String driverPhone = driver.getPhoneNumber();
+                    DriverRide driverRide = driver.getDrivingEvents().get(currEventName);
+                    double driverFuelCosts = driverRide.getFuelReturnsPerHitchhiker();
+            %>
+            <div class="driver-details">
+                Driver: <%= driverName %><br>
+                Phone: <%= driverPhone %><br>
+                Fuel Costs: $<%= driverFuelCosts %>
+            </div>
+            <%
+            } else {
+            %>
+            <span class="x-sign">X</span>
+            <%
+                }
+            %>
         </td>
     </tr>
-    <% } %>
+    <%
+        }
+    %>
 </table>
-<div class="button-container">
-    <a href="hitchhikerOptionsMenu.jsp" class="button">Back to Hitchhiker Options Menu</a>
-</div>
+<%
+    }
+%>
+
+<footer>
+    &copy; <%= new java.util.Date().getYear() + 1900 %> WeDrive | All rights reserved
+</footer>
+
 </body>
 </html>

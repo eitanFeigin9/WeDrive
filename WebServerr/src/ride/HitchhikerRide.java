@@ -7,7 +7,6 @@ public class HitchhikerRide {
     private int fuelMoney;
     private Boolean isFreeForPickup;
     private String driverName;
-    private String driverPhone;
     private String area;
     private double latitude;  // New attribute for latitude
     private double longitude; // New attribute for longitude
@@ -21,12 +20,25 @@ public class HitchhikerRide {
         this.latitude = latitude;
         this.longitude = longitude;
         this.area = identifyRegion(longitude,latitude);
+        this.driverName=null;
     }
+public void removeMatch(){
+    this.isFreeForPickup = true;
+    this.driverName=null;
 
+}
     public String getArea() {
         return area;
     }
 
+public boolean findARide(String driverName){
+        if(isFreeForPickup){
+            isFreeForPickup=false;
+            this.driverName=driverName;
+            return true;
+        }
+        return false;
+}
     public static String identifyRegion(double longitude, double latitude) {
         if (isInUpperGalilee(longitude, latitude)) {
             return "Upper Galilee";
@@ -81,12 +93,10 @@ public class HitchhikerRide {
     public Boolean getFreeForPickup() { return isFreeForPickup; }
 
     public String getDriverName() { return driverName; }
-    public String getDriverPhone() { return driverPhone; }
     public void setEventName(String eventName) { this.eventName = eventName; }
     public void setFuelMoney(int fuelMoney) { this.fuelMoney = fuelMoney; }
     public void setFreeForPickup(Boolean freeForPickup) { isFreeForPickup = freeForPickup; }
     public void setDriverName(String driverName) { this.driverName = driverName; }
-    public void setDriverPhone(String driverPhone) { this.driverPhone = driverPhone; }
     public double getLatitude() { return latitude; }
 
     public double getLongitude() { return longitude; }

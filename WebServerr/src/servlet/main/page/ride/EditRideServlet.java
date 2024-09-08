@@ -29,15 +29,18 @@ public class EditRideServlet extends HttpServlet {
         int maxCapacityInInt;
         int fuelReturnsInInt;
         MatchedDAO matchedDAO = new MatchedDAO();
+        // Get form data from the request parameters
         String eventName = request.getParameter("eventName");
-        String driverName = (String)request.getSession().getAttribute("userName");
-        ServerClient driver = Users.getUserByUserName(driverName);
+        String driverName = (String) request.getSession().getAttribute("userName"); // Assuming the username is stored in session
         String sourceLocation = request.getParameter("sourceLocation");
         String sourceLatitude = request.getParameter("sourceLatitude");
         String sourceLongitude = request.getParameter("sourceLongitude");
         String maxCapacityInStr = request.getParameter("maxCapacity");
         String fuelReturnsPerPersonStr = request.getParameter("fuelReturns");
         String maxPickupDistanceStr = request.getParameter("maxPickupDistance");
+
+        ServerClient driver = Users.getUserByUserName(driverName);
+
 
 
         try {
@@ -47,18 +50,22 @@ public class EditRideServlet extends HttpServlet {
             driverLongitude = Double.parseDouble(sourceLongitude);
             maxPickupDistance = Double.parseDouble(maxPickupDistanceStr);
         } catch (NumberFormatException e) {
-            response.sendRedirect("editRideError.jsp");
+            request.setAttribute("errorMessage", "You entered text instead of number in one of the fields.");
+            request.getRequestDispatcher("/editRide.jsp").forward(request, response);
             return;
         }
-        Users userManager = ServletUtils.getUserManager(getServletContext());
-        HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
+        HashMap<String, ServerClient> webUsers = Users.getWebUsers();
         DriverRide driverRide = driver.getDrivingEventByName(eventName);
         int copyOfNewMaxCapacity = maxCapacityInInt;
         //In case the driver increased the fuel return per hitchhiker
         if (fuelReturnsInInt > driverRide.getFuelReturnsPerHitchhiker() || !sourceLocation.equals(driverRide.getSourceLocation()) || maxPickupDistance < driverRide.getMaxPickupDistance()) {
-            HashMap<String, HitchhikerRide> hitchhikers = driverRide.getCurrentHitchhikers();
+            List<Map.Entry<String, HitchhikerRide>> entries = new ArrayList<>(driverRide.getCurrentHitchhikers().entrySet());
+            Collections.reverse(entries);
+            //HashMap<String, HitchhikerRide> hitchhikers = driverRide.getCurrentHitchhikers();
             List<String> hitchhikersToDelete = new LinkedList<>();
-            for (String hitchhikerName : hitchhikers.keySet()) {
+          //  for (String hitchhikerName : hitchhikers.keySet()) {
+            for (Map.Entry<String, HitchhikerRide> entry : entries) {
+                String hitchhikerName = entry.getKey();
                 if (webUsers.containsKey(hitchhikerName)) {
                     ServerClient user = webUsers.get(hitchhikerName);
                     HitchhikerRide hitchhikerRide = user.getHitchhikingEventByName(eventName);
@@ -67,17 +74,10 @@ public class EditRideServlet extends HttpServlet {
                     double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
                     if (hitchhikerRide.getFuelMoney() < fuelReturnsInInt || distance > maxPickupDistance) { //this hitchhiker can't afford this ride
                         matchedDAO.deleteMatch(eventName,driverName,hitchhikerName);
-
-                       /* hitchhikerRide.setFreeForPickup(true);
-                        hitchhikerRide.setDriverName("");
-                        hitchhikerRide.setDriverPhone("");  */
                         hitchhikersToDelete.add(hitchhikerName);
+                       // driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
+                       // copyOfNewMaxCapacity--;
 
-
-                    /*    driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
-                        copyOfNewMaxCapacity--;
-
-                     */
                     }
                 }
             }
@@ -90,15 +90,18 @@ public class EditRideServlet extends HttpServlet {
         //In case the driver decreased the max capacity for this ride
         if (maxCapacityInInt < driverRide.getMaxCapacity() && (driverRide.getMaxCapacity()-driverRide.getFreeCapacity()) > maxCapacityInInt) {
             int numOfHitchhikersToDelete = driverRide.getMaxCapacity()-driverRide.getFreeCapacity() - maxCapacityInInt;
-            HashMap<String,HitchhikerRide> hitchhikers = driverRide.getCurrentHitchhikers();
-            Iterator<Map.Entry<String, HitchhikerRide>> iterator = hitchhikers.entrySet().iterator();
+            List<String> hitchhikerKeys = new ArrayList<>(driverRide.getCurrentHitchhikers().keySet());
+            ListIterator<String> iterator = hitchhikerKeys.listIterator(hitchhikerKeys.size());
 
-            while (numOfHitchhikersToDelete > 0 && iterator.hasNext()) {
-                Map.Entry<String, HitchhikerRide> hitchhikerEntry = iterator.next();
-                String hitchhikerName = hitchhikerEntry.getKey();
+          //  HashMap<String,HitchhikerRide> hitchhikers = driverRide.getCurrentHitchhikers();
+           // Iterator<Map.Entry<String, HitchhikerRide>> iterator = hitchhikers.entrySet().iterator();
+            while (numOfHitchhikersToDelete > 0 && iterator.hasPrevious()) {
+          //  while (numOfHitchhikersToDelete > 0 && iterator.hasNext()) {
+                //Map.Entry<String, HitchhikerRide> hitchhikerEntry = iterator.next();
+                String hitchhikerName = iterator.previous();
 
                 if (webUsers.containsKey(hitchhikerName)) {
-                    matchedDAO.deleteMatch(eventName,driverName,hitchhikerName);
+                     matchedDAO.deleteMatch(eventName,driverName,hitchhikerName);
                     /*ServerClient user = webUsers.get(hitchhikerName);
                     HitchhikerRide hitchhikerRide = user.getHitchhikingEventByName(eventName);
                     hitchhikerRide.setFreeForPickup(true);
@@ -122,8 +125,17 @@ public class EditRideServlet extends HttpServlet {
         driverRide.setSourceLongitude(driverLongitude);
         //matchHitchhikersToDriver checks if there are other passengers that match this driver after updating the details
         DriverRideDAO driverRideDAO=new DriverRideDAO();
-        driverRideDAO.matchHitchhikersToDriver(driverName, eventName);
-        response.sendRedirect("driverOptionsMenu.jsp");
+        boolean isMatch = driverRideDAO.matchHitchhikersToDriver(driverName, eventName);
+        if(isMatch){
+            response.sendRedirect("driverFindMatch.jsp?userName=" + driverName + "&eventName=" + eventName);
+
+        }
+        else {                 response.sendRedirect("driverOptionsMenu.jsp?userName=" + driverName);
+
+        }
     }
+
+
 }
+
 

@@ -1,5 +1,6 @@
 package database;
 
+import entity.ServerClient;
 import event.EventData;
 
 import java.sql.*;
@@ -39,6 +40,7 @@ public class EventsDAO {
                 String eventOwnerUsername = resultSet.getString("userName");
                 setEventParameters(insertStatement, eventName, eventDate, eventKind, guestList, location, fileName, latitude, longitude, eventOwnerUsername, qrCodeFilePath, invitationLink);
                 insertStatement.executeUpdate();
+
             } else {
                 System.out.println("Event owner not found.");
                 return false;
@@ -95,6 +97,7 @@ public class EventsDAO {
                         eventResultSet.getString("qrCodeFilePath"),
                         eventResultSet.getString("invitationLink")
                 );
+                Users.addEventToMap(event);
                 ownedEvents.put(event.getEventName(), event);
             }
         } catch (SQLException e) {
@@ -128,6 +131,11 @@ public class EventsDAO {
 
     // Method to delete an event from the database
     public boolean deleteEvent(String eventName, String userName) {
+        // Remove the event from the client's local map
+        ServerClient client = Users.getUserByUserName(userName);
+        client.getOwnedEvents().remove(eventName);
+        Users.removeEventToMap(eventName);
+
         String deleteSql = "DELETE FROM Events WHERE eventName = ? AND userName = ?";
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement deleteStatement = connection.prepareStatement(deleteSql)) {

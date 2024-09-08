@@ -1,7 +1,10 @@
 package ride;
 
 
-import java.util.HashMap;
+import database.Users;
+import javafx.scene.Parent;
+
+import java.util.*;
 
 public class DriverRide {
     private String eventName;
@@ -17,7 +20,7 @@ public class DriverRide {
     private double sourceLongitude;
     private int fuelReturnsPerHitchhiker;
     private boolean isMatch;
-    private HashMap<String, HitchhikerRide> currentHitchhikers;
+    private static Map<String, HitchhikerRide> currentHitchhikers ;//Username of the hitchhiker
 
     private double maxPickupDistance;
 
@@ -51,9 +54,24 @@ public class DriverRide {
         this.sourceLongitude = sourceLongitude;
         this.fuelReturnsPerHitchhiker = fuelReturnsPerHitchhiker;
         this.maxPickupDistance = maxPickupDistance;
-        this.currentHitchhikers = new HashMap<>();
+        this.currentHitchhikers = new LinkedHashMap<>();
         this.freeCapacity=maxCapacity;
         this.isMatch=false;
+    }
+    /*public void removeMatch(String hitchhikerName){
+        addSeat();
+        currentHitchhikers.remove(hitchhikerName);
+    }
+
+     */
+    public Map<String, HitchhikerRide> getHitchhikersForThisRide(){return currentHitchhikers;}
+    public String getDriverFullName()
+    {
+        return Users.getUserByUserName(driverName).getFullName();
+    }
+    public String getDriverPhoneNumber()
+    {
+        return Users.getUserByUserName(driverName).getPhoneNumber();
     }
 public boolean isEmptySeat(){
     return freeCapacity > 0;
@@ -66,8 +84,19 @@ public boolean isEmptySeat(){
         this.eventLongitude = eventLongitude;
     }
 
-    public HashMap<String, HitchhikerRide> getCurrentHitchhikers() {
+    public static Map<String, HitchhikerRide> getCurrentHitchhikers() {
         return currentHitchhikers;
+    }
+
+    public void addNewHitchhikersRideByEvents(HitchhikerRide hitchhikerRide) {
+        currentHitchhikers.put(Users.getUserByUserName(hitchhikerRide.getHitchhikerUserName()).getFullName(), hitchhikerRide);
+        this.isMatch=true;
+        takeSeat();
+    }
+    public void deleteHitchhikersRideByEvents(String hitchhikerName) {
+        currentHitchhikers.remove(hitchhikerName);
+        if (currentHitchhikers.isEmpty())
+        {     this.isMatch=false;}
     }
 
     public int getFreeCapacity() {
@@ -128,7 +157,10 @@ public boolean isEmptySeat(){
     public void setEventLongitude(double eventLongitude) { this.eventLongitude = eventLongitude;}
 
     public void setEventName(String eventName) { this.eventName = eventName; }
-    public void setMaxCapacity(int maxCapacity) { this.maxCapacity = maxCapacity; }
+    public void setMaxCapacity(int maxCapacity) { this.maxCapacity = maxCapacity;
+    if (currentHitchhikers.size()==maxCapacity){isMatch=false;}
+        freeCapacity= maxCapacity-currentHitchhikers.size();
+    }
 
     public void setFuelReturnsPerHitchhiker(int fuelReturnsPerHitchhiker) { this.fuelReturnsPerHitchhiker = fuelReturnsPerHitchhiker; }
 public void takeSeat(){
@@ -177,7 +209,18 @@ public void takeSeat(){
 
         if(currentHitchhikers.containsKey(hitchhikerName)){
             currentHitchhikers.remove(hitchhikerName);
-            addSeat();
+            return true;
+        }
+        return false;
+    }
+    public boolean removeHitchhikerByFullName(String hitchhikerName){
+
+        if(currentHitchhikers.containsKey(Users.getUserByUserName(hitchhikerName).getFullName())){
+            currentHitchhikers.remove(Users.getUserByUserName(hitchhikerName).getFullName());
+            if(currentHitchhikers.isEmpty())
+            {
+                isMatch=false;
+            }
             return true;
         }
         return false;

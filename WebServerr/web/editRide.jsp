@@ -1,61 +1,63 @@
-<%@ page import="entity.ServerClient" %>
-<%@ page import="database.Users" %>
-<%@ page import="ride.DriverRide" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Pickup</title>
+    <link rel="stylesheet" type="text/css" href="newEvent/newEventStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        .container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #fff;
+            min-height: 100vh;
+            background-color: #f2f2f2;
             padding: 20px;
+        }
+        .screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            background: white;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            position: relative;
+        }
+        .screen__content {
+            width: 100%;
             text-align: center;
-            max-width: 400px;
         }
-        h1 {
+        .screen__content h1 {
             color: #333;
-            font-size: 22px;
             margin-bottom: 20px;
         }
-        form {
-            margin-bottom: 20px;
+        .event-form__field {
+            margin-bottom: 15px;
+            position: relative;
         }
-        input[type="text"], input[type="number"] {
-            width: calc(100% - 20px);
+        .event-form__input {
+            width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
         }
-        .button-container {
-            text-align: center;
+        .event-form__icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
         }
-        button, a.button {
-            padding: 10px 20px;
-            margin: 10px 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            text-decoration: none;
-            display: inline-block;
-            width: 45%;
-        }
-        .update-button {
+        .button.event-form__submit {
             background-color: #4CAF50;
             color: white;
             padding: 12px 24px;
@@ -64,65 +66,82 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
+            display: inline-block;
+            margin-top: 10px;
         }
-        .update-button:hover {
+        .button.event-form__submit:hover {
             background-color: #45a049;
         }
-        .notice {
-            color: #ff0000;
-            font-size: 12px;
-            margin-top: -10px;
-            margin-bottom: 10px;
-            text-align: left;
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
         }
-        #map {
+        .screen__background {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 300px;
-            margin-top: 20px;
-            border-radius: 5px;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .screen__background__shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<%
-    String userName = (String) request.getSession().getAttribute("userName");
-    String eventName = request.getParameter("eventName");
-    ServerClient client = Users.getUserByFullName(userName);
-    DriverRide ride = client.getDrivingEventByName(eventName);
-    if (userName != null && eventName != null && ride != null) {
-%>
 <body>
 <div class="container">
-    <h1>Edit Pickup For The <%= request.getParameter("eventName") %> Event</h1>
-    <form action="editRide" method="post" class="form-container">
-        <label for="maxCapacity">Max Capacity:</label><br>
-        <input type="number" id="maxCapacity" name="maxCapacity" min="0" max="40" value="<%= ride.getMaxCapacity() %>" required><br>
-        <div class="notice">Notice: If you have lowered the number of passengers - the last hitchhikers added will be affected</div>
-        <label for="pickupCity">Pickup Address (your starting point):</label><br>
-        <input type="text" id="pickupCity" name="pickupCity" value="<%= ride.getPickupCity() %>" required><br>
-        <div class="notice">Notice: If you change the pickup address - your hitchhikers might be affected</div>
-        <label for="fuelReturns">Fuel Returns (per hitchhiker):</label><br>
-        <input type="number" id="fuelReturns" name="fuelReturns" min="0" value="<%= ride.getFuelReturnsPerHitchhiker() %>" required><br>
-        <div class="notice">Notice: If you raise the fuel costs - the current passengers will pay the amount that agreed at the beginning</div>
-        <label for="maxPickupDistance">Maximum KM you are willing to drive to pick up a passenger:</label><br>
-        <input type="number" id="maxPickupDistance" name="maxPickupDistance" min="0" required><br>
-        <div class="notice">Notice: If you have lowered the max pickup distance - your hitchhikers might be affected</div>
-        <input type="hidden" id="latitude" name="latitude" value="<%= ride.getLatitude() %>">
-        <input type="hidden" id="longitude" name="longitude" value="<%= ride.getLongitude() %>">
-        <div id="map"></div>
-        <form action="editRide" method="post" style="display:inline;">
-            <input type="hidden" name="eventName" value="<%= request.getParameter("eventName") %>">
-            <button type="submit" class="button update-button">Edit the Pickup</button>
-        </form>
-    </form>
-    <%
-    } else {
-    %>
-    <p>Error: Event ID or owner not found.</p>
-    <%
-        }
-    %>
+    <div class="screen">
+        <div class="screen__content">
+            <%
+                String eventName = request.getParameter("eventName");
+                String errorMessage = (String) request.getAttribute("errorMessage");
+            %>
+            <%
+                if (errorMessage != null) {
+            %>
+            <div class="error-message">
+                <p><strong><%= errorMessage %></strong></p>
+            </div>
+            <%
+                }
+            %>
+            <h1>Edit your ride For <%= eventName %> Event</h1>
+
+            <form action="editRide" method="post" class="event-form">
+                <input type="hidden" id="eventName" name="eventName" value="<%= eventName %>">
+                <div class="event-form__field">
+                    <input type="number" id="maxCapacity" name="maxCapacity" class="event-form__input" placeholder="Max free seats capacity" required>
+                </div>
+                <div class="event-form__field">
+                    <input type="text" id="eventLocation" name="sourceLocation" class="event-form__input" placeholder="Starting point address" required>
+                </div>
+                <div class="event-form__field">
+                    <input type="number" id="fuelReturns" name="fuelReturns" class="event-form__input" placeholder="Fuel Returns (per hitchhiker) in $" required>
+                </div>
+                <div class="event-form__field">
+                    <input type="number" id="maxPickupDistance" name="maxPickupDistance" class="event-form__input" placeholder="Maximum KM to pick up a passenger" min="0" required>
+                </div>
+                <div id="map"></div>
+                <input type="hidden" id="latitude" name="sourceLatitude">
+                <input type="hidden" id="longitude" name="sourceLongitude">
+                <button type="submit" class="button event-form__submit">
+                    Edit your driving ride!
+                </button>
+            </form>
+        </div>
+        <div class="screen__background">
+            <span class="screen__background__shape screen__background__shape1"></span>
+            <span class="screen__background__shape screen__background__shape2"></span>
+            <span class="screen__background__shape screen__background__shape3"></span>
+            <span class="screen__background__shape screen__background__shape4"></span>
+        </div>
+    </div>
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
-<script src="web/js/map.js"></script>
+<script src="newEvent/map2.js"></script>
 </body>
 </html>

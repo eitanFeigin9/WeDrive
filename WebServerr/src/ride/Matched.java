@@ -1,5 +1,11 @@
 package ride;
 
+import database.EventsDAO;
+import database.Users;
+import event.EventData;
+
+import java.util.Map;
+
 public class Matched {
     private String eventName;
     private String driverUserName;
@@ -9,6 +15,7 @@ public class Matched {
         this.eventName = eventName;
         this.driverUserName = driverUserName;
         this.hitchhikerUserName = hitchhikerUserName;
+
     }
 
     public String getEventName() {

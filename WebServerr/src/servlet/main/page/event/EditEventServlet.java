@@ -1,6 +1,8 @@
 package servlet.main.page.event;
 
+import database.DriverRideDAO;
 import database.EventsDAO;
+import database.HitchhikerRideDAO;
 import database.Users;
 import entity.ServerClient;
 import event.EventData;
@@ -82,6 +84,10 @@ public class EditEventServlet extends HttpServlet {
         // Update the event in the local map
         client.deleteOwnedEvent(eventOldName);
         boolean isDeleted = eventsDAO.deleteEvent(eventOldName, userName);
+        DriverRideDAO.deleteDriverRidesByEventName(eventOldName);
+        HitchhikerRideDAO.deleteHitchhikerRidesByEventName(eventOldName);
+        Users.getDriversRideByEvents().remove(eventOldName);
+        Users.getHitchhikersRideByEvents().remove(eventOldName);
         String guestListString = String.join(",", guestList);
 /*
         // Update the event in the database

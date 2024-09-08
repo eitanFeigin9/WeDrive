@@ -87,15 +87,27 @@
 <%
     String userName = (String) request.getSession().getAttribute("userName");
     String eventName = request.getParameter("eventName");
-    ServerClient client = Users.getUserByFullName(userName);
+    ServerClient client = Users.getUserByUserName(userName);
     HitchhikerRide ride = client.getHitchhikingEventByName(eventName);
 %>
 <body>
 <div class="container">
-    <h1>Edit Pickup For The <%= request.getParameter("eventName") %> Event</h1>
+    <%
+        String errorMessage = (String) request.getAttribute("errorMessage");
+    %>
+    <%
+        if (errorMessage != null) {
+    %>
+    <div class="error-message">
+        <p><strong><%= errorMessage %></strong></p>
+    </div>
+    <%
+        }
+    %>
+    <h1>Edit Transportation Request For The <%= request.getParameter("eventName") %> Event</h1>
     <form action="editRideHitchhiker" method="post" class="form-container">
         <label for="pickupCity">Pickup Address:</label><br>
-        <input type="text" id="pickupCity" name="pickupCity" value="<%= ride.getPickupCity() %>" required><br>
+        <input type="text" id="pickupCity" name="pickupCity" value="<%= ride.getPickupLocation() %>" required><br>
         <div class="notice">Notice: If you change the pickup address, the current drive may be canceled</div>
         <label for="fuelMoney">The Maximum Fuel Price You Are Willing To Pay:</label><br>
         <input type="number" id="fuelMoney" name="fuelMoney" min="0" value="<%= ride.getFuelMoney() %>" required><br>
@@ -105,6 +117,8 @@
         <div id="map"></div>
         <form action="editRideHitchhiker" method="post" style="display:inline;">
             <input type="hidden" name="eventName" value="<%= request.getParameter("eventName") %>">
+            <input type="hidden" name="userName" value="<%= request.getParameter("userName") %>">
+
             <button type="submit" class="button update-button">Edit the Pickup</button>
         </form>
     </form>

@@ -56,6 +56,7 @@
     <p>are you sure you want to cancel the ride for the <%= request.getParameter("eventName") %> event?</p>
     <form action="cancelRideHitchhiker" method="post" style="display:inline;">
         <input type="hidden" name="eventName" value="<%= request.getParameter("eventName") %>">
+        <input type="hidden" name="userName" value="<%= request.getParameter("userName") %>">
         <button type="submit" class="button cancel-button">Cancel Ride</button>
     </form>
     <button onclick="window.history.back()" class="button back-button">Back</button>

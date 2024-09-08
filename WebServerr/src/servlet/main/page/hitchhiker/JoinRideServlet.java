@@ -37,32 +37,29 @@ public class JoinRideServlet extends HttpServlet {
         String latitudeStr = request.getParameter("latitude");   // Get latitude
         String longitudeStr = request.getParameter("longitude"); // Get longitude
         int fuelMoneyInInt;
-        double hitchhikerLatitude;
-        double hitchhikerLongitude;
 
         try {
             fuelMoneyInInt = Integer.parseInt(fuelMoneyStr);
         } catch (NumberFormatException e) {
-            //redirect to error page
+            // Redirect to error page for invalid input
+            response.sendRedirect("invalidInputError.jsp");
             return;
         }
-       // if (!hitchhiker.addNewHitchhikingEvent(eventName,pickupCity,fuelMoneyInInt,hitchhikerLatitude, hitchhikerLongitude)) {
+
         HitchhikerRideDAO hitchhikerRideDAO = new HitchhikerRideDAO();
 
-        if (!hitchhikerRideDAO.insert(hitchhikerName,eventName,pickupLocation,latitudeStr, longitudeStr,fuelMoneyInInt,true)) {
-            response.sendRedirect("eventExistsError.jsp"); //change to you are already register as a hitchhiker to this event
-        }
-        else {
-            //add to the database
-           // HitchhikerRide newRide = client.getHitchhikingEventByName(eventName);
-            //Users userManager = ServletUtils.getUserManager(getServletContext());
-            if (hitchhikerRideDAO.matchDriverToHitchhiker(hitchhikerName,eventName)) {
-                response.sendRedirect("thankYouHitchhiker.jsp");
+        if (!hitchhikerRideDAO.insert(hitchhikerName, eventName, pickupLocation, latitudeStr, longitudeStr, fuelMoneyInInt, true)) {
+            // Redirect if hitchhiker is already registered for this event
+            response.sendRedirect("eventExistsError.jsp");
+        } else {
+            // Check if there is a matching driver for the hitchhiker
+            if (hitchhikerRideDAO.matchDriverToHitchhiker(hitchhikerName, eventName)) {
+                // Redirect to hitchhiker match page
+                response.sendRedirect("hitchhikerFindMatch.jsp?hitchhikerName=" + hitchhikerName + "&eventName=" + eventName);
+            } else {
+                // Redirect to thank you page if no match is found
+                response.sendRedirect("thankYouHitchhiker.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
             }
-
-
-            response.sendRedirect("thankYouHitchhiker.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
         }
-
     }
 }

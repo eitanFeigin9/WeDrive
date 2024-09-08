@@ -26,6 +26,7 @@
             <%
                 }
             %>
+            <h1>Create a new event!</h1>
 
             <form action="createEvent" method="post" enctype="multipart/form-data" class="event-form">
                 <div class="event-form__field">

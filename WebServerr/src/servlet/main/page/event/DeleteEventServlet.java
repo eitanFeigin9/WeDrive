@@ -1,6 +1,8 @@
 package servlet.main.page.event;
 
+import database.DriverRideDAO;
 import database.EventsDAO;
+import database.HitchhikerRideDAO;
 import database.Users;
 import entity.ServerClient;
 import jakarta.servlet.ServletException;
@@ -19,13 +21,17 @@ public class DeleteEventServlet extends HttpServlet {
         String userName = (String) request.getSession().getAttribute("userName");
         ServerClient client = Users.getUserByUserName(userName);
 
-        // Remove the event from the client's local map
-        client.getOwnedEvents().remove(eventName);
+
 
         // Remove the event from the database
         EventsDAO eventsDAO = new EventsDAO();
         boolean isDeleted = eventsDAO.deleteEvent(eventName, userName);
-
+        DriverRideDAO driverRideDAO = new DriverRideDAO();
+        DriverRideDAO.deleteDriverRidesByEventName(eventName);
+        HitchhikerRideDAO hitchhikerRideDAO = new HitchhikerRideDAO();
+        HitchhikerRideDAO.deleteHitchhikerRidesByEventName(eventName);
+        Users.getDriversRideByEvents().remove(eventName);
+        Users.getHitchhikersRideByEvents().remove(eventName);
         // Redirect to the appropriate page based on success/failure
         if (isDeleted) {
             response.sendRedirect("editOrDeleteEvent.jsp");

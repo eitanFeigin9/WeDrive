@@ -64,7 +64,7 @@
                 <%
                     if (isMatch) {
                 %>
-                <a href="hitchikersData.jsp?id=<%= eventName %>&owner=<%= userName %>">Yes</a>
+                <a href="hitchikersData.jsp?eventName=<%= eventName %>&userName=<%= userName %>">Yes</a>
                 <%
                 } else {
                 %>
@@ -74,11 +74,11 @@
                 %>
             </td>
             <td>
-                <form action="editRide.jsp" method="get" style="display:inline;">
+                <form action="editRide.jsp?eventName=<%= eventName %>&userName=<%= userName %>" method="get" style="display:inline;">
                     <input type="hidden" name="eventName" value="<%= eventName %>">
                     <button type="submit" class="button edit-button">Edit</button>
                 </form>
-                <form action="cancelRide.jsp" method="get" style="display:inline;">
+                <form action="cancelRide.jsp?eventName=<%= eventName %>&userName=<%= userName %>" method="get" style="display:inline;">
                     <input type="hidden" name="eventName" value="<%= eventName %>">
                     <button type="submit" class="button delete-button">Delete</button>
                 </form>

@@ -38,7 +38,7 @@
                 <input type="hidden" id="eventOwner" name="eventOwner" value="<%= eventOwner %>">
                 <div class="event-form__field">
                     <i class="event-form__icon fas fa-car"></i>
-                    <input type="range" id="maxCapacity" name="maxCapacity" min="0" max="50" value="1" oninput="updateCapacityValue(this.value)" class="event-form__input" required>
+                    <input type="range" id="maxCapacity" name="maxCapacity" min="1" max="50" value="1" oninput="updateCapacityValue(this.value)" class="event-form__input" required>
                     <span class="slider-label"><strong>Free seats: </strong><strong id="capacityValue">1</strong></span>
                 </div>
                 <div class="event-form__field">
@@ -57,7 +57,7 @@
                 <input type="hidden" id="latitude" name="sourceLatitude">
                 <input type="hidden" id="longitude" name="sourceLongitude">
                 <button type="submit" class="button event-form__submit">
-                    <span class="button__text">Create Event</span>
+                    <span class="button__text">Create new ride for the event!</span>
                     <i class="button__icon fas fa-check"></i>
                 </button>
             </form>

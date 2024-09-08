@@ -1,5 +1,6 @@
 package servlet.main.page.hitchhiker;
 
+import database.MatchedDAO;
 import database.Users;
 import entity.ServerClient;
 import jakarta.servlet.ServletException;
@@ -20,10 +21,9 @@ public class CancelRideHitchhikerServlet extends HttpServlet {
         String eventName = request.getParameter("eventName");
 
         String userName = (String)request.getSession().getAttribute("userName");
-        ServerClient client = Users.getUserByFullName(userName);
+        ServerClient client = Users.getUserByUserName(userName);
 
-        Users userManager = ServletUtils.getUserManager(getServletContext());
-        HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
+        HashMap<String, ServerClient> webUsers = Users.getWebUsers();
 
         //need to remove hitchhiker from the driver list and update the curr amount of hitchhikers
         HitchhikerRide hitchhikerRide = client.getHitchhikingEventByName(eventName);
@@ -33,13 +33,16 @@ public class CancelRideHitchhikerServlet extends HttpServlet {
             if (!driverName.isEmpty() && webUsers.containsKey(driverName)) {
                 ServerClient driver = webUsers.get(driverName);
                 DriverRide driverRide = driver.getDrivingEventByName(eventName);
-                //driverRide.removeHitchhiker(client.getFullName()); //remove hitchiker from the driverRide
+                MatchedDAO matchedDAO = new MatchedDAO();
+                matchedDAO.deleteMatch(eventName,driverName,hitchhikerRide.getHitchhikerUserName());
+                driverRide.removeHitchhikerByFullName(client.getUserName()); //remove hitchiker from the driverRide
+                Users.removeSpecificHitchhikerRide(hitchhikerRide.getHitchhikerUserName(),eventName);
                 //driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
             }
         }
         client.getHitchhikingEvents().remove(eventName);
 
 
-        response.sendRedirect("hitchhikerOptionsMenu.jsp");
+        response.sendRedirect("hitchhikerOptionsMenu.jsp?userName="+userName);
     }
 }

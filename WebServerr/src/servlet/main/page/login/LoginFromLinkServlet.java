@@ -25,14 +25,14 @@ public class LoginFromLinkServlet extends HttpServlet {
         String eventId = request.getParameter("id");
         String eventOwner = request.getParameter("owner");
         if (!Users.checkUserExists(userName)) {
-            response.sendRedirect("loginFromLink.jsp?error=Username does not exist!");
+            response.sendRedirect("loginFromLink.jsp?id="+eventId+"&owner="+eventOwner+"&error=Username does not exist!");
             return; // Stop further processing
         }
         // Get the owner details
         ServerClient owner = Users.getUserByUserName(eventOwner);
         if (owner == null) {
             // Early exit after redirect
-            response.sendRedirect("loginFromLink.jsp?error=Owner is invalid!");
+            response.sendRedirect("loginFromLink.jsp?id="+eventId+"&owner="+eventOwner+"&error=Owner is invalid!");
             return;
         }
 
@@ -40,20 +40,30 @@ public class LoginFromLinkServlet extends HttpServlet {
         EventData eventData = owner.getOwnedEventByName(eventId);
         if (eventData == null || (eventData.getFileName() != null && eventData.getGuestList().isEmpty())) {
             // Early exit after redirect
-            response.sendRedirect("loginFromLink.jsp?error=You are not invited to the event:" + eventId + "!");
+            response.sendRedirect("loginFromLink.jsp?id="+eventId+"&owner="+eventOwner+"&error=You are not invited to the event:" + eventId + "!");
             return;
         }
 
         // Check if the user credentials are valid
         if (Users.isValidUser(userName, password)) {
             // Set session attribute for logged-in user
+
             request.getSession().setAttribute("userName", userName);
-            response.sendRedirect("optionsFromLink.jsp?id=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
-            return;
+            if(owner.getHitchhikingEvents().containsKey(eventId)||owner.getDrivingEvents().containsKey(eventId))
+            {
+                if(owner.getHitchhikingEvents().containsKey(eventId)){response.sendRedirect("rideAlreadyCreated.jsp?eventName=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&userName=" + userName);
+                    return;}
+                else {response.sendRedirect("hitchhikingAskAlreadyExits.jsp?eventName=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&userName=" + userName);
+                    return;}
+
+            }
+            else { response.sendRedirect("optionsFromLink.jsp?id=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
+                return;}
+
         }
 
         // Check if the password is incorrect
-        response.sendRedirect("loginFromLink.jsp?error=Password isn't correct!");
+        response.sendRedirect("loginFromLink.jsp?error=Password isn't correct!&id="+eventId+"&owner="+eventOwner);
         return;
     }
 

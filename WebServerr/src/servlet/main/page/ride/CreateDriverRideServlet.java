@@ -71,7 +71,12 @@ public class CreateDriverRideServlet extends HttpServlet {
             DriverRide newRide =client.getDrivingEventByName(eventName);
             //DriverRide newRide = driverRideDAO.getDriverRideForUser(driverName, eventName);
             boolean matched = driverRideDAO.matchHitchhikersToDriver(driverName, eventName);
-            response.sendRedirect("thankForNewRide.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
+            if(matched){
+                response.sendRedirect("driverFindMatch.jsp?userName=" + driverName + "&eventName=" + eventName);
+
+            }
+            else {            response.sendRedirect("thankForNewRide.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwner, "UTF-8"));
+            }
         }
     }
 

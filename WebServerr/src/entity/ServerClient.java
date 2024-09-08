@@ -8,6 +8,8 @@ import ride.HitchhikerRide;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 public class ServerClient {
     private  String fullName;
@@ -20,6 +22,7 @@ public class ServerClient {
     private HashMap<String, EventData> ownedEvents;
     private HashMap<String, DriverRide> drivingEvents;
     private HashMap<String,HitchhikerRide> hitchhikingEvents;
+    //private Map<String, List<HitchhikerRide>> hitchhikersPerEvent; //EventName, list ofHitchhikerRides
 
     public ServerClient(String fullName,String userName ,String email, String phoneNumber, String password, String securityAnswer) {
         this.fullName = fullName;
@@ -31,8 +34,10 @@ public class ServerClient {
         this.ownedEvents = new HashMap<>();
         this.drivingEvents = new HashMap<>();
         this.hitchhikingEvents = new HashMap<>();
+       // this.hitchhikersPerEvent= new HashMap<>();
         restoreOwnedEventsFromDB();
     }
+    //public void addingNewHitchhikerForEventRide(String eventName,String)
     public void restoreOwnedEventsFromDB(){
 // Instantiate the EventsDAO to fetch events from the database
         EventsDAO eventsDAO = new EventsDAO();
@@ -132,8 +137,8 @@ public class ServerClient {
 
         if(!checkDrivingEventExists(eventName)){
             DriverRide newRide=new DriverRide(eventName,this.userName,eventAddress,Double.parseDouble(eventLatitude),Double.parseDouble(eventLongitude),maxCapacity,sourceLocation,Double.parseDouble(sourceLatitude), Double.parseDouble(sourceLongitude), fuelReturnsPerHitchhiker,maxPickupDistance);
-            drivingEvents.put(eventName,newRide );
-            Users.getDriversRideByEvents().put(eventName,newRide);
+            drivingEvents.put(eventName,newRide);
+            Users.addNewDriversRideByEvents(eventName,newRide);
             return true;
         }
         return false;
@@ -150,7 +155,7 @@ public class ServerClient {
         if(!checkHitchhikingEventExists(eventName)){
             HitchhikerRide newRide = new HitchhikerRide(hitchhikerUserName,eventName,pickupLocation,fuelMoney, latitude, longitude);
             hitchhikingEvents.put(eventName,newRide );
-            Users.getHitchhikersRideByEvents().put(eventName,newRide);
+            Users.addNewHitchhikersRideByEvents(eventName,newRide);
 
             return true;
         }
@@ -169,5 +174,16 @@ public class ServerClient {
         }
         return false; // Event already exists
     }
+   /* public boolean addDrivingEvent(EventData event) {
+        // Check if the event already exists
+        if (!drivingEvents.containsKey(event.getEventName())) {
+            // If it doesn't exist, add the event to the ownedEvents map
+            drivingEvents.put(event.getEventName(), event);
+            return true; // Successfully added
+        }
+        return false; // Event already exists
+    }
+
+    */
 
 }

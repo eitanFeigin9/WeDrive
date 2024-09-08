@@ -14,7 +14,7 @@
 </head>
 <%
     String userName = (String) request.getSession().getAttribute("userName");
-    ServerClient client = Users.getUserByFullName(userName);
+    ServerClient client = Users.getUserByUserName(userName);
     String eventNamePar = request.getParameter("eventName");
     EventData event = client.getOwnedEventByName(eventNamePar);
     request.getSession().setAttribute("eventOldName", eventNamePar);
