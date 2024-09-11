@@ -11,6 +11,33 @@
             height: 400px;
             width: 100%;
         }
+        h1 {
+            color: white; /* Set title color to white */
+        }
+
+        /* Style for the input placeholders */
+        .event-form__input::placeholder {
+            color: white; /* Set placeholder text color to white */
+            opacity: 0.8; /* Optional: slightly transparent */
+        }
+
+        /* Style for the Back button */
+        .back-button {
+            background-color: #f3e7e7; /* Red background */
+            color: #2a2727; /* White text */
+            border: none; /* No border */
+            padding: 10px 20px; /* Padding */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            border-radius: 5px; /* Rounded corners */
+            margin-bottom: 20px; /* Space below the button */
+            text-decoration: none; /* No underline */
+        }
+
+        .back-button:hover {
+            background-color: #f3e5e5; /* Darker red on hover */
+        }
+
     </style>
 </head>
 <body>
@@ -46,12 +73,12 @@
                     <input type="number" id="fuelReturns" name="fuelReturns" class="event-form__input" placeholder="Fuel Returns per passenger in $" min="0" required>
                 </div>
                 <div class="event-form__field">
-                    <i class="event-form__icon fas fa-road"></i>
-                    <input type="number" id="maxPickupDistance" name="maxPickupDistance" class="event-form__input" placeholder="Maximum KM for pickup from starting point" min="0" step="0.1" required>
-                </div>
-                <div class="event-form__field">
                     <i class="event-form__icon fas fa-map-marker-alt"></i>
                     <input type="text" id="eventLocation" name="sourceLocation" class="event-form__input" placeholder="Source Address (your starting point)" required>
+                </div>
+                <div class="event-form__field">
+                    <i class="event-form__icon fas fa-road"></i>
+                    <input type="number" id="maxPickupDistance" name="maxPickupDistance" class="event-form__input" placeholder="Maximum KM for pickup from starting point" min="0" step="0.1" required>
                 </div>
                 <div id="map"></div>
                 <input type="hidden" id="latitude" name="sourceLatitude">

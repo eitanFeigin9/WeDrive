@@ -24,12 +24,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hitchhikers Data</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/hitchhikerMatch/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #0b3f60;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #555;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button {
+            background-color: #0b3f60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #0f5b8c;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <h2>Event Details</h2>
-
     <table>
         <tr>
             <th>Event Name</th>
@@ -44,7 +114,6 @@
     </table>
 
     <h2>Hitchhikers</h2>
-
     <table>
         <tr>
             <th>Hitchhiker Name</th>
@@ -69,7 +138,6 @@
         <a href="mainPage.jsp" class="button">Back to Main Page</a>
     </div>
 </div>
-
-<script src="${pageContext.request.contextPath}/hitchhikerMatch/script.js"></script>
 </body>
 </html>
+

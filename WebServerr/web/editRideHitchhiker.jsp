@@ -31,8 +31,12 @@
             font-size: 22px;
             margin-bottom: 20px;
         }
-        form {
-            margin-bottom: 20px;
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
         }
         input[type="text"], input[type="number"] {
             width: calc(100% - 20px);
@@ -41,6 +45,13 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+        }
+        .notice {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            text-align: left;
         }
         .button-container {
             text-align: center;
@@ -57,7 +68,7 @@
             width: 45%;
         }
         .update-button {
-            background-color: #4CAF50;
+            background-color: #44386c;
             color: white;
             padding: 12px 24px;
             border-radius: 5px;
@@ -67,14 +78,12 @@
             transition: background-color 0.3s;
         }
         .update-button:hover {
-            background-color: #45a049;
+            background-color: #6754a8;
         }
-        .notice {
+        .error-message {
             color: #ff0000;
-            font-size: 12px;
-            margin-top: -10px;
             margin-bottom: 10px;
-            text-align: left;
+            font-size: 14px;
         }
         #map {
             width: 100%;
@@ -94,36 +103,40 @@
 <div class="container">
     <%
         String errorMessage = (String) request.getAttribute("errorMessage");
-    %>
-    <%
         if (errorMessage != null) {
     %>
     <div class="error-message">
-        <p><strong><%= errorMessage %></strong></p>
+        <strong><%= errorMessage %></strong>
     </div>
     <%
         }
     %>
-    <h1>Edit Transportation Request For The <%= request.getParameter("eventName") %> Event</h1>
+    <h1>Edit Transportation Request for <%= eventName %></h1>
     <form action="editRideHitchhiker" method="post" class="form-container">
-        <label for="pickupCity">Pickup Address:</label><br>
-        <input type="text" id="pickupCity" name="pickupCity" value="<%= ride.getPickupLocation() %>" required><br>
-        <div class="notice">Notice: If you change the pickup address, the current drive may be canceled</div>
-        <label for="fuelMoney">The Maximum Fuel Price You Are Willing To Pay:</label><br>
-        <input type="number" id="fuelMoney" name="fuelMoney" min="0" value="<%= ride.getFuelMoney() %>" required><br>
-        <div class="notice">Notice: Lowering the price of fuel could lead to the cancellation of the current pickup</div>
+        <label for="pickupCity">Pickup Address:</label>
+        <input type="text" id="pickupCity" name="pickupCity" value="<%= ride.getPickupLocation() %>" required>
+        <div class="notice">Notice: Changing the pickup address may cancel your current ride.</div>
+
+        <label for="fuelMoney">Maximum Fuel Price:</label>
+        <input type="number" id="fuelMoney" name="fuelMoney" min="0" value="<%= ride.getFuelMoney() %>" required>
+        <div class="notice">Notice: Lowering the price may lead to cancellation of your current ride.</div>
+
         <input type="hidden" id="latitude" name="latitude" value="<%= ride.getLatitude() %>">
         <input type="hidden" id="longitude" name="longitude" value="<%= ride.getLongitude() %>">
-        <div id="map"></div>
-        <form action="editRideHitchhiker" method="post" style="display:inline;">
-            <input type="hidden" name="eventName" value="<%= request.getParameter("eventName") %>">
-            <input type="hidden" name="userName" value="<%= request.getParameter("userName") %>">
 
-            <button type="submit" class="button update-button">Edit the Pickup</button>
-        </form>
+        <div id="map"></div>
+
+        <div class="button-container">
+            <input type="hidden" name="eventName" value="<%= eventName %>">
+            <input type="hidden" name="userName" value="<%= userName %>">
+            <button type="submit" class="update-button">Update Pickup</button>
+        </div>
+        <button onclick="window.history.back()" class="update-button">Back</button>
     </form>
 </div>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA84fzc-D-45OeGPHqeJ1e_F7kRgTBEASg&libraries=places"></script>
 <script src="web/js/map.js"></script>
 </body>
 </html>
+

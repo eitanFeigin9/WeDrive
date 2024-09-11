@@ -1,6 +1,7 @@
- .u-section-1 {
+.u-section-1 {
   background-image: url("images/weDriveDriverOptionsMenu.png");
-  background-position: 50% 0%;
+  background-position: center top;
+  background-size: cover;
 }
 
 .u-section-1 .u-sheet-1 {
@@ -41,6 +42,8 @@
   padding: 10px 47px;
 }
 
+/* Media Queries for Mobile Compatibility */
+
 @media (max-width: 1199px) {
   .u-section-1 .u-sheet-1 {
     min-height: 736px;
@@ -49,17 +52,11 @@
   .u-section-1 .u-group-1 {
     width: 433px;
     min-height: 453px;
-    --animation-custom_in-translate_x: 300px;
-    --animation-custom_in-translate_y: 0px;
-    --animation-custom_in-opacity: 0;
-    --animation-custom_in-rotate: 0deg;
-    --animation-custom_in-scale: 1;
-    height: auto;
+    margin: 40px auto;
   }
 
   .u-section-1 .u-container-layout-1 {
-    padding-left: 40px;
-    padding-right: 40px;
+    padding: 20px 30px;
   }
 
   .u-section-1 .u-text-1 {
@@ -75,12 +72,11 @@
   .u-section-1 .u-group-1 {
     width: 326px;
     min-height: 426px;
-    margin-top: 29px;
+    margin-top: 20px;
   }
 
   .u-section-1 .u-container-layout-1 {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 20px;
   }
 
   .u-section-1 .u-text-1 {
@@ -89,9 +85,9 @@
 }
 
 @media (max-width: 767px) {
-   .u-section-1 {
-    background-position: 16.91% 100%;
-    background-size: auto 115%;
+  .u-section-1 {
+    background-position: center bottom;
+    background-size: cover;
   }
 
   .u-section-1 .u-sheet-1 {
@@ -101,29 +97,36 @@
   .u-section-1 .u-group-1 {
     width: 270px;
     min-height: 438px;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
   }
 
   .u-section-1 .u-container-layout-1 {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 15px;
+  }
+
+  .u-section-1 .u-text-1 {
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 575px) {
-   .u-section-1 {
-    background-position: 49.79% 100%;
-    background-size: auto 130%;
+  .u-section-1 {
+    background-position: center bottom;
+    background-size: cover;
   }
 
   .u-section-1 .u-group-1 {
-    width: 222px;
+    width: 100%;
+    max-width: 300px;
     min-height: 452px;
-    margin-right: 0;
-    margin-bottom: 34px;
+    margin: 20px auto;
   }
 
   .u-section-1 .u-text-1 {
     font-size: 1.875rem;
+  }
+
+  .u-section-1 .u-container-layout-1 {
+    padding: 10px;
   }
 }

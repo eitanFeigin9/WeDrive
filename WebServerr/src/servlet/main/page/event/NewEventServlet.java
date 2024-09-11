@@ -78,41 +78,11 @@ public class NewEventServlet extends HttpServlet {
         String guestListString = String.join(",", guestList);
         String eventOwnerUserName = eventOwner.getUserName();
 
-        // Generate the event link and QR code
-      //  String eventLink = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventName;
-        String eventLink = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventName +  "&owner=" + eventOwnerUserName;
 
-        // String qrCodeFilePath = getServletContext().getRealPath("/") + QR_CODE_IMAGE_PATH + "/" + eventName + "_QR.png";
-
-        // Ensure the directory exists
-      /*  File qrCodeDir = new File(getServletContext().getRealPath("/") + QR_CODE_IMAGE_PATH);
-        if (!qrCodeDir.exists()) {
-            qrCodeDir.mkdirs();
-        }
-
-       */
-
-    /*    String qrCodeFileName = eventName.replaceAll("\\s+", "_") + ".png";
-        String basePath = getServletContext().getInitParameter("basePath");
-        String qrCodeFilePath = basePath+("WebServerr/web/QRCodes/"+qrCodeFileName);
-        String qrCodePath = generateQRCodeImage(eventLink, eventName + "_QR.png", 350, 350);
+        //String eventLink = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventName+  "&owner=" + eventOwnerUserName;
+        String eventLink = "http://wedriveco.com:8080/users/welcome.jsp?id=" + eventName +  "&owner=" + eventOwnerUserName;
 
 
-     */
-        // Create a new EventData object and store it
-      /*  EventData newEvent = new EventData(eventName, eventOwnerUserName, eventDate, eventKind, guestList, eventLocation,
-                guestListFileName, latitude, longitude, qrCodeFilePath, eventLink);
-        eventOwner.addOwnedEvent(newEvent);
-
-
-       */
-        // Add the event to the database
-        /*
-        EventsDAO eventsDAO = new EventsDAO();
-        eventsDAO.addNewEvent(eventName, eventDate, eventKind, guestListString, eventLocation, guestListFileName, latitude, longitude, eventOwnerUserName, qrCodeFilePath, eventLink);
-
-
-         */
         // Store the event name and owner in maps for future reference
         nameMap.put(eventName, eventName);
         ownerMap.put(eventName, eventOwnerUserName);
@@ -138,42 +108,4 @@ public class NewEventServlet extends HttpServlet {
         return Users.getUserByUserName(userName);
     }
 
-    private String generateQRCodeImage(String text, String fileName, int width, int height) {
-        try {
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            hints.put(EncodeHintType.MARGIN, 1);
-
-            if (text == null || fileName == null) {
-                throw new IllegalArgumentException("Text or file name is null");
-            }
-
-            BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height, hints);
-
-            // Resolve file path relative to the web application directory
-            String qrCodeDirPath = getServletContext().getRealPath("/") + QR_CODE_IMAGE_PATH;
-            String qrCodeFilePath = qrCodeDirPath + File.separator + fileName;
-
-            File file = new File(qrCodeFilePath);
-
-            // Ensure the directory exists
-            file.getParentFile().mkdirs();
-
-            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", file.toPath());
-
-            return fileName; // Return the file name to use in the JSP
-
-        } catch (WriterException | IOException e) {
-            e.printStackTrace();
-            return null; // Return null in case of an error
-        }
-    }
-
-    public static Map<String, String> getNameMap() {
-        return nameMap;
-    }
-
-    public static String getEventOwnerName(String eventName) {
-        return ownerMap.get(eventName);
-    }
 }

@@ -38,6 +38,10 @@
                     <input type="date" id="eventDate" name="eventDate" class="event-form__input" required>
                 </div>
                 <div class="event-form__field">
+                    <i class="event-form__icon fas fa-map-marker-alt"></i>
+                    <input type="text" id="eventLocation" name="eventLocation" class="event-form__input" placeholder="Event Location" required>
+                </div>
+                <div class="event-form__field">
                     <i class="event-form__icon fas fa-tag"></i>
                     <select id="eventKind" name="eventKind" class="event-form__input" required>
                         <option value="" disabled selected>Select event kind</option>
@@ -53,10 +57,7 @@
                 <div class="event-form__field">
                     <i class="event-form__icon fas fa-file-upload"></i>
                     <input type="file" id="guestList" name="guestList" class="event-form__input" accept=".csv">
-                </div>
-                <div class="event-form__field">
-                    <i class="event-form__icon fas fa-map-marker-alt"></i>
-                    <input type="text" id="eventLocation" name="eventLocation" class="event-form__input" placeholder="Event Location" required>
+                    <p style="color: #555; font-size: 14px; margin-top: 5px;">(Optional: Upload guest list file)</p> <!-- Optional message -->
                 </div>
                 <div id="map"></div>
                 <input type="hidden" id="latitude" name="latitude">
@@ -79,3 +80,4 @@
 <script src="newEvent/map2.js"></script>
 </body>
 </html>
+

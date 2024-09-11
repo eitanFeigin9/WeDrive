@@ -30,15 +30,8 @@ public class Matched {
         return driverUserName;
     }
 
-    public void setDriverUserName(String driverUserName) {
-        this.driverUserName = driverUserName;
-    }
-
     public String getHitchhikerUserName() {
         return hitchhikerUserName;
     }
 
-    public void setHitchhikerUserName(String hitchhikerUserName) {
-        this.hitchhikerUserName = hitchhikerUserName;
-    }
 }

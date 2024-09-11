@@ -163,7 +163,7 @@
 
             Graphics2D g2d = weddingInvitationImage.createGraphics();
 
-            g2d.setFont(new Font("Brush Script MT", Font.PLAIN, 170));
+            g2d.setFont(new Font("Brush Script MT", Font.PLAIN, 100));
             g2d.setColor(new Color(216, 165, 71));
             g2d.drawString(eventName, 340, 1170);
 
@@ -231,7 +231,7 @@
 
             Graphics2D barMitzvahG2d = barMitzvahInvitationImage.createGraphics();
 
-            barMitzvahG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 170));
+            barMitzvahG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 100));
             barMitzvahG2d.setColor(new Color(35, 33, 54));
             barMitzvahG2d.drawString(eventName, 555, 1100);
 
@@ -261,7 +261,7 @@
 
             Graphics2D batMitzvahG2d = batMitzvahInvitationImage.createGraphics();
 
-            batMitzvahG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 170));
+            batMitzvahG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 100));
             batMitzvahG2d.setColor(new Color(68, 56, 108));
             batMitzvahG2d.drawString(eventName, 555, 1100);
 
@@ -290,7 +290,7 @@
 
             Graphics2D birthdayG2d = birthdayInvitationImage.createGraphics();
 
-            birthdayG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 170));
+            birthdayG2d.setFont(new Font("Brush Script MT", Font.PLAIN, 100));
             birthdayG2d.setColor(new Color(216, 165, 71));
             birthdayG2d.drawString(eventName, 340, 700);
 

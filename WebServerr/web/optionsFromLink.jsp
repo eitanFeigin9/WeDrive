@@ -19,38 +19,46 @@
         }
         .container {
             text-align: center;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 40px 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
             max-width: 500px;
             width: 100%;
         }
         h1 {
-            color: #4CAF50;
-            margin-bottom: 20px;
+            color: #2a3f54;
+            font-size: 32px;
+            margin-bottom: 15px;
         }
         h2 {
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         .btn {
             display: inline-block;
-            padding: 15px 25px;
-            background-color: #4CAF50;
+            padding: 15px 30px;
+            background-color: #9a9093;
             color: #fff;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 8px;
             margin: 10px 0;
             transition: background-color 0.3s ease, transform 0.3s ease;
             font-size: 16px;
+            cursor: pointer;
         }
         .btn:hover {
-            background-color: #45a049;
+            background-color: #9a9093;
             transform: translateY(-2px);
         }
         .btn.main-menu {
-            margin-top: 30px; /* Add extra margin to push it further down */
+            display: block;
+            width: 80%; /* Full width for the main menu button */
+            margin-top: 30px; /* Add space between other buttons */
+            background-color: #5d6d7e;
+        }
+        .btn.main-menu:hover {
+            background-color: #4e5a6c;
         }
         .invalid-url {
             color: #d9534f;
@@ -64,19 +72,23 @@
     <%
         String eventId = request.getParameter("id");
         String eventOwner = request.getParameter("owner");
-        //String eventOwner = request.getAttribute("eventOwner").toString();
         if (eventId != null && eventOwner != null) {
     %>
-    <button class="btn" onclick="window.location.href='createRide.jsp?id=<%= java.net.URLEncoder.encode(eventId, "UTF-8") %>&owner=<%= java.net.URLEncoder.encode(eventOwner, "UTF-8") %>'">Are you interested in driving other guests and saving on fuel costs?</button>
-    <button class="btn" onclick="window.location.href='joinRide.jsp?id=<%= java.net.URLEncoder.encode(eventId, "UTF-8") %>&owner=<%= java.net.URLEncoder.encode(eventOwner, "UTF-8") %>'">Do you need transportation to the event?</button>
+    <button class="btn" onclick="window.location.href='createRide.jsp?id=<%= java.net.URLEncoder.encode(eventId, "UTF-8") %>&owner=<%= java.net.URLEncoder.encode(eventOwner, "UTF-8") %>'">
+        Interested in driving other guests and saving on fuel?
+    </button>
+    <button class="btn" onclick="window.location.href='joinRide.jsp?id=<%= java.net.URLEncoder.encode(eventId, "UTF-8") %>&owner=<%= java.net.URLEncoder.encode(eventOwner, "UTF-8") %>'">
+        Need transportation to the event?
+    </button>
     <a href="mainPage.jsp" class="btn main-menu">Main Menu</a>
     <%
     } else {
     %>
-    <p>Error: Event ID not found.</p>
+    <p class="invalid-url">Error: Event ID not found.</p>
     <%
         }
     %>
 </div>
 </body>
 </html>
+

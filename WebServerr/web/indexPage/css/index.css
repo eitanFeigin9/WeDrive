@@ -1,16 +1,16 @@
- .u-section-1 {
-  min-height: 1016px;
+.u-section-1 {
+  min-height: 100vh; /* Adjusted to be more responsive */
 }
 
 .u-section-1 .u-shape-1 {
-  width: calc(((100% - 1140px) / 2)  + 926px);
+  width: calc(((100% - 1140px) / 2) + 926px);
   height: 416px;
   --animation-custom_in-translate_x: 300px;
   --animation-custom_in-translate_y: 0px;
   --animation-custom_in-opacity: 0;
   --animation-custom_in-rotate: 0deg;
   --animation-custom_in-scale: 1;
-  margin: 600px auto 0 0;
+  margin: 100px auto 0 auto; /* Adjusted margin for better mobile positioning */
 }
 
 .u-section-1 .u-image-1 {
@@ -20,13 +20,14 @@
   --animation-custom_in-opacity: 0;
   --animation-custom_in-rotate: 0deg;
   --animation-custom_in-scale: 1;
-  margin-top: -1075px;
+  margin-top: 20px; /* Adjusted margin for better mobile positioning */
   margin-bottom: 0;
 }
 
 .u-section-1 .u-image-2 {
-  width: 485px;
-  min-height: 461px;
+  width: 100%; /* Full width for better mobile fit */
+  max-width: 485px; /* Added max-width to prevent oversized images */
+  min-height: 300px; /* Adjusted min-height for better mobile fit */
   background-image: url("images/fg_150.png");
   height: auto;
   --animation-custom_in-translate_x: 0px;
@@ -34,7 +35,7 @@
   --animation-custom_in-opacity: 0;
   --animation-custom_in-rotate: 180deg;
   --animation-custom_in-scale: 1;
-  margin: -235px calc(((100% - 1140px) / 2)) 0 auto;
+  margin: 20px auto; /* Centered image on mobile */
 }
 
 .u-section-1 .u-container-layout-1 {
@@ -44,8 +45,9 @@
 }
 
 .u-section-1 .u-group-2 {
-  width: 504px;
-  min-height: 457px;
+  width: 100%; /* Full width for better mobile fit */
+  max-width: 504px; /* Added max-width to prevent oversized elements */
+  min-height: 300px; /* Adjusted min-height for better mobile fit */
   background-image: none;
   --animation-custom_in-translate_x: -300px;
   --animation-custom_in-translate_y: 0px;
@@ -53,23 +55,23 @@
   --animation-custom_in-rotate: 0deg;
   --animation-custom_in-scale: 1;
   height: auto;
-  margin: -395px calc(((100% - 1140px) / 2)  + 79px) 48px auto;
+  margin: 20px auto; /* Centered element on mobile */
 }
 
 .u-section-1 .u-container-layout-2 {
-  padding: 30px 50px;
+  padding: 20px; /* Reduced padding for better mobile fit */
 }
 
 .u-section-1 .u-text-1 {
   font-weight: 700;
   font-family: "Playfair Display", serif;
-  font-size: 3rem;
-  margin: 78px 0 0;
+  font-size: 2rem; /* Adjusted font size for better mobile readability */
+  margin: 20px 0; /* Adjusted margin for better mobile spacing */
 }
 
 .u-section-1 .u-text-2 {
-  font-size: 1.125rem;
-  margin: 27px 0 0;
+  font-size: 1rem; /* Adjusted font size for better mobile readability */
+  margin: 10px 0; /* Adjusted margin for better mobile spacing */
 }
 
 .u-section-1 .u-btn-1 {
@@ -79,8 +81,8 @@
   font-size: 0.875rem;
   letter-spacing: normal;
   background-image: none;
-  margin: 20px auto 0 0;
-  padding: 10px 47px;
+  margin: 10px auto 0 auto; /* Centered button on mobile */
+  padding: 10px 20px; /* Adjusted padding for better mobile fit */
 }
 
 .u-section-1 .u-btn-2 {
@@ -89,130 +91,133 @@
   font-weight: 600;
   font-size: 0.875rem;
   letter-spacing: normal;
-  margin: -46px 11px 0 auto;
-  padding: 10px 47px;
+  margin: 10px auto 0 auto; /* Centered button on mobile */
+  padding: 10px 20px; /* Adjusted padding for better mobile fit */
 }
 
 @media (max-width: 1199px) {
-   .u-section-1 {
-    min-height: 1021px;
+  .u-section-1 {
+    min-height: auto; /* Adjusted for better mobile fit */
   }
 
   .u-section-1 .u-shape-1 {
-    width: calc(((100% - 940px) / 2)  + 800px);
+    width: calc(((100% - 940px) / 2) + 800px);
     height: 421px;
+    margin: 50px auto 0 auto; /* Adjusted margin for better mobile positioning */
   }
 
   .u-section-1 .u-image-1 {
-    margin-top: -1021px;
+    margin-top: 20px; /* Adjusted margin for better mobile positioning */
   }
 
   .u-section-1 .u-image-2 {
-    margin-top: -230px;
-    margin-right: calc(((100% - 940px) / 2));
+    margin-top: 20px;
+    margin-right: auto; /* Centered image on mobile */
     height: auto;
   }
 
   .u-section-1 .u-group-2 {
-    margin-right: calc(((100% - 940px) / 2)  + 79px);
-    height: auto;
+    margin-right: auto; /* Centered element on mobile */
   }
 }
 
 @media (max-width: 991px) {
-   .u-section-1 {
-    min-height: 1063px;
+  .u-section-1 {
+    min-height: auto; /* Adjusted for better mobile fit */
   }
 
   .u-section-1 .u-shape-1 {
-    width: calc(((100% - 720px) / 2)  + 450px);
+    width: calc(((100% - 720px) / 2) + 450px);
     height: 463px;
+    margin: 30px auto; /* Adjusted margin for better mobile positioning */
   }
 
   .u-section-1 .u-image-1 {
-    margin-top: -1063px;
+    margin-top: 20px; /* Adjusted margin for better mobile positioning */
   }
 
   .u-section-1 .u-image-2 {
-    margin-top: -188px;
-    margin-right: calc(((100% - 720px) / 2));
+    margin-top: 20px;
+    margin-right: auto; /* Centered image on mobile */
   }
 
   .u-section-1 .u-group-2 {
-    margin-right: calc(((100% - 720px) / 2)  + 79px);
+    margin-right: auto; /* Centered element on mobile */
   }
 
   .u-section-1 .u-container-layout-2 {
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-}
-
-@media (max-width: 767px) {
-   .u-section-1 {
-    min-height: 1218px;
-  }
-
-  .u-section-1 .u-shape-1 {
-    width: calc(((100% - 540px) / 2)  + 410px);
-    height: 618px;
-  }
-
-  .u-section-1 .u-image-1 {
-    margin-top: -1218px;
-  }
-
-  .u-section-1 .u-image-2 {
-    margin-top: -113px;
-    margin-right: calc(((100% - 540px) / 2));
-  }
-
-  .u-section-1 .u-group-2 {
-    width: 450px;
-    min-height: 500px;
-    margin: -370px auto 60px calc(((100% - 540px) / 2));
-  }
-
-  .u-section-1 .u-container-layout-2 {
-    padding-left: 20px;
+    padding-left: 20px; /* Adjusted padding for better mobile fit */
     padding-right: 20px;
   }
 }
 
-@media (max-width: 575px) {
-   .u-section-1 {
-    min-height: 1061px;
+@media (max-width: 767px) {
+  .u-section-1 {
+    min-height: auto; /* Adjusted for better mobile fit */
   }
 
   .u-section-1 .u-shape-1 {
-    width: calc(((100% - 340px) / 2)  + 290px);
-    height: 713px;
-    margin-top: 350px;
+    width: calc(((100% - 540px) / 2) + 410px);
+    height: 618px;
+    margin: 20px auto; /* Adjusted margin for better mobile positioning */
   }
 
   .u-section-1 .u-image-1 {
-    height: 491px;
-    margin-top: -1064px;
+    margin-top: 20px; /* Adjusted margin for better mobile positioning */
   }
 
   .u-section-1 .u-image-2 {
-    width: 275px;
-    min-height: 374px;
-    margin-top: -89px;
-    margin-right: calc(((100% - 340px) / 2));
+    margin-top: 20px;
+    margin-right: auto; /* Centered image on mobile */
   }
 
   .u-section-1 .u-group-2 {
-    width: 285px;
-    margin-top: -326px;
-    margin-left: calc(((100% - 340px) / 2)  + 14px);
+    width: 100%; /* Full width for better mobile fit */
+    max-width: 450px; /* Added max-width to prevent oversized elements */
+    margin: 20px auto; /* Centered element on mobile */
+  }
+
+  .u-section-1 .u-container-layout-2 {
+    padding-left: 15px; /* Reduced padding for better mobile fit */
+    padding-right: 15px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-1 {
+    min-height: auto; /* Adjusted for better mobile fit */
+  }
+
+  .u-section-1 .u-shape-1 {
+    width: calc(((100% - 340px) / 2) + 290px);
+    height: 713px;
+    margin: 20px auto; /* Adjusted margin for better mobile positioning */
+  }
+
+  .u-section-1 .u-image-1 {
+    height: auto; /* Adjusted for better mobile fit */
+    margin-top: 20px; /* Adjusted margin for better mobile positioning */
+  }
+
+  .u-section-1 .u-image-2 {
+    width: 100%; /* Full width for better mobile fit */
+    max-width: 275px; /* Added max-width to prevent oversized images */
+    min-height: auto; /* Adjusted for better mobile fit */
+    margin-top: 20px; /* Adjusted margin for better mobile positioning */
+    margin-right: auto; /* Centered image on mobile */
+  }
+
+  .u-section-1 .u-group-2 {
+    width: 100%; /* Full width for better mobile fit */
+    max-width: 285px; /* Added max-width to prevent oversized elements */
+    margin: 20px auto; /* Centered element on mobile */
   }
 
   .u-section-1 .u-text-1 {
-    font-size: 2.25rem;
+    font-size: 1.75rem; /* Adjusted font size for better mobile readability */
   }
 
   .u-section-1 .u-btn-2 {
-    margin-right: 0;
+    margin-right: auto; /* Centered button on mobile */
   }
 }

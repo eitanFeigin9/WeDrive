@@ -89,20 +89,9 @@ public class EditEventServlet extends HttpServlet {
         Users.getDriversRideByEvents().remove(eventOldName);
         Users.getHitchhikersRideByEvents().remove(eventOldName);
         String guestListString = String.join(",", guestList);
-/*
-        // Update the event in the database
-        //if (isUpdated) {
-            // Generate the QR code
-            String link = "http://localhost:8080/weDrive/eventDetails.jsp?eventName=" + eventNewName;
-            String qrCodeFileName = eventNewName + ".png";
-            String qrCodeFilePath = getServletContext().getRealPath("/") + QR_CODE_DIRECTORY + "/" + qrCodeFileName;
-            generateQRCodeImage(link, qrCodeFilePath, 350, 350);
 
-
- */
-            // Set attributes for JSP
-       // String eventLink = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventNewName;
-        String eventLink = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventNewName +  "&owner=" + userName;
+         //String eventLink = "http://localhost:8080/weDrive/welcome.jsp?id=" + eventNewName+  "&owner=" + userName;
+        String eventLink = "http://wedriveco.com:8080/users/welcome.jsp?id=" + eventNewName +  "&owner=" + userName;
         request.setAttribute("eventName", eventNewName);
         request.setAttribute("eventDate", eventDate);
         request.setAttribute("eventLocation", location);
@@ -117,50 +106,7 @@ public class EditEventServlet extends HttpServlet {
         ownerMap.put(eventNewName, userName);
         request.getRequestDispatcher("editEventSuccess.jsp").forward(request, response);
 
-        /*request.setAttribute("eventName", eventNewName);
-            request.setAttribute("eventDate", eventDate);
-            request.setAttribute("eventLocation", location);
-            request.setAttribute("eventKind", eventKind);
-            request.setAttribute("qrImagePath", QR_CODE_DIRECTORY + "/" + qrCodeFileName);
-            request.setAttribute("invitationLink", link);
-            client.addNewOwnedEvent(eventNewName, userName, eventDate, eventKind, guestList, location, fileName, latitude, longitude,QR_CODE_DIRECTORY + "/" + qrCodeFileName,link);
-             eventsDAO.updateEvent(eventOldName, eventNewName, eventDate, eventKind, guestListString, location, fileName, latitude, longitude, userName,QR_CODE_DIRECTORY + "/" + qrCodeFileName,link);
 
-            request.getRequestDispatcher("updateEventSuccess.jsp").forward(request, response);
-
-         */
-        }// else {
-         //   response.sendRedirect("editEventError.jsp");
-        //}
-
-
-
-  /*  private void generateQRCodeImage(String text, String filePath, int width, int height) {
-        try {
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            hints.put(EncodeHintType.MARGIN, 1);
-            BitMatrix bitMatrix = qrCodeWriter.encode(text, com.google.zxing.BarcodeFormat.QR_CODE, width, height, hints);
-
-            // Write the QR code to a PNG file
-            File file = new File(filePath);
-            file.getParentFile().mkdirs(); // Create directories if they don't exist
-            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", file.toPath());
-        } catch (WriterException | IOException e) {
-            e.printStackTrace();
         }
-    }
 
-   */
-
-    public static Map<String, String> getNameMap() {
-        return nameMap;
-    }
-
-    public static Map<String, String> getOwnerMap() {
-        return ownerMap;
-    }
-    public static String getEventOwnerName(String eventName) {
-        return ownerMap.get(eventName);
-    }
 }

@@ -63,26 +63,24 @@ public class EditRideServlet extends HttpServlet {
             Collections.reverse(entries);
             //HashMap<String, HitchhikerRide> hitchhikers = driverRide.getCurrentHitchhikers();
             List<String> hitchhikersToDelete = new LinkedList<>();
-          //  for (String hitchhikerName : hitchhikers.keySet()) {
+            //  for (String hitchhikerName : hitchhikers.keySet()) {
             for (Map.Entry<String, HitchhikerRide> entry : entries) {
                 String hitchhikerName = entry.getKey();
-                if (webUsers.containsKey(hitchhikerName)) {
-                    ServerClient user = webUsers.get(hitchhikerName);
+                String hitchhikerUserName = entry.getValue().getHitchhikerUserName(); //זה מה ששיניתי
+                if (webUsers.containsKey(hitchhikerUserName)) {
+                    ServerClient user = webUsers.get(hitchhikerUserName);
                     HitchhikerRide hitchhikerRide = user.getHitchhikingEventByName(eventName);
                     double hitchhikerLatitude = hitchhikerRide.getLatitude();
                     double hitchhikerLongitude = hitchhikerRide.getLongitude();
                     double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
                     if (hitchhikerRide.getFuelMoney() < fuelReturnsInInt || distance > maxPickupDistance) { //this hitchhiker can't afford this ride
-                        matchedDAO.deleteMatch(eventName,driverName,hitchhikerName);
+                        matchedDAO.deleteMatch(eventName,driverName,hitchhikerUserName); //לבדוק שאני שולחת פה username
                         hitchhikersToDelete.add(hitchhikerName);
-                       // driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
-                       // copyOfNewMaxCapacity--;
-
                     }
                 }
             }
             for (String item : hitchhikersToDelete) {
-                driverRide.removeHitchhiker(item);
+                driverRide.removeHitchhiker(item); //זה מה שהיה, Item הוא fullname
             }
 
 
@@ -93,15 +91,15 @@ public class EditRideServlet extends HttpServlet {
             List<String> hitchhikerKeys = new ArrayList<>(driverRide.getCurrentHitchhikers().keySet());
             ListIterator<String> iterator = hitchhikerKeys.listIterator(hitchhikerKeys.size());
 
-          //  HashMap<String,HitchhikerRide> hitchhikers = driverRide.getCurrentHitchhikers();
-           // Iterator<Map.Entry<String, HitchhikerRide>> iterator = hitchhikers.entrySet().iterator();
+            //  HashMap<String,HitchhikerRide> hitchhikers = driverRide.getCurrentHitchhikers();
+            // Iterator<Map.Entry<String, HitchhikerRide>> iterator = hitchhikers.entrySet().iterator();
             while (numOfHitchhikersToDelete > 0 && iterator.hasPrevious()) {
-          //  while (numOfHitchhikersToDelete > 0 && iterator.hasNext()) {
+                //  while (numOfHitchhikersToDelete > 0 && iterator.hasNext()) {
                 //Map.Entry<String, HitchhikerRide> hitchhikerEntry = iterator.next();
                 String hitchhikerName = iterator.previous();
 
                 if (webUsers.containsKey(hitchhikerName)) {
-                     matchedDAO.deleteMatch(eventName,driverName,hitchhikerName);
+                    matchedDAO.deleteMatch(eventName,driverName,hitchhikerName);
                     /*ServerClient user = webUsers.get(hitchhikerName);
                     HitchhikerRide hitchhikerRide = user.getHitchhikingEventByName(eventName);
                     hitchhikerRide.setFreeForPickup(true);

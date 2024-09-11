@@ -5,7 +5,9 @@ import ride.DriverRide;
 import ride.HitchhikerRide;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static utils.ServletUtils.calculateDistance;
@@ -131,6 +133,41 @@ public class DriverRideDAO {
             e.printStackTrace();
         }
     }
+
+    public List<DriverRide> getAllDriverRidesByUserName(String userName) {
+        List<DriverRide> driverRides = new ArrayList<>();
+        String query = "SELECT * FROM DriverRide WHERE driverUserName = ?"; // SQL query with WHERE clause
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, userName); // Set the parameter for driverUserName
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                String driverUserName = rs.getString("driverUserName");
+                String eventName = rs.getString("eventName");
+                String eventAddress = rs.getString("eventAddress");
+                Double eventLatitude = rs.getDouble("eventLatitude");
+                Double eventLongitude = rs.getDouble("eventLongitude");
+                int maxCapacity = rs.getInt("maxCapacity");
+                String sourceLocation = rs.getString("sourceLocation");
+                double sourceLatitude = rs.getDouble("sourceLatitude");
+                double sourceLongitude = rs.getDouble("sourceLongitude");
+                int fuelReturnsPerHitchhiker = rs.getInt("fuelReturnsPerHitchhiker");
+                double maxPickupDistance = rs.getDouble("maxPickupDistance");
+
+                DriverRide driverRide = new DriverRide(eventName, driverUserName, eventAddress, eventLatitude, eventLongitude,
+                        maxCapacity, sourceLocation, sourceLatitude, sourceLongitude,
+                        fuelReturnsPerHitchhiker, maxPickupDistance);
+                driverRides.add(driverRide);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return driverRides;
+    }
+
 }
 
 

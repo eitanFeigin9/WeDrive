@@ -3,8 +3,6 @@
 <%
     String eventName = request.getParameter("eventName");
     String userName = request.getParameter("userName");
-  //  String encodedEventName = URLEncoder.encode(eventName, "UTF-8");
-    //String encodedUserName = URLEncoder.encode(userName, "UTF-8");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +69,11 @@
         <a href="driverMenu.jsp?eventName=<%= eventName %>&userName=<%= userName %>" class="button">
             For details on your next driving events, press here!
         </a>
+        <a href="mainPage.jsp" class="button">
+            Go To Main Page
+        </a>
     </div>
 </div>
 </body>
 </html>
+

@@ -17,7 +17,6 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Retrieve form data
-        //Users userManagerManager = ServletUtils.getUserManager(getServletContext());
         String fullName = request.getParameter("fullName");
         String userName = request.getParameter("userName");
         String email = request.getParameter("email");

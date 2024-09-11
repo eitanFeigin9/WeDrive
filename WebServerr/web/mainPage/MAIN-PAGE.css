@@ -1,158 +1,110 @@
- .u-section-1 {
+.u-section-1 {
   background-image: none;
 }
 
 .u-section-1 .u-sheet-1 {
-  min-height: 1260px;
+  min-height: 100vh; /* Make the height flexible based on the screen */
 }
 
 .u-section-1 .u-shape-1 {
   width: 433px;
-  left: auto;
   right: 317px;
 }
 
 .u-section-1 .u-image-1 {
-  height: 1072px;
+  height: auto; /* Adjust to auto for flexible resizing */
+  width: 100%; /* Make the image responsive */
   margin-top: 94px;
-  margin-bottom: 0;
 }
 
-.u-section-1 .u-group-1 {
-  width: 204px;
-  height: 204px;
-  margin: -1064px auto 0 17px;
-}
-
-.u-section-1 .u-container-layout-1 {
-  padding: 0;
-}
-
-.u-section-1 .u-text-1 {
-  margin: 9px 0 0;
-}
-
-.u-section-1 .u-icon-1 {
-  width: 64px;
-  height: 64px;
-  margin: 9px auto 0;
-}
-
-.u-section-1 .u-btn-1 {
-  --radius: 50px;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  border-style: solid;
-  font-weight: 700;
-  background-image: none;
-  box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4);
-  margin: 11px auto 0;
-  padding: 6px 16px 7px;
-}
-
-.u-section-1 .u-group-2 {
-  height: 205px;
-  width: 205px;
-  margin: 17px auto 0 16px;
-}
-
-.u-section-1 .u-container-layout-2 {
-  padding: 0;
-}
-
-.u-section-1 .u-text-2 {
-  margin: 11px auto 0;
-}
-
-.u-section-1 .u-icon-2 {
-  width: 64px;
-  height: 64px;
-  margin: 14px auto 0;
-}
-
-.u-section-1 .u-btn-2 {
-  --radius: 50px;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  border-style: solid;
-  font-weight: 700;
-  background-image: none;
-  margin: 8px auto 0;
-  padding: 6px 16px 7px;
-}
-
+.u-section-1 .u-group-1,
+.u-section-1 .u-group-2,
 .u-section-1 .u-group-3 {
-  height: 206px;
-  width: 206px;
-  margin: 17px auto 60px 16px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto; /* Center the groups on smaller screens */
 }
 
+.u-section-1 .u-container-layout-1,
+.u-section-1 .u-container-layout-2,
 .u-section-1 .u-container-layout-3 {
-  padding-bottom: 0;
-}
-
-.u-section-1 .u-text-3 {
-  margin: 8px 0 0;
-}
-
-.u-section-1 .u-icon-3 {
-  width: 73px;
-  height: 73px;
-  margin: 3px auto 0 56px;
   padding: 0;
 }
 
+.u-section-1 .u-text-1,
+.u-section-1 .u-text-2,
+.u-section-1 .u-text-3 {
+  margin: 9px 0 0;
+  text-align: center; /* Center text for better readability on mobile */
+}
+
+.u-section-1 .u-icon-1,
+.u-section-1 .u-icon-2,
+.u-section-1 .u-icon-3 {
+  width: 64px;
+  height: 64px;
+  margin: 14px auto;
+}
+
+.u-section-1 .u-btn-1,
+.u-section-1 .u-btn-2,
 .u-section-1 .u-btn-3 {
   --radius: 50px;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  border-style: solid;
+  font-size: 1rem;
   font-weight: 700;
   background-image: none;
-  margin: 8px auto 0;
-  padding: 8px 27px 8px 26px;
+  padding: 12px 20px; /* Increased padding for easier touch interaction */
+  margin: 20px auto; /* Ensure buttons are spaced well on mobile */
 }
 
 @media (max-width: 1199px) {
-  .u-section-1 .u-group-1 {
-    height: auto;
-  }
-
-  .u-section-1 .u-group-2 {
-    height: auto;
-  }
-
-  .u-section-1 .u-btn-2 {
-    font-size: 0.875rem;
-    padding: 8px 27px 8px 26px;
-  }
-
+  .u-section-1 .u-group-1,
+  .u-section-1 .u-group-2,
   .u-section-1 .u-group-3 {
     height: auto;
-  }
-
-  .u-section-1 .u-container-layout-3 {
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
+    width: 90%; /* Make groups take more width */
+    max-width: none;
   }
 }
 
 @media (max-width: 991px) {
   .u-section-1 .u-shape-1 {
-    right: 287px;
+    right: 150px;
+    width: 90%; /* Make shapes more responsive */
   }
 }
 
 @media (max-width: 767px) {
   .u-section-1 .u-shape-1 {
-    right: 107px;
+    right: 0;
+    width: 100%; /* Ensure the shape fits the mobile screen */
+  }
+
+  .u-section-1 .u-btn-1,
+  .u-section-1 .u-btn-2,
+  .u-section-1 .u-btn-3 {
+    font-size: 0.9rem; /* Slightly reduce button text for mobile */
+    padding: 10px 18px; /* Ensure buttons are easily clickable on small screens */
+  }
+
+  .u-section-1 .u-icon-1,
+  .u-section-1 .u-icon-2,
+  .u-section-1 .u-icon-3 {
+    margin: 20px auto;
   }
 }
 
 @media (max-width: 575px) {
   .u-section-1 .u-shape-1 {
-    width: 340px;
-    right: 0;
+    width: 100%; /* Full width for smaller screens */
+    margin-right: 0;
+  }
+
+  .u-section-1 .u-btn-1,
+  .u-section-1 .u-btn-2,
+  .u-section-1 .u-btn-3 {
+    font-size: 0.85rem; /* Adjust font size on very small devices */
+    padding: 8px 16px;
   }
 }

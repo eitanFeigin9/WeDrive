@@ -106,29 +106,6 @@ public class EventsDAO {
         return ownedEvents;
     }
 
-    // Method to update an event in the database
-    public boolean updateEvent(String eventOldName, String eventName, String eventDate, String eventKind,
-                               String guestList, String location, String fileName, double latitude, double longitude,
-                               String eventOwnerUserName, String qrCodeFilePath, String invitationLink) {
-        String updateSql = "UPDATE Events SET eventName = ?, eventDate = ?, eventKind = ?, guestList = ?, " +
-                "location = ?, fileName = ?, latitude = ?, longitude = ?, qrCodeFilePath = ?, invitationLink = ? " +
-                "WHERE eventName = ? AND userName = ?";
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
-
-            setEventParameters(updateStatement, eventName, eventDate, eventKind, guestList, location, fileName, latitude, longitude, eventOwnerUserName, qrCodeFilePath, invitationLink);
-            updateStatement.setString(12, eventOldName);
-            updateStatement.setString(13, eventOwnerUserName);
-
-            int rowsUpdated = updateStatement.executeUpdate();
-            return rowsUpdated > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     // Method to delete an event from the database
     public boolean deleteEvent(String eventName, String userName) {
         // Remove the event from the client's local map

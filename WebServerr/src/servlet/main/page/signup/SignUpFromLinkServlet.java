@@ -24,17 +24,6 @@ public class SignUpFromLinkServlet extends HttpServlet {
         // the version with database
         UsersDAO usersDAO = new UsersDAO();
         EventsDAO eventsDAO = new EventsDAO();
-        //Users userManagerManager = ServletUtils.getUserManager(getServletContext());
-        /*String fullName = request.getParameter("fullName");
-        String userName = request.getParameter("userName");
-
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String password = request.getParameter("password");
-        String securityAnswer = request.getParameter("securityAnswer");
-        String eventName = request.getParameter("id");
-        String eventOwnerName = request.getParameter("owner");
-         */
 
         String fullName = request.getParameter("fullName");
         String userName = request.getParameter("userName");
@@ -46,9 +35,6 @@ public class SignUpFromLinkServlet extends HttpServlet {
         String eventOwnerName = request.getParameter("owner");
         HashMap<String, EventData> ownedEvents = Users.getUserByUserName(eventOwnerName).getOwnedEvents();
 
-       // HashMap<String, EventData> ownedEvents = eventsDAO.getAllOwnedEventsForUser(eventOwnerName);
-        //ServerClient owner = usersDAO.getUserByEmail(email);
-        //ServerClient owner = ServletUtils.getUserManager(getServletContext()).getUserByFullName(eventOwnerName);
         if (!ownedEvents.isEmpty())
         {
             EventData eventData = ownedEvents.get(eventName);
@@ -74,7 +60,6 @@ public class SignUpFromLinkServlet extends HttpServlet {
                     response.sendRedirect("signUpFromLinkNameError.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                 }
                 else {
-                    //usersDAO.addNewUser(fullName,email,phone,password,securityAnswer); //I don't think it needs to be here
                     response.sendRedirect("loginFromLink.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));
                 }
             }

@@ -27,7 +27,6 @@ public class PasswordRecoveryFromLinkServlet extends HttpServlet {
             request.setAttribute("password", user.getPassword());
             request.setAttribute("id", eventName);
             request.setAttribute("owner", eventOwnerName);
-          //  response.sendRedirect("/PasswordRecoveryFromLink.jsp?id="+eventName+"&owner="+eventOwnerName);
             request.getRequestDispatcher("/PasswordRecoveryFromLink.jsp?id="+eventName+"&owner="+eventOwnerName).forward(request, response);
         } else {
             response.sendRedirect("ForgotPasswordErrorFromLink.jsp?id=" + java.net.URLEncoder.encode(eventName, "UTF-8") + "&owner=" + java.net.URLEncoder.encode(eventOwnerName, "UTF-8"));

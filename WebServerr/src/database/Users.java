@@ -4,6 +4,7 @@ import entity.ServerClient;
 import event.EventData;
 import ride.DriverRide;
 import ride.HitchhikerRide;
+import ride.Matched;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,8 @@ public class Users {
     private boolean isFirstUser;
     private static Map<String, List<HitchhikerRide>> hitchhikersRideByEvents ;
     private static Map<String, List<DriverRide>>driversRideByEvents;
-private static HashMap<String, EventData> eventsMap;
+    private static HashMap<String, EventData> eventsMap;
+    private static Map<String, List<Matched>> matchedRidesByEvent;
 
 
     public Users() {
@@ -24,6 +26,7 @@ private static HashMap<String, EventData> eventsMap;
         hitchhikersRideByEvents = new HashMap<>();
         driversRideByEvents= new HashMap<>();
         eventsMap=new HashMap<>();
+        matchedRidesByEvent = new HashMap<>();
     }
 
     public static HashMap<String, EventData> getEventsMap() {
@@ -32,7 +35,8 @@ private static HashMap<String, EventData> eventsMap;
     public static void addEventToMap(EventData newEvent)
     {
         eventsMap.put(newEvent.getEventName(),newEvent);
-    }   public static void removeEventToMap(String eventName)
+    }
+    public static void removeEventToMap(String eventName)
     {
         eventsMap.remove(eventName);
     }
@@ -50,9 +54,17 @@ private static HashMap<String, EventData> eventsMap;
         return hitchhikersRideByEvents;
     }
     public static List<HitchhikerRide> getHitchhikersRideBySpecificEvent(String eventName) {
+        List<HitchhikerRide> hitchhikerRidesEmpty = new ArrayList<>();
+        if (hitchhikersRideByEvents.get(eventName) == null) {
+            return hitchhikerRidesEmpty;
+        }
         return hitchhikersRideByEvents.get(eventName);
     }
     public static List<DriverRide> getDriversRideBySpecificEvent(String eventName) {
+        List<DriverRide> driverRidesEmpty = new ArrayList<>();
+        if (driversRideByEvents.get(eventName) == null) {
+            return driverRidesEmpty;
+        }
         return driversRideByEvents.get(eventName);
     }
     public static DriverRide findSpecificDriver(String driverName, String eventName){
@@ -107,13 +119,14 @@ private static HashMap<String, EventData> eventsMap;
         Users.webUsers = webUsers;
     }
 
-    public synchronized boolean isFirstUser() {
-        return isFirstUser;
+    public static void addMatchedRide(String eventName, String driverUserName, String hitchhikerUserName) {
+        Matched match = new Matched(eventName, driverUserName, hitchhikerUserName);
+
+        matchedRidesByEvent.putIfAbsent(eventName, new ArrayList<>());
+        matchedRidesByEvent.get(eventName).add(match);
     }
 
-    public synchronized void setFirstUser(boolean firstUser) {
-        isFirstUser = firstUser;
-    }
+
     public static ServerClient getUserByFullName(String fullName) {
         for (Map.Entry<String, ServerClient> entry : webUsers.entrySet()) {
             ServerClient client = entry.getValue();

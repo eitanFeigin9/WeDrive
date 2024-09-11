@@ -22,7 +22,6 @@ public class ServerClient {
     private HashMap<String, EventData> ownedEvents;
     private HashMap<String, DriverRide> drivingEvents;
     private HashMap<String,HitchhikerRide> hitchhikingEvents;
-    //private Map<String, List<HitchhikerRide>> hitchhikersPerEvent; //EventName, list ofHitchhikerRides
 
     public ServerClient(String fullName,String userName ,String email, String phoneNumber, String password, String securityAnswer) {
         this.fullName = fullName;
@@ -34,18 +33,12 @@ public class ServerClient {
         this.ownedEvents = new HashMap<>();
         this.drivingEvents = new HashMap<>();
         this.hitchhikingEvents = new HashMap<>();
-       // this.hitchhikersPerEvent= new HashMap<>();
         restoreOwnedEventsFromDB();
     }
-    //public void addingNewHitchhikerForEventRide(String eventName,String)
+
     public void restoreOwnedEventsFromDB(){
-// Instantiate the EventsDAO to fetch events from the database
         EventsDAO eventsDAO = new EventsDAO();
-
-        // Use the DAO to fetch all owned events for this client (by userName)
         HashMap<String, EventData> restoredEvents = eventsDAO.getAllOwnedEventsForUser(this.userName);
-
-        // If events are retrieved, add them to the ownedEvents map
         if (restoredEvents != null && !restoredEvents.isEmpty()) {
             this.ownedEvents.putAll(restoredEvents);
         } else {
@@ -99,20 +92,6 @@ public class ServerClient {
     public boolean ifEventExists(String eventName){
         return !checkOwnedEventExists(eventName);
     }
-    public boolean addNewOwnedEvent(String eventName, String eventOwner, String eventDate, String eventKind,
-                                    HashSet<String> guestList, String location, String fileName,
-                                    double latitude, double longitude, String qrCodeFilePath, String invitationLink) {
-        // Create a new EventData object with the updated parameters including QR code and invitation link
-        EventData newEvent = new EventData(eventName, eventOwner, eventDate, eventKind, guestList, location,
-                fileName, latitude, longitude, qrCodeFilePath, invitationLink);
-
-        // Check if the event with the same name already exists in owned events
-        if (!checkOwnedEventExists(eventName)) {
-            ownedEvents.put(eventName, newEvent);
-            return true;
-        }
-        return false;
-    }
 
     public void deleteOwnedEvent(String eventName){
         ownedEvents.remove(eventName);
@@ -144,9 +123,6 @@ public class ServerClient {
         return false;
     }
 
-    public void deleteDrivingEvent(String eventName){
-        drivingEvents.remove(eventName);
-    }
     public DriverRide getDrivingEventByName(String eventName) { return drivingEvents.get(eventName); }
 
     public boolean checkHitchhikingEventExists(String eventName){ return hitchhikingEvents.containsKey(eventName); }
@@ -161,9 +137,6 @@ public class ServerClient {
         }
         return false;
     }
-    public void deleteHitchhikingEvent(String eventName){
-        hitchhikingEvents.remove(eventName);
-    }
     public HitchhikerRide getHitchhikingEventByName(String eventName) { return hitchhikingEvents.get(eventName); }
     public boolean addOwnedEvent(EventData event) {
         // Check if the event already exists
@@ -174,16 +147,21 @@ public class ServerClient {
         }
         return false; // Event already exists
     }
-   /* public boolean addDrivingEvent(EventData event) {
-        // Check if the event already exists
-        if (!drivingEvents.containsKey(event.getEventName())) {
-            // If it doesn't exist, add the event to the ownedEvents map
-            drivingEvents.put(event.getEventName(), event);
-            return true; // Successfully added
+
+    public boolean addDrivingRide(DriverRide driverRide) {
+        if (!checkDrivingEventExists(driverRide.getEventName())) {
+            drivingEvents.put(driverRide.getEventName(), driverRide);
+            return true;
         }
-        return false; // Event already exists
+        return false;
     }
 
-    */
+    public boolean addHitchhikerRide(HitchhikerRide hitchhikerRide) {
+        if (!checkHitchhikingEventExists(hitchhikerRide.getEventName())) {
+            hitchhikingEvents.put(hitchhikerRide.getEventName(), hitchhikerRide);
+            return true;
+        }
+        return false;
+    }
 
 }

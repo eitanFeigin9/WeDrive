@@ -13,20 +13,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Details</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/editDelEvent/style.css">
-
-
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #9a9093; /* Antique pink */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Change to flex-start to avoid cutting off */
+            min-height: 100vh; /* Use min-height instead of height */
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            margin-top: 30px; /* Add margin at the top */
+        }
+        h1 {
+            color: #cb9f9f;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #cb9f9f;
+            color: white;
+        }
+        td {
+            color: #333;
+        }
+        td img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+        td a {
+            text-decoration: none;
+            color: #cb9f9f;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        /* Make the Date column wider */
+        td:nth-child(3) {
+            white-space: nowrap;
+            width: 150px;
+        }
+        .qr-wrapper {
+            margin-bottom: 10px;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .button {
+            padding: 12px 30px;
+            background-color: #cb9f9f;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #b08787;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <h2>Event Details</h2>
+    <!-- Big Title Header -->
+    <h1>Event Details</h1>
 
     <%
         String userName = (String) request.getSession().getAttribute("userName");
         ServerClient client = Users.getUserByUserName(userName);
         request.getSession().setAttribute("client", client);  // Update session with the latest client object
         HashMap<String, EventData> events = client.getOwnedEvents();
-
     %>
 
     <table>
@@ -78,3 +154,7 @@
 </div>
 </body>
 </html>
+
+
+
+

@@ -67,6 +67,6 @@
     </listener>
     <context-param>
         <param-name>basePath</param-name>
-        <param-value>C:\Users\איתן\Desktop\WeDriveWithDB\</param-value>
+        <param-value>http://wedriveco.com:8080/users/welcome.jsp?id=</param-value>
     </context-param>
 </web-app>

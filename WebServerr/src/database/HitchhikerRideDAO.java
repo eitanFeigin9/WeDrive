@@ -5,7 +5,9 @@ import ride.DriverRide;
 import ride.HitchhikerRide;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static utils.ServletUtils.calculateDistance;
@@ -45,8 +47,8 @@ public class HitchhikerRideDAO {
             pstmt.setString(3, pickupLocation);
             pstmt.setString(4, pickupLatitude);
             pstmt.setString(5, pickupLongitude);
-            pstmt.setObject(6, fuelMoney); // Use setObject to handle null values for Integer
-            pstmt.setObject(7, isFreeForPickup); // Use setObject to handle null values for Boolean
+            pstmt.setObject(6, fuelMoney);
+            pstmt.setObject(7, isFreeForPickup);
             pstmt.executeUpdate();
             ServerClient hitchhiker = Users.getUserByUserName(hitchhikerUserName);
             hitchhiker.addNewHitchhikingEvent(hitchhikerUserName, eventName, pickupLocation, fuelMoney, Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude));
@@ -58,88 +60,7 @@ public class HitchhikerRideDAO {
         return true;
     }
 
-/*
-    public void addNewHitchhikerRide(String eventName, String pickupCity, int fuelMoney, Boolean isFreeForPickup,
-                                     String driverName, String driverPhone, String latitude, String longitude, String hitchhikerName) {
-        String selectSql = "SELECT id FROM Users WHERE fullName = ?";
-        String insertSql = "INSERT INTO HitchhikerRide (eventName, pickupCity, fuelMoney, isFreeForPickup, driverName, " +
-                "driverPhone, latitude, longitude, hitchhikerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement selectStatement = connection.prepareStatement(selectSql);
-             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
-
-            // Retrieve hitchhikerId using hitchhikerName
-            selectStatement.setString(1, hitchhikerName);
-            ResultSet resultSet = selectStatement.executeQuery();
-
-            if (resultSet.next()) {
-                int hitchhikerId = resultSet.getInt("id");
-
-                // Insert the new hitchhiker ride into the HitchhikerRide table
-                insertStatement.setString(1, eventName);
-                insertStatement.setString(2, pickupCity);
-                insertStatement.setInt(3, fuelMoney);
-                insertStatement.setBoolean(4, isFreeForPickup);
-                insertStatement.setString(5, driverName);
-                insertStatement.setString(6, driverPhone);
-                insertStatement.setString(7, latitude);
-                insertStatement.setString(8, longitude);
-                insertStatement.setInt(9, hitchhikerId);
-
-                insertStatement.executeUpdate();
-            } else {
-                // Handle case where hitchhikerName is not found
-                System.out.println("Hitchhiker not found.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
- */
-    /*
-    public HashMap<String, HitchhikerRide> getAllHitchhikerRidesForUser(String fullName) {
-        HashMap<String, HitchhikerRide> hitchhikingEvents = new HashMap<>();
-
-        String getUserIDSql = "SELECT id FROM Users WHERE fullName = ?";
-        String getRidesSql = "SELECT * FROM HitchhikerRide WHERE hitchhikerID = ?";
-
-        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement getUserIDStatement = connection.prepareStatement(getUserIDSql);
-             PreparedStatement getRidesStatement = connection.prepareStatement(getRidesSql)) {
-
-            // Get user ID based on email
-            getUserIDStatement.setString(1, fullName);
-            ResultSet userResultSet = getUserIDStatement.executeQuery();
-
-            if (userResultSet.next()) {
-                int userId = userResultSet.getInt("id");
-
-                // Get all events for the user
-                getRidesStatement.setInt(1, userId);
-                ResultSet ridesResultSet = getRidesStatement.executeQuery();
-
-                while (ridesResultSet.next()) {
-                    HitchhikerRide hitchhikerRide = new HitchhikerRide( ridesResultSet.getString("eventName"), ridesResultSet.getString("pickupCity"), ridesResultSet.getInt("fuelMoney"), Double.parseDouble(ridesResultSet.getString("latitude")), Double.parseDouble(ridesResultSet.getString("longitude")));
-                    hitchhikingEvents.put(hitchhikerRide.getEventName(), hitchhikerRide);
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return hitchhikingEvents;
-    }
-
-
-     */
-
     public boolean matchDriverToHitchhiker(String hitchhikerName, String eventName) {
-        //String updateHitchhikerRideSQL = "UPDATE HitchhikerRide SET isFreeForPickup = 0 WHERE eventName = ? AND hitchhikerUserName = ?";
         boolean isMatchFound = false;
         if (!Users.getUserByUserName(hitchhikerName).getHitchhikingEventByName(eventName).getFreeForPickup()) {
             return false;
@@ -207,6 +128,36 @@ public class HitchhikerRideDAO {
             e.printStackTrace();
         }
     }
+
+
+    public List<HitchhikerRide> getAllHitchhikerRidesByUserName(String userName) {
+        List<HitchhikerRide> hitchhikerRides = new ArrayList<>();
+        String query = "SELECT * FROM HitchhikerRide WHERE hitchhikerUserName = ?"; // SQL query with WHERE clause
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, userName); // Set the parameter for hitchhikerUserName
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                String hitchhikerUserName = rs.getString("hitchhikerUserName");
+                String eventName = rs.getString("eventName");
+                String pickupLocation = rs.getString("pickupLocation");
+                double pickupLatitude = rs.getDouble("pickupLatitude");
+                double pickupLongitude = rs.getDouble("pickupLongitude");
+                int fuelMoney = rs.getInt("fuelMoney");
+                boolean isFreeForPickup = rs.getBoolean("isFreeForPickup");
+
+                HitchhikerRide hitchhikerRide = new HitchhikerRide(hitchhikerUserName, eventName, pickupLocation, fuelMoney, pickupLatitude, pickupLongitude, isFreeForPickup);
+                hitchhikerRides.add(hitchhikerRide);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return hitchhikerRides;
+    }
+
 }
 
 

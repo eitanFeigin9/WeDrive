@@ -8,8 +8,8 @@ public class HitchhikerRide {
     private Boolean isFreeForPickup;
     private String driverName;
     private String area;
-    private double latitude;  // New attribute for latitude
-    private double longitude; // New attribute for longitude
+    private double latitude;
+    private double longitude;
 
     public HitchhikerRide(String hitchhikerUserName,String eventName, String pickupLocation, int fuelMoney, double latitude, double longitude) {
         this.hitchhikerUserName=hitchhikerUserName;
@@ -22,23 +22,36 @@ public class HitchhikerRide {
         this.area = identifyRegion(longitude,latitude);
         this.driverName=null;
     }
-public void removeMatch(){
-    this.isFreeForPickup = true;
-    this.driverName=null;
 
-}
+    public HitchhikerRide(String hitchhikerUserName,String eventName, String pickupLocation, int fuelMoney, double latitude, double longitude,Boolean isFreeForPickup) {
+        this.hitchhikerUserName=hitchhikerUserName;
+        this.eventName = eventName;
+        this.pickupLocation = pickupLocation;
+        this.fuelMoney = fuelMoney;
+        this.isFreeForPickup = isFreeForPickup;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.area = identifyRegion(longitude,latitude);
+        this.driverName=null;
+    }
+
+    public void removeMatch(){
+     this.isFreeForPickup = true;
+      this.driverName=null;
+
+    }
     public String getArea() {
         return area;
     }
 
-public boolean findARide(String driverName){
-        if(isFreeForPickup){
-            isFreeForPickup=false;
-            this.driverName=driverName;
-            return true;
-        }
-        return false;
-}
+    public boolean findARide(String driverName){
+          if(isFreeForPickup){
+              isFreeForPickup=false;
+              this.driverName=driverName;
+              return true;
+         }
+          return false;
+    }
     public static String identifyRegion(double longitude, double latitude) {
         if (isInUpperGalilee(longitude, latitude)) {
             return "Upper Galilee";

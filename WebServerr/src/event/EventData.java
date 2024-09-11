@@ -12,8 +12,8 @@ public class EventData {
     private String fileName;
     private double latitude;
     private double longitude;
-    private String qrCodeFilePath; // New field to store QR code file path
-    private String invitationLink; // New field to store the invitation link
+    private String qrCodeFilePath;
+    private String invitationLink;
 
     public EventData(String eventName, String eventOwnerUserName, String eventDate, String eventKind, HashSet<String> guestList,
                      String location, String fileName, double latitude, double longitude, String qrCodeFilePath, String invitationLink) {

@@ -55,8 +55,6 @@ public class CancelRideServlet extends HttpServlet {
             }
 
 
-       // client.getDrivingEvents().remove(eventName);
-
 
 
 

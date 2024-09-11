@@ -21,8 +21,6 @@ public class DeleteEventServlet extends HttpServlet {
         String userName = (String) request.getSession().getAttribute("userName");
         ServerClient client = Users.getUserByUserName(userName);
 
-
-
         // Remove the event from the database
         EventsDAO eventsDAO = new EventsDAO();
         boolean isDeleted = eventsDAO.deleteEvent(eventName, userName);
@@ -32,11 +30,10 @@ public class DeleteEventServlet extends HttpServlet {
         HitchhikerRideDAO.deleteHitchhikerRidesByEventName(eventName);
         Users.getDriversRideByEvents().remove(eventName);
         Users.getHitchhikersRideByEvents().remove(eventName);
-        // Redirect to the appropriate page based on success/failure
+
         if (isDeleted) {
             response.sendRedirect("editOrDeleteEvent.jsp");
         } else {
-            // You could add error handling here if necessary
             response.sendRedirect("deleteEventError.jsp");
         }
     }

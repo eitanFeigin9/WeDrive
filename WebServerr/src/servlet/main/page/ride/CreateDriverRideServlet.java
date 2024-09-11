@@ -33,10 +33,8 @@ public class CreateDriverRideServlet extends HttpServlet {
         String sourceLocation = request.getParameter("sourceLocation");
         String sourceLatitude = request.getParameter("sourceLatitude");
         String sourceLongitude = request.getParameter("sourceLongitude");
-        //ServerClient owner = Users.getUserByFullName(eventOwner);
         UsersDAO usersDAO = new UsersDAO();
         EventsDAO eventsDAO = new EventsDAO();
-        //EventData event = eventsDAO.getEventByOwnerAndName(eventOwner,eventName);
         EventData event = owner.getOwnedEventByName(eventName);
         double eventLatitude = event.getLatitude();
         String eventAddress = event.getLocation();
@@ -69,7 +67,6 @@ public class CreateDriverRideServlet extends HttpServlet {
             response.sendRedirect("eventExistsError.jsp");
         } else {
             DriverRide newRide =client.getDrivingEventByName(eventName);
-            //DriverRide newRide = driverRideDAO.getDriverRideForUser(driverName, eventName);
             boolean matched = driverRideDAO.matchHitchhikersToDriver(driverName, eventName);
             if(matched){
                 response.sendRedirect("driverFindMatch.jsp?userName=" + driverName + "&eventName=" + eventName);

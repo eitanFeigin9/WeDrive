@@ -30,12 +30,17 @@ public class LoginFromLinkServlet extends HttpServlet {
         }
         // Get the owner details
         ServerClient owner = Users.getUserByUserName(eventOwner);
+        ServerClient user = Users.getUserByUserName(userName);
         if (owner == null) {
             // Early exit after redirect
             response.sendRedirect("loginFromLink.jsp?id="+eventId+"&owner="+eventOwner+"&error=Owner is invalid!");
             return;
         }
-
+        if (user == null) {
+            // Early exit after redirect
+            response.sendRedirect("loginFromLink.jsp?id="+eventId+"&owner="+eventOwner+"&error=User is invalid!");
+            return;
+        }
         // Get event data owned by the owner
         EventData eventData = owner.getOwnedEventByName(eventId);
         if (eventData == null || (eventData.getFileName() != null && eventData.getGuestList().isEmpty())) {
@@ -49,9 +54,9 @@ public class LoginFromLinkServlet extends HttpServlet {
             // Set session attribute for logged-in user
 
             request.getSession().setAttribute("userName", userName);
-            if(owner.getHitchhikingEvents().containsKey(eventId)||owner.getDrivingEvents().containsKey(eventId))
+            if(user.getHitchhikingEvents().containsKey(eventId)|| user.getDrivingEvents().containsKey(eventId))
             {
-                if(owner.getHitchhikingEvents().containsKey(eventId)){response.sendRedirect("rideAlreadyCreated.jsp?eventName=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&userName=" + userName);
+                if(!user.getHitchhikingEvents().containsKey(eventId)){response.sendRedirect("rideAlreadyCreated.jsp?eventName=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&userName=" + userName);
                     return;}
                 else {response.sendRedirect("hitchhikingAskAlreadyExits.jsp?eventName=" + java.net.URLEncoder.encode(eventId, "UTF-8") + "&userName=" + userName);
                     return;}

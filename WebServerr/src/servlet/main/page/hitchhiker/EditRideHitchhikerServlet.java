@@ -56,15 +56,9 @@ public class EditRideHitchhikerServlet extends HttpServlet {
                     double driverLongitude = hitchhikerRide.getLongitude();
                     double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
                     if (fuelMoneyInInt < driverRide.getFuelReturnsPerHitchhiker() || distance > driverRide.getMaxPickupDistance()) {
-                //        driverRide.removeHitchhiker(userName);
-                  //      driverRide.lowerTotalFuelReturns(hitchhikerRide.getFuelMoney());
-                     /*   hitchhikerRide.setDriverPhone("");
-                        hitchhikerRide.setDriverName("");
-                        hitchhikerRide.setFreeForPickup(true);
-
-                      */
                         MatchedDAO matchedDAO=new MatchedDAO();
                         matchedDAO.deleteMatch(eventName,driverName,userName);
+                        driverRide.removeHitchhikerByFullName(client.getUserName());
                     }
                 }
             }
@@ -78,13 +72,11 @@ public class EditRideHitchhikerServlet extends HttpServlet {
             if(isMatchFound){
                 response.sendRedirect("hitchhikerFindMatch.jsp?hitchhikerName=" + userName + "&eventName=" + eventName);
             } else {
-                // Redirect to thank you page if no match is found
                 response.sendRedirect("hitchhikerOptionsMenu.jsp?userName="+userName+"&eventName="+eventName);
             }
 
             }
     }
-      //  response.sendRedirect("hitchhikerOptionsMenu.jsp");
 
 
     }

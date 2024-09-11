@@ -36,7 +36,7 @@
             <div class="u-container-layout u-container-layout-1">
                 <h4 class="u-custom-font u-font-montserrat u-text u-text-white u-text-1"> Event Owner?</h4>
                 <span class="u-file-icon u-icon u-icon-1"><img src="mainPage/images/5759551.png" alt=""></span>
-                <a href="eventOwnerMenu.jsp" class="u-border-2 u-border-black u-btn u-btn-round u-button-style u-hover-black u-palette-4-base u-radius u-btn-1"> Organize and manage&nbsp;<br>your event's&nbsp;<br>transportation needs
+                <a href="eventOwnerMenu.jsp?userName=<%= userName %>" class="u-border-2 u-border-black u-btn u-btn-round u-button-style u-hover-black u-palette-4-base u-radius u-btn-1"> Organize and manage&nbsp;<br>your event's&nbsp;<br>transportation needs
                 </a>
             </div>
         </div>
@@ -69,3 +69,5 @@
 
 </body>
 </html>
+
+

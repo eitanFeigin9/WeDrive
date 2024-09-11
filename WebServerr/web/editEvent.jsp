@@ -50,17 +50,26 @@
                     <input type="date" id="eventDate" name="eventDate" class="event-form__input" value="<%= event.getEventDate() %>" required>
                 </div>
                 <div class="event-form__field">
+                    <i class="event-form__icon fas fa-map-marker-alt"></i>
+                    <input type="text" id="eventLocation" name="eventLocation" class="event-form__input" placeholder="Event Location" value="<%= event.getLocation() %>" required>
+                </div>
+                <div class="event-form__field">
                     <i class="event-form__icon fas fa-tag"></i>
-                    <input type="text" id="eventKind" name="eventKind" class="event-form__input" placeholder="Event Kind" value="<%= event.getEventKind() %>" required>
+                    <select id="eventKind" name="eventKind" class="event-form__input" placeholder="Event Kind" value="<%= event.getEventKind() %>" required>
+                        <option value="" disabled selected>Select event kind</option>
+                        <option value="Wedding">Wedding</option>
+                        <option value="Bar Mitzvah">Bar Mitzvah</option>
+                        <option value="Bat Mitzvah">Bat Mitzvah</option>
+                        <option value="Birthday party">Birthday party</option>
+                        <option value="Ritual circumcision">Ritual circumcision</option>
+                        <option value="Conference">Conference</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
                 <div class="event-form__field">
                     <i class="event-form__icon fas fa-file-upload"></i>
                     <input type="file" id="guestList" name="guestList" class="event-form__input" accept=".csv" onchange="updateFileName(this)">
                     <div class="file-info"><%= event.getFileName() %></div>
-                </div>
-                <div class="event-form__field">
-                    <i class="event-form__icon fas fa-map-marker-alt"></i>
-                    <input type="text" id="eventLocation" name="eventLocation" class="event-form__input" placeholder="Event Location" value="<%= event.getLocation() %>" required>
                 </div>
                 <div id="map"></div>
                 <input type="hidden" id="latitude" name="latitude" value="<%= event.getLatitude() %>">
@@ -69,6 +78,7 @@
                     <span class="button__text">Update Event</span>
                     <i class="button__icon fas fa-check"></i>
                 </button>
+                <button onclick="window.history.back()" class="button event-form__submit">Back</button>
             </form>
         </div>
         <div class="screen__background">

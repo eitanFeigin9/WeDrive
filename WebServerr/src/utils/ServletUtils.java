@@ -29,7 +29,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 public class ServletUtils {
     private static final Object managerLock = new Object();
     private static final String USER_MANAGER_ATTRIBUTE = "userManager";
-    private static final int EARTH_RADIUS = 6371; // Earth radius in kilometers
+    private static final int EARTH_RADIUS = 6371;
 
     public static Users getUserManager(ServletContext servletContext) {
         synchronized (managerLock) {
@@ -101,88 +101,5 @@ public class ServletUtils {
         return EARTH_RADIUS * c; // Distance in kilometers
     }
 
-    /*public static void matchHitchhikersToDriver(ServerClient client, DriverRide newRide, Users userManager, String eventName, String userName, Double driverLatitude, Double driverLongitude, Double maxPickupDistance) {
-        if (newRide.isTherePlace()) {
-            HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
-            for (Map.Entry<String, ServerClient> user : webUsers.entrySet()) {
-                if (user.getValue().checkHitchhikingEventExists(eventName) && !user.getKey().equals(userName) && newRide.isTherePlace()) {
-                    HitchhikerRide hitchhikerRide = user.getValue().getHitchhikingEventByName(eventName);
-                    if (hitchhikerRide.getFreeForPickup()) {
-                        double hitchhikerLatitude = hitchhikerRide.getLatitude();
-                        double hitchhikerLongitude = hitchhikerRide.getLongitude();
-                        double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
-                        if (distance <= maxPickupDistance) {
-                            if (hitchhikerRide.getFuelMoney() >= newRide.getFuelReturnsPerHitchhiker()) {
-                                if (newRide.addNewHitchhiker(user.getValue().getFullName(), user.getValue().getPhoneNumber(), hitchhikerRide.getPickupCity(), hitchhikerLatitude, hitchhikerLongitude)) {
-                                    newRide.addToTotalFuelReturns(hitchhikerRide.getFuelMoney());
-                                    hitchhikerRide.setFreeForPickup(false);
-                                    hitchhikerRide.setDriverName(client.getFullName());
-                                    hitchhikerRide.setDriverPhone(client.getPhoneNumber());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
-     */
-
-   /* public static boolean matchDriverToHitchhiker(ServerClient client, HitchhikerRide newRide, Users userManager, String eventName, String userName, Double hitchhikerLatitude, Double hitchhikerLongitude) {
-        HashMap<String, ServerClient> webUsers = userManager.getWebUsers();
-        for (Map.Entry<String, ServerClient> user : webUsers.entrySet()) {
-            if (user.getValue().checkDrivingEventExists(eventName) && !user.getKey().equals(userName)) {
-                DriverRide driverRide = user.getValue().getDrivingEventByName(eventName);
-                double driverLatitude = driverRide.getLatitude();
-                double driverLongitude = driverRide.getLongitude();
-                double distance = calculateDistance(driverLatitude, driverLongitude, hitchhikerLatitude, hitchhikerLongitude);
-                if (driverRide.isTherePlace() && distance <= driverRide.getMaxPickupDistance()) {
-                    if (newRide.getFuelMoney() >= driverRide.getFuelReturnsPerHitchhiker()) {
-                        if (driverRide.addNewHitchhiker(client.getFullName(), client.getPhoneNumber(), newRide.getPickupCity(), hitchhikerLatitude, hitchhikerLongitude)) {
-                            driverRide.addToTotalFuelReturns(newRide.getFuelMoney());
-                            newRide.setFreeForPickup(false);
-                            newRide.setDriverName(user.getValue().getFullName());
-                            newRide.setDriverPhone(user.getValue().getPhoneNumber());
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-
-    */
-    public static String generateQRCodeImage(String text, String fileName, int width, int height, ServletContext servletContext) {
-        try {
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            hints.put(EncodeHintType.MARGIN, 1);
-
-            if (text == null || fileName == null) {
-                throw new IllegalArgumentException("Text or file name is null");
-            }
-
-            BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height, hints);
-
-            // Resolve file path relative to the web application directory and concatenate the QR_CODE_IMAGE_PATH
-            String qrCodeDirPath = servletContext.getRealPath("/") + "web/QRCodes";
-            String qrCodeFilePath = qrCodeDirPath + File.separator + fileName;
-
-            File file = new File(qrCodeFilePath);
-
-            // Ensure the directory exists
-            file.getParentFile().mkdirs();
-
-            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", file.toPath());
-
-            return fileName; // Return the file name to use in the JSP
-
-        } catch (WriterException | IOException e) {
-            e.printStackTrace();
-            return null; // Return null in case of an error
-        }
-    }
 }
