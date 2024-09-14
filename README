@@ -1,0 +1,125 @@
+WeDrive Project
+Overview
+WeDrive is a web application built to simplify transportation for event attendees by enabling users to find or offer rides to events. The project is deployed on an Amazon EC2 instance with a unique domain, utilizing a MySQL database, and hosted on a Tomcat server. The application is developed in Java 8 using Jakarta Servlets and IntelliJ IDE.
+
+Project Structure
+Backend: Java 8
+Framework: Jakarta Servlets
+Frontend: HTML, CSS, JavaScript
+Database: MySQL on AWS RDS
+Server: Apache Tomcat 10
+Hosting: Amazon EC2
+Domain:http://wedriveco.com:8080/users/
+Features
+User registration and login.
+Event creation and management.
+Ride-sharing coordination for event attendees.
+Cost-sharing for fuel between drivers and passengers.
+Automatic ride matching based on proximity and availability.
+Prerequisites
+Java 8: Ensure you have JDK 1.8 installed on your machine.
+Tomcat 10.x: Apache Tomcat version 10 is used to run the application.
+MySQL Database: The application connects to an AWS RDS MySQL instance. Ensure you have the MySQL JDBC Connector.
+Jakarta EE: Jakarta Servlet API is used for request handling.
+EC2 Setup: Application hosted on an EC2 instance with necessary security group rules for HTTP and database access.
+Setup Instructions
+1. Clone the repository
+git clone https://github.com/eitanFeigin9/WeDrive.git
+2. Configure MySQL Database
+Ensure that your MySQL database is running on AWS RDS or any local/remote instance.
+Create the required tables by executing the provided SQL scripts :
+CREATE DATABASE `wedrive-aws-db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE TABLE `Clients` (
+  `fullName` varchar(255) NOT NULL,
+  `userName` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phoneNumber` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `securityAnswer` varchar(255) NOT NULL,
+  PRIMARY KEY (`userName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `DriverRide` (
+  `driverUserName` varchar(255) NOT NULL,
+  `eventName` varchar(255) NOT NULL,
+  `eventAddress` varchar(255) NOT NULL,
+  `eventLatitude` varchar(255) DEFAULT NULL,
+  `eventLongitude` varchar(255) DEFAULT NULL,
+  `maxCapacity` int DEFAULT NULL,
+  `sourceLocation` varchar(255) DEFAULT NULL,
+  `sourceLatitude` varchar(255) DEFAULT NULL,
+  `sourceLongitude` varchar(255) DEFAULT NULL,
+  `fuelReturnsPerHitchhiker` int DEFAULT NULL,
+  `maxPickupDistance` double DEFAULT NULL,
+  PRIMARY KEY (`driverUserName`,`eventName`),
+  CONSTRAINT `FK_DriverRide` FOREIGN KEY (`driverUserName`) REFERENCES `Clients` (`userName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `Events` (
+  `eventID` int NOT NULL AUTO_INCREMENT,
+  `eventName` varchar(255) NOT NULL,
+  `eventDate` varchar(255) DEFAULT NULL,
+  `eventKind` varchar(100) DEFAULT NULL,
+  `guestList` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `fileName` varchar(255) DEFAULT NULL,
+  `latitude` varchar(255) DEFAULT NULL,
+  `longitude` varchar(255) DEFAULT NULL,
+  `userName` varchar(255) NOT NULL,
+  `qrCodeFilePath` longtext,
+  `invitationLink` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`eventID`),
+  KEY `FK_Client_Event` (`userName`),
+  CONSTRAINT `FK_Client_Event` FOREIGN KEY (`userName`) REFERENCES `Clients` (`userName`)
+) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `HitchhikerRide` (
+  `hitchhikerUserName` varchar(255) NOT NULL,
+  `eventName` varchar(255) NOT NULL,
+  `pickupLocation` varchar(255) DEFAULT NULL,
+  `pickupLatitude` varchar(255) DEFAULT NULL,
+  `pickupLongitude` varchar(255) DEFAULT NULL,
+  `fuelMoney` int DEFAULT NULL,
+  `isFreeForPickup` tinyint DEFAULT NULL,
+  PRIMARY KEY (`hitchhikerUserName`,`eventName`),
+  CONSTRAINT `FK_User_HitchhikerRide` FOREIGN KEY (`hitchhikerUserName`) REFERENCES `Clients` (`userName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `Matched` (
+  `driverUserName` varchar(255) NOT NULL,
+  `hitchhikerUserName` varchar(255) NOT NULL,
+  `eventName` varchar(255) NOT NULL,
+  PRIMARY KEY (`driverUserName`,`hitchhikerUserName`,`eventName`),
+  KEY `hitchhikerUserName` (`hitchhikerUserName`),
+  CONSTRAINT `Matched_ibfk_1` FOREIGN KEY (`driverUserName`) REFERENCES `Clients` (`userName`),
+  CONSTRAINT `Matched_ibfk_2` FOREIGN KEY (`hitchhikerUserName`) REFERENCES `Clients` (`userName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+Update the database connection details in the db.properties file:
+db.url=jdbc:mysql://aws-db-wedrive.c5seuugwg6qy.us-east-1.rds.amazonaws.com:3306/wedrive-aws-db
+db.username=sharon
+db.password=sharonaws9
+
+3. Deploy on Tomcat
+Install Tomcat 10.x on your local machine or EC2 instance.
+Configure the Tomcat server.xml file to match your domain if necessary.
+Deploy the .war file to the Tomcat webapps directory.
+Start Tomcat by running the following command:
+catalina.sh start
+
+4. Domain Configuration
+The project uses a unique domain. Configure your domain settings by pointing your domain's DNS records to your EC2 instance's IP.
+Update the Tomcat configuration (server.xml) to use the domain:
+<Host name="yourdomain.com" appBase="webapps" unpackWARs="true" autoDeploy="true">
+    <Alias>http://wedriveco.com:8080/users/</Alias>
+</Host>
+Deployment on EC2
+EC2 Setup: Launch an Amazon EC2 instance with the necessary configurations (Amazon Linux/Ubuntu).
+Security Groups: Open ports 22 (SSH), 80 (HTTP), and 3306 (for MySQL if using remote access).
+Tomcat Deployment: Upload the .war file to /opt/tomcat/webapps/ on your EC2 instance.
+Domain Configuration: Ensure your domain points to your EC2 public IP or DNS name.
+Technologies Used
+Java 8
+Jakarta EE (Servlets)
+MySQL Database
+Tomcat 10.x
+AWS EC2 & RDS
+IntelliJ IDEA
+Authors
+Eitan Feigin, Sharon Olshanetsky and Tomer Simantov.
